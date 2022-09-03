@@ -1,0 +1,41 @@
+import * as React from 'react';
+import {Card, Paragraph, Title} from 'react-native-paper';
+import {Text, View} from 'react-native';
+import styles from "./PetCardStyles";
+
+const pets = [
+    {
+        name: 'Blanquito',
+        age: '3 años',
+        image: 'https://i.blogs.es/c9e91c/bichon-maltes/450_1000.jpeg',
+        state: 'En adopción'
+    },
+    {
+        name: 'Naranjita',
+        age: '6 meses',
+        image: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxIQEhUTEhIVEBUVEBUSFhcWFRUVFRUVFRcWFhUVFRUYHSggGBolGxUVITEhJSkrLi4uFx8zODMtNygtLisBCgoKDg0OGxAQGy0lHyUtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLf/AABEIAK4BIgMBIgACEQEDEQH/xAAbAAACAwEBAQAAAAAAAAAAAAADBAABBQIGB//EADYQAAEDAwIEAwcEAgIDAQAAAAEAAhEDBCESMQVBUWFxgZEGEyKhscHwFDLR8VLhQmJDktIj/8QAGQEAAwEBAQAAAAAAAAAAAAAAAAECAwQF/8QAJREAAgICAgICAgMBAAAAAAAAAAECEQMhEjETQQRRFCIyYYEj/9oADAMBAAIRAxEAPwD6+wyJ5rqm480AGCmmmUIAbqkbrptQFW5uEq5pHZJsA9SjPZCfSciU3nmrFbsUDF6esd/FEe53+PzRPehUytq3EIAEK5GHNI7otOoDsV2WghL1aPkjYB3kqw5ADHx+6VdMkfuyiwGCEKcowK5LZymIjF2qCuUAQqlCqQBaipRAFlcVdl2uKuyAFSuSrK5KQySoqUSAuVSiiALUVKIAtRRRAEUUUQBSitUgCKKKIAaYcwjDCA5snouvdkDBVCCOSz2u5ZR25EEKvd9MJMDhoJGV3TBG6zr+9q0zDWB3mEoOLVQfiYR5T9Fm8sYvZqsUpdG84SuZDd1mUuKzuiVL4HojzQ+xeKX0PuAjBhVTI8VmG9KGeIwl54leGRtl4CBVrtHNYla+LtsIbap5lZy+SvRcfjv2bX61o5qv17ViPdOyG6osn8po0XxkeiZeg80QXI6rzuqIXBvYO6r8r7E/jfR6U3YS1xxamzc56BYP6l7zDfX+UalQDcnJ6nl4J/kSl/EXgjHsbfxWs/8AYwNH/ZaFhdOcIcIIHLZYdS7AMAgJuhdQ0nyThkd22KWPWkbmsLiq/CxDxFcHimFf5MCPx5mqSuCVlt4iuhxEIXyIP2DwTRoypKUZdgozasrRTT6IcGuwsq0LWpqVE0FUXEq5QB3KkrkFWgC1FStAiKKKIAiiiiANErhoI6LoBUqEU6YwuKbnTlW8TzhU3A3lAA7m31LIfU0u0kZ+q2H1oWbxik2o3UDJb0iY6LOa1ZpB7pgzTa7cR8j8kGraH/iZ7bFJ0LtgxqcJ/wCjox3AICYbeNJhplc0oJnQpSQlcOI59lKs6Qd+aZvKOqD6/wC0LVEDfkuWUaZ0KVoEx0N7kSjzjrIlJuqjVHeEY1cCNvpG6zs0o6tq3LnMLp9L4oHj80oxvx45ukJ+rUGoFSna2NqnoJWEAef2StOhqPzPgtP3YcPmp+nAEBdCx27MOdICwBuBA/OqBc1G6cEY5mppjzH3RLmi5okNL/Df5LKrXdbMU/DU7fyMxHcfyt0qM+wBdGfea8mIgznqO627ZpNEnuFg8Koe+PxlgJGNJP8A8tnzC9W2joplu/gojDs0nLpGJXMID3o1wJQvcHcriad6OmNUcCSjspkri3MlXWuOiaqrYnd0i21CEzSuiEi0yjtYnGbXQpQT7NCne9UyyvKx3NIVMuC1dMPktOpHPLAmtG+1y7BWZb3gKeY9dsZJnJKLXYcLoIbSuwVZDO1FyF0mIiiiiAIrVK0AFN0ehQn3juTU6aY6LhzB0VEmbUvKnIJapcVjt9FrPQHuUtDsx6huDz37BcWlpUDhqwOy1HVUI1lNFJnmuLW9P3hkE5kiS0eMgj1lPcM4e1h1Na1oIkRJknnqJyUTiFAGo122fFaDSGiABHbA8hyWDOi9HL1lVx8fY48CtOos67EkHbquXKb4wVeiZJjP7h5bj0lEDCIA558/wJoEFod0/D6/dU0jY8iVDii1Jg6VvnuDI/PNDp/G+D+bFPU3QD06pOyy8uWc0tIuLe2a9uICLOUNrvkrD11ppI5WrYUiRHZJVbIkGQNPMZdI6Z3TMlGbJwtoyszaro8fb8ObUrSGxB3jSSe4+3zXrwwU6fgFG2bQZAgoPGhFI+IU8eKbKcubSMgEap7rq4f8JhJVqs7cggVbyBA6Li5pWdnBuiUnxKXDpKXbX+Eo9rsudvVG6Q3RTNJyC0YXTHhNOiXsebQJGcBAuLeNhKJSuF3+oW9xaMf2TMxriwrXs7vUs66E5SlvXLHdAqw5eLr0LJi5qz1rHIgKSta0jdNtK9NOzzmgoXS4BXUqyGWooogCK1FEAOl6DUqImwQnfEnZIJ5mUsWyivpkA+iXYYOdilZVC1cuBwJHVBfUAIHzTpI2BlIXNvtHWVDKVB7ijqaENu0QutZDYKC0LmyPZ0QWgjnEDp9+yVqScfk8in2NB5n8+qDdWsZHqFk4NotSSYpZPlrqbjDhJB6g/wC5XLXQBmYPyP5CJxWgdIqN3aR/tANUFzXcnemSssicdG0Hex64IayB/wAuXiqs6WlctGqq0bgRK030QCIVLHydr0S58VX2cNaV20FMOZAXGlbOFGPOymLum+EIvAXHvAVLlRXGzSY6UtxPLCEvSuIVXVeQtVlTiR42pHmXs0k9/wAhKXNKGYMndaHEXz+0QkR/icyvOlSdHoR2rM6mDB9U9bvwEpOpzo2mEUP2Czlo0WzU14XDqkIOeWV1B5pWFBm1Si03HmlA3mmaDCdpVIl0MNpygX9tAWjQoEZQ71wIghb8KjbMOW6QDg9ziDyW4xy8pZu0vXpqD5C7fjzuJy/IjTGwV2EJq7C6kcrCKLkLpMRFFFEAO1XLgVIGUYtlc+7HiqJAPzywl6tuCnaiX3SY0ZdxbhpkY8Ej+pdBkExzW5ValKo7KGikzHF5O4jxXP6sc8eX06o900bQqtw3ouPLHZ145aOKnGmU2F7iGtG5gn5ASVKftLbuhj3e7c4EjUCNus7KuM2HvKDwyNUah4tyPAL59xCwdcXDKramlrZa8bOZEy0jktccLVtmc5U9I+rwHU+oI3GQR1BG+DKy6tDS0AcjAjw2+iwPZXjjPfvtZlmnUwkzpfu4eB38ZXrBTmW/hSy4x450Th9MatXVv4U9dVA34iYa0ST4IVvSgjv9Uh7Y0X1aD6VLDnsIHIDB39I8wnjhUaCTuRnXvta0lgDm0WvfoYahjXjfsMH5dUe2vK/v/clzXNOr4m7gtj1Bz6Lwld9KuxjKzX06tN22lx26QM+XZe69lrVznmu9pptDdLWnciZLiORMDHKPTVwj7ITl/hqC1eZ1nnywhOtnDIytN1WfBArExjZcEscTqjkkZ4kHJVXVYjbouqlTms6tV1FYN8ejdLkArOPP7IdVkCRuforc/wCKMCE22lr5rPtmnSMggNMDnnv3lHFENAxPNCvgGP6Tj+1pCo0gbbAJ1YXRKVPn1XDqR6qw8EwunUuhSoLLZCZp1m9YSNOi6UzTt3dlUb9Eyr2HddHkUJ1SRsuv0h6Ki2MK/wBvZH6+jNuAWmdlu8Mr6mpCvT1BH4XjC2wNqVGeZXE2mlFCCzZFC9FHns7CtchdKiS1FFEAaKhUUVEg3BAqBMOQXhIBaoyYPRK1KonSU88JCrSEyN0mNCdywQUlScmLhhfLeyz6dB9MaRnxP8rDJHkbwlQ60kZGUhxDh1rVM1aQ1bSIz2nBhM0ak4dA85+iaZY6s79guX/pHSOn9Htnnbq3o2zW+4Zo+IHbTz5krW4ZxEvJmNuu0eHh80W9si4/EIA2/tKWFEBzpIBHI4we/RNSnewqLRtVq4gGcdvqsy4unueHGSMZGcDqOXNNMe0yCQIwMhGt6QLRA3OMZTk5Ppgko9oWfctGfcsJ3kic+ATFG6c/cgdhgDyTNGzPMjbZdmxA7eClxyMXOCKahVXuUrVwMAz4pSpUc5TLWioqwNxVnA+iWqUsYhO+7ICjKQO+AsHFtm6kkZTLVzimLckGDnvyTgLGc5Q33TDzAS4pe9jcm/RlcXtGkbmVkNrwSOkLY4m8YxqHoYWRb0AXRECZyiSsqDrs17N0/GNvqtBreeQSgUmBoEQAB6rr3mcQVajS2ZuVvQwx4b+5F/UDcLJuXvHIFEs6vIo51oHC9muy9GxHmhVxnCWeyMg+SoViN9lTm6pkqK7R3UkArmwq5VknxCHbCHIg/wBkElpm/SOEZqVtzhMtXpxejz5KmFC6C4C7CszLUUUQBoq1UqSqJKcgvRHOXDiEAAcErVaSm6jktUKQzNbRLCTMysi/DydycbAwPMrauapAWHxC4MY259zyCykjRAqLsCPhM8ufick/mVoW1y5kRnr09Sfv4SvNVKzuuT6QOQ7duchaNlW1DT/7GZ8c8+iwnraNob0eko31OpjVpO2+D4Tuh3PD2VN89HDBB6gjYrGr24gxuUOzrVKOWmR0OxWfP1JGnCtxZrM4fD/iOoAy2WjB5yRvsteiBt98LDpe0JEhzQTyXZ4y90xDfz+1alBdEy5y7N51VjBuBzgLPrXxqYbgd+fgUhT3lzp3ie+48EZjmtMAjInspllb10OONI6aevmHKEN/rl5LipWzp3MYP2KplQbkbY7+BWLd6NkvYemAe8eqUu7xowDlU6q12TyPMZHih3NKm4Tgnl/aTTa0Nd7E6lST/S4cMYI9UvdVgzA/ghJGs9wMeWFksbfZq50HrPDvAIAeBgZnH8K6VKoAcavCEG4o1OTYMYWygkjJybY3Wu9DdOrbn9ihWt7zHIrNr2dYu1EDYY1BN2ds8jIAM+KmUb9lxlrYzcX5ftIK6trnnOURvCqh2A2lLNsZfBcRHkpcfspSXo0DxEE6SYduOh7ItKtO4hZzLYTBzBTdF8bqXL0PiPzjBXNGZ3QnuhXRrZVRashrRu2rk61IWifYF6cOjzp9hQuguQuwtTItRRRAD3ul1oXRKrUqJOSxcFqIXIb3IAE5qBVajOKDUlIZmXgXn+IcwF6irSlIV7IdFEolJnibuZGOnoPwpa3vqjM9T/f2Xrq/DJ5cll3PCT0WTiaqRxQvNQHzRqt03DQsx9i9u2Ez7P2s1PjEjuud46ZuphGcOqOz+3ounWtZnMHK9YKIaJhSjRnffZDgHM8cW1gYIMfPz8iU7w6k9wgjYjy/Mei9DcUQSBGT+EpujZiNlCxtst5EkZlvaxB6CPz5Lu4lsmNzv/K1DTACweM8ZZSlo+I9lrwpGfO2XcVWbzB2IXnbkEu+FxaPJAfxA1DJAaNt4Q/1HZYT/pG8EO03xuZ+ZTVOq3qT5LNbUHb6rqjUJO58llcjWoj9er0CWL/zdDrN80u5wCl2ykkhpzlKdWNiknXXQeZKuld9du32S4sq0b1teaRGT3KQrVfiJ5nZAbdNOGj6ylTUdqiCcdCqdtUSkk7NFjxK5qVOXmqocMruiGnK1KHs3Vc6XYRHDOXSFLLBdszqdzIjcrRsLfWZjmtaz9nGN/dlbFtYNYMBdeL4sruRy5fkxqoi9rZQEyKZTTWrqF3KKRwuTYrpVhNQqLQqokXUR/dhRAB5VKKpTEQrkrpUgDghcFqLC5QAF1NDdSTJCohIYoaCE62B5J7SppQFmTV4aCkHcLcx2po26L0uhQNUuKZSm0Zdcg0xIO4JHgmWlpyCIKe0qBg6KPGV5DJpFvvIPOfBaEHkjBq7hCx0DyWJm1nc+XJJV+B0XZLAVsQuSFfFE8mebreyNs7/AIR4FL1fYukdnuC9XCkKXji/RSySXs8kfYxsQKjh5BWz2MaP/K8+n0XrdKmlLww+h+af2eWZ7IMG9R7vT6ItP2SojcucvSQppR4YfQeaf2eePslbndpPmmKfs5biP/zBjacrZ0q9Kfjj9E+Wf2Z9PhVJu1NvoEZtjT/wHoE3CkK+KFyYIUwNgug1dwrhMk40q4Vq0AUArhWogClFaiAKUVqIAuFaiiYiKlaooApUVaooApUrUQBUKQrUSAqFaiiBkCtRWgClFaiAKUhWogCoUhdBSEAcQrhdEKkAVCi6KpAFKK4UQBSuFFYQBUK4VqIAqFIVqIAiqFaiYioUhWoUAcqKKIA//9k=',
+        state: 'En transito'
+    },
+    {
+        name: 'Azulino',
+        age: '8 meses',
+        image: 'https://images.ecestaticos.com/J51MKchWSGA9o_AmoApwmBWzyes=/0x0:640x360/1200x900/filters:fill(white):format(jpg)/f.elconfidencial.com%2Foriginal%2Fb3a%2F56d%2Fa61%2Fb3a56da612b260e9cfcbdb4f05e84335.jpg',
+        state: 'Perdido'
+    },
+]
+export default function PetCard() {
+    return pets.map((pet, index) => {
+        return (
+        <Card style={styles.container} key={index}>
+            <Card.Content>
+                <Title>{pet.name}</Title>
+                <Paragraph>{pet.age}</Paragraph>
+            </Card.Content>
+            <Card.Cover source={{ uri: pet.image }} style={styles.card_image}/>
+            <View style={(pet.state === 'Perdido') ? styles.text_container_red : styles.text_container_grey}>
+                <Text style={ styles.card_title}>{pet.state}</Text>
+            </View>
+        </Card>)
+    })
+}
+
