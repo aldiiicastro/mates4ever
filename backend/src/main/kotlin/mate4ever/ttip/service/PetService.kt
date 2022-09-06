@@ -14,6 +14,9 @@ class PetService {
         return petRepository!!.findItemById(id)
     }
 
+    fun findALl(): MutableIterable<Pet?> {
+        return petRepository!!.findAll()
+    }
     fun createPet(pet: Pet): Pet? {
         return petRepository!!.insert(pet)
     }
