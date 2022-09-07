@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository
 interface PetRepository : MongoRepository<Pet?, String?> {
     fun findItemById(id: String): Pet?
     fun insert(pet: Pet): Pet
+//    override fun deleteAll()
 }

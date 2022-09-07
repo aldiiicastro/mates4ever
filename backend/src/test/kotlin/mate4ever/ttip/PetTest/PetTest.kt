@@ -13,10 +13,19 @@ class PetTest {
 
     @Test
     fun createAndFindPet() {
-        val pet = Pet("Firu", "image", 5, "Dog", "none", "Lost", "Anto", "Lo encontre en la puerta de mi casa")
-        val newId = petController!!.createPet(pet).id
-        val findPet = petController.getPet(newId!!)
-        assert(findPet!!.name == pet.name)
+        var pet = Pet("Firu", "image", 5, null,"Dog", "none", "Lost", "Anto", "Lo encontre en la puerta de mi casa")
+        pet = petController!!.createPet(pet).body as Pet
+        val findPet = petController.getPet(pet.id!!).body as Pet
+        assert(findPet.name == pet.name)
+
+    }
+
+    @Test
+    fun createAndFindPetWithNullParameters() {
+        var pet = Pet("Firu", "image", 5, null,"Dog", null, "Lost", "Anto", null)
+        pet = petController!!.createPet(pet).body as Pet
+        val findPet = petController.getPet(pet.id!!).body as Pet
+        assert(findPet.name == pet.name)
 
     }
 }
