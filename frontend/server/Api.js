@@ -7,3 +7,9 @@ export const fetchPets = async () => {
     const response = await axios.get(url);
     return response
 }
+
+export const fetchSearch = async (string) => {
+    const url = `${baseUrl}/api/transfer/search?string=${string}`;
+    const response = await axios.get(url);
+    return response
+}

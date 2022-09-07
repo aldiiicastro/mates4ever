@@ -6,16 +6,16 @@ import {useEffect, useState} from "react";
 import {fetchPets} from "../server/Api";
 
 
-export default function PetCard() {
-    const [pets, setPets] = useState(null)
+export default function PetCard(props) {
+/*    const [pets, setPets] = useState(null)
     useEffect(() => {
        fetchPets().then((response) => {
             setPets(response.data);
         });
     }, []);
-
-    if (!pets) return <Card></Card>
-    return pets.map((pet, index) => {
+*/
+    if (!props.pets) return <Card></Card>
+    return props.pets.map((pet, index) => {
         return (
         <Card style={(pet.state === 'Perdido') ? styles.container_red : styles.container_yellow} key={index}>
             <Card.Content>

@@ -21,8 +21,7 @@ class PetController {
 //            ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)
 //        }
         return petService!!.createPet(pet)!!
-
-}
+    }
 
 //    @LogExecutionTime
     @GetMapping("/api/transfer/id")
@@ -38,5 +37,10 @@ class PetController {
     @GetMapping("/api/transfer/all")
     fun getAllPets(): MutableIterable<Pet?> {
         return petService!!.findALl()
+    }
+
+    @GetMapping("/api/transfer/search")
+    fun searchBy(@RequestParam(required = true) string: String) : List<Pet?> {
+        return petService!!.search(string)
     }
 }
