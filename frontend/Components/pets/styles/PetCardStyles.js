@@ -36,8 +36,8 @@ const petCardStyle = StyleSheet.create({
         bottom:0,
         padding: 3,
         backgroundColor: colors.transBlack,
-        borderTopLeftRadius: 3,
-        borderTopRightRadius: 3,
+        borderTopLeftRadius: 18,
+        borderTopRightRadius: 18,
         borderBottomLeftRadius: 18,
         borderBottomRightRadius: 18,
     },
@@ -47,6 +47,7 @@ const petCardStyle = StyleSheet.create({
     card_text: {
         color: colors.white,
         fontSize: 18,
+        paddingLeft: 10
     },
 });
 
