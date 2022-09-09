@@ -38,11 +38,16 @@ class PetController {
     }
     @GetMapping("/api/transfer/all")
     fun getAllPets(): MutableIterable<Pet?> {
-        return petService!!.findALl()
+        return petService!!.findAll()
     }
 
     @GetMapping("/api/transfer/search")
-    fun searchBy(@RequestParam(required = true) string: String) : List<Pet?> {
-        return petService!!.search(string)
+    fun searchBy(@RequestParam(required = true) query: String) : ResponseEntity<*> {
+        return try {
+            val pets = petService!!.search(query)
+            ResponseEntity<List<Pet?>>(pets,null,HttpStatus.OK)
+        }catch (e:Exception) {
+            ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)
+        }
     }
 }

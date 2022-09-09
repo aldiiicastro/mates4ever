@@ -1,5 +1,5 @@
 import axios from 'axios';
-const baseUrl = 'http://192.168.0.27:8080';
+const baseUrl = 'http://192.168.0.39:8090';
 
 // Invoking get method to perform a GET request
 export const fetchPets = async () => {
@@ -9,7 +9,7 @@ export const fetchPets = async () => {
 }
 
 export const fetchSearch = async (string) => {
-    const url = `${baseUrl}/api/transfer/search?string=${string}`;
+    const url = `${baseUrl}/api/transfer/search?query=${string}`;
     const response = await axios.get(url);
     return response
 }

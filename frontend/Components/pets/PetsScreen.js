@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {ScrollView} from 'react-native';
-import PetCard from "./PetCard";
+import PetsCards from "./PetsCards";
 import {useEffect, useState} from "react";
-import {fetchPets, fetchSearch} from "../server/Api";
+import {fetchPets, fetchSearch} from "../../server/Api";
 import {Searchbar} from "react-native-paper";
 
 export default function Pets() {
@@ -20,15 +20,16 @@ export default function Pets() {
     useEffect(() => {allPets()}, []);
 
     return (
-        <ScrollView>
+        <React.Fragment>
             <Searchbar
-                placeholder="Type Here..."
+                placeholder="Escribe aquí..."
                 onChangeText={(text) => search(text)}
                 onClear={(text) => search('')}
                 value={searchQuery}
             />
-            { (!petsSearching ) ?  <PetCard pets={pets}/>:<PetCard pets={petsSearching}></PetCard> }
-        </ScrollView>
-    )
+            <ScrollView >
+                    { (!petsSearching ) ?  <PetsCards pets={pets}/>:<PetsCards pets={petsSearching}></PetsCards> }
+            </ScrollView>
+        </React.Fragment>)
 }
 

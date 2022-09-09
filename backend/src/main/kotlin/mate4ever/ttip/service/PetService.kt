@@ -15,7 +15,7 @@ class PetService {
         return petRepository!!.findItemById(id)
     }
 
-    fun findALl(): MutableIterable<Pet?> {
+    fun findAll(): MutableIterable<Pet?> {
         return petRepository!!.findAll()
     }
     fun createPet(pet: Pet): Pet? {
@@ -25,17 +25,17 @@ class PetService {
         return petRepository!!.findAll().filter { pet: Pet? -> searchFor(pet!!, string) }
     }
     private fun searchFor(pet: Pet, string : String) : Boolean {
-        var name = pet.name!!
-        var breed =  pet.breed!!
-        var description = pet.description!!
-        var state = pet.state!!
-        var tutor = pet.tutor!!
-        var type = pet.type!!
+        var name = pet.name
+        var breed =  pet.breed
+        var description = pet.description
+        var state = pet.state
+        var tutor = pet.tutor
+        var type = pet.type
         return containsFor(name, string) || containsFor(breed, string) || containsFor(description, string)
                 || containsFor(state, string) || containsFor(tutor, string) || containsFor(type, string)
     }
 
-    private fun containsFor(petField : String, string: String) : Boolean {
-        return petField.contains(string, ignoreCase = true)
+    private fun containsFor(petField : String?, string: String) : Boolean {
+        return (petField != null) && petField.contains(string, ignoreCase = true)
     }
 }
