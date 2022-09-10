@@ -2,9 +2,11 @@ import {StyleSheet} from "react-native";
 
 const colors = {
     red : "rgb(171,72,72)",
-    yellow : "rgb(250,235,161)",
+    ligth_yellow : "rgb(250,235,161)",
     transBlack: "rgba(0,0,0, 0.3)",
-    white: "rgb(255,255,255)"
+    white: "rgb(255,255,255)",
+    yellow: "#ffdf4c",
+    bg_grey: "#f2f2f2"
 }
 
 const petCardStyle = StyleSheet.create({
@@ -21,7 +23,7 @@ const petCardStyle = StyleSheet.create({
         backgroundColor: colors.red,
     },
     container_backGround_yellow:{
-        backgroundColor: colors.yellow,
+        backgroundColor: colors.ligth_yellow,
     },
     card_image: {
         width: 380 ,
@@ -51,4 +53,42 @@ const petCardStyle = StyleSheet.create({
     },
 });
 
-export default petCardStyle
+const petDetails = StyleSheet.create({
+    header: {
+      paddingHorizontal: 20,
+      marginTop: 20,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+    },
+
+    imageContainer: {
+      flex: 1,
+      marginTop: 20,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+
+    detailsContainer: {
+      flex: 0.55,
+      backgroundColor: colors.bg_grey,
+      marginHorizontal: 7,
+      borderTopLeftRadius: 20,
+      borderTopRightRadius: 20,
+      marginTop: 30,
+      paddingTop: 30,
+    },
+ 
+    tag: {
+      backgroundColor: colors.yellow,
+      width: 80,
+      height: 40,
+      justifyContent: 'center',
+      borderTopLeftRadius: 25,
+      borderBottomLeftRadius: 25,
+    },
+  });
+
+export {
+    petCardStyle,
+    petDetails
+}

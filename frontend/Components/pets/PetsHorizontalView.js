@@ -1,5 +1,5 @@
 import {Title} from "react-native-paper";
-import petCardStyle from "./styles/PetCardStyles";
+import {petCardStyle} from "./styles/PetCardStyles";
 import {ScrollView, View} from "react-native";
 import PetCard from "./PetCard";
 import * as React from "react";

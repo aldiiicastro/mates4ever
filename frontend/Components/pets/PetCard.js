@@ -1,5 +1,5 @@
 import {Card, Paragraph, Title} from "react-native-paper";
-import petCardStyle from "./styles/PetCardStyles";
+import {petCardStyle} from "./styles/PetCardStyles";
 import {Text, View} from "react-native";
 import * as React from "react";
 
