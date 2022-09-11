@@ -69,9 +69,9 @@ const petDetails = StyleSheet.create({
     },
 
     detailsContainer: {
-      flex: 0.55,
+      flex: 1,
       backgroundColor: colors.bg_grey,
-      marginHorizontal: 7,
+      marginHorizontal: 12,
       borderTopLeftRadius: 20,
       borderTopRightRadius: 20,
       marginTop: 30,
@@ -80,7 +80,7 @@ const petDetails = StyleSheet.create({
  
     tag: {
       backgroundColor: colors.yellow,
-      width: 80,
+      width: 90,
       height: 40,
       justifyContent: 'center',
       borderTopLeftRadius: 25,

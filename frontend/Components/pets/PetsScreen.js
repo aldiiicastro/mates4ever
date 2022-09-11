@@ -5,7 +5,7 @@ import {useEffect, useState} from "react";
 import {fetchPets, fetchSearch} from "../../server/Api";
 import {Searchbar} from "react-native-paper";
 
-export default function Pets() {
+export default function Pets({ navigation }) {
     const [searchQuery, setSearchQuery] = useState('')
     const [pets, setPets] = useState(null)
     const [petsSearching, setPetsSearching] = useState(null)
@@ -28,7 +28,7 @@ export default function Pets() {
                 value={searchQuery}
             />
             <ScrollView >
-                    { (!petsSearching ) ?  <PetsCards pets={pets}/>:<PetsCards pets={petsSearching}></PetsCards> }
+                    { (!petsSearching ) ?  <PetsCards navigation={navigation} pets={pets}/>:<PetsCards navigation={navigation} pets={petsSearching}></PetsCards> }
             </ScrollView>
         </React.Fragment>)
 }

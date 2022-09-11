@@ -6,9 +6,11 @@ import * as React from "react";
 export default function PetCard(props) {
     return props.pets.map((pet, index) => {
         return (
-            <Card style={[petCardStyle.container, (pet.state === 'Perdido') ? petCardStyle.container_backGround_red: petCardStyle.container_backGround_yellow]} key={index}>
+            <Card style={[petCardStyle.container, (pet.state === 'Perdido') ? petCardStyle.container_backGround_red: petCardStyle.container_backGround_yellow]} 
+                key={index}
+                onPress={() => props.navigation.navigate('Detalles', pet.id)}>
                 <Card.Content>
-                    <Title style={petCardStyle.card_title}>{pet.state} { pet.image}</Title>
+                    <Title style={petCardStyle.card_title}>{pet.state} {pet.image}</Title>
                     <Paragraph style={petCardStyle.card_title}>Edad: {pet.age}</Paragraph>
                 </Card.Content>
                 <Card.Cover source={{uri: pet.image}} style={petCardStyle.card_image}/>

@@ -43,8 +43,8 @@ function MainContainer() {
                     tabBarInactiveTintColor:"rgba(0,0,0, 0.3)",
                 })}
                 >
-                <Tab.Screen name={settingsName} component={SettingsScreen}   options={{headerTitle: (props) => (<TabScreenProperties name={settingsName}/>),}}/>
                 <Tab.Screen name={homeName} component={HomeScreen} options={{headerTitle: (props) => (<TabScreenProperties name={"Mates4Ever"}/>)}}/>
+                <Tab.Screen name={settingsName} component={SettingsScreen}   options={{headerTitle: (props) => (<TabScreenProperties name={settingsName}/>),}}/>
                 <Tab.Screen name={detailsName} component={DetailsScreen} options={{headerTitle: (props) => (<TabScreenProperties name={detailsName}/>)}}/>
             </Tab.Navigator>
         </NavigationContainer>

@@ -2,48 +2,44 @@ import * as React from 'react';
 import {View, Image, Text, StyleSheet} from 'react-native';
 import {ScrollView} from 'react-native';
 import {useEffect, useState} from "react";
-import {fetchPets, fetchSearch} from "../../server/Api";
+import {getPetById, fetchSearch} from "../../server/Api";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {petDetails} from "./styles/PetCardStyles";
 import Tag from '../common/Tag';
+import Back from '../common/Back';
+// import Back from '../common/back';
 
 
-export default function PetDetails({navigation, route }) {
+export default function PetDetails({navigation, id }) {
     const [pet, setPet] = useState({})
     
     useEffect(() => {
-        fetchPets().then((response) => {setPet(response.data[0])})
-    }, []);
-    
+        getPetById(id).then((response) => {setPet(response.data)})
+    }, [id]);
     return (
-        <ScrollView 
-            vertical
-            style={{ backgroundColor: "#fff" }}>
-            <View style={petDetails.header}>
-                <Icon name="arrow-back" size={28} onPress={() => navigation.goBack()} />
-            </View>
+        <ScrollView vertical style={{ backgroundColor: "#fff", width: "100%" }}>
+            <Back navigation={navigation} />
             <View style={petDetails.imageContainer}>
-                <Image 
-                    // source={{ uri:pet.image }} 
-                    source={{ uri:"https://raw.githubusercontent.com/aldiiicastro/mates4ever/main/frontend/assets/gatitos/Mia.jpg" }} 
+                <Image
+                    source={{ uri:pet.image }}
                     style={{resizeMode: 'cover', flex: 1, width: "90%", height: 300}} />
             </View>
             <View style={petDetails.detailsContainer}>
                 <View
-                style={{
-                    marginLeft: 20,
-                    flexDirection: 'row',
-                    alignItems: 'flex-end',
+                    style={{
+                        marginLeft: 20,
+                        flexDirection: 'row',
+                        alignItems: 'flex-end',
                 }}>
                 <Text style={{fontSize: 30, fontWeight: 'bold'}}>{pet.name}</Text>
                 </View>
                 <View
-                style={{
-                    marginLeft: 20,
-                    marginTop: 20,
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
+                    style={{
+                        marginLeft: 20,
+                        marginTop: 20,
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
                 }}>
                 <Text style={{fontSize: 18, fontWeight: 'bold'}}>Edad: {pet.age}</Text>
                 <Tag value={pet.state}/>
@@ -57,12 +53,12 @@ export default function PetDetails({navigation, route }) {
                     lineHeight: 22,
                     marginTop: 10,
                     marginBottom: 20,
+
                     }}>
                     {pet.description}
                 </Text>
-                
-                </View>
-      </View>
+            </View>
+        </View>
     </ScrollView>
     )
 }

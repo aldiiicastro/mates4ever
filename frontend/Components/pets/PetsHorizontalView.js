@@ -8,7 +8,7 @@ export default function PetsHorizontalView(props) {
     return(<View>
         {(props.pets.length) ?  <Title style={petCardStyle.card_title}>{props.title}</Title> : <Title/>}
             <ScrollView horizontal>
-                <PetCard pets={props.pets}></PetCard>
+                <PetCard navigation={props.navigation} pets={props.pets}></PetCard>
             </ScrollView>
     </View>)
 }
