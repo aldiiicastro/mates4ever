@@ -8,7 +8,7 @@ export default function HomeScreen({ navigation }) {
             <Text
                 onPress={() => alert('This is the "Home" screen.')}
                 style={{ fontSize: 26, fontWeight: 'bold' }}></Text>
-            <PetsScreen></PetsScreen>
+            <PetsScreen navigation={navigation}></PetsScreen>
         </View>
     );
 }

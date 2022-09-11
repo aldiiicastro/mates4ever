@@ -2,7 +2,9 @@ package mate4ever.ttip.model
 
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
-import java.util.Date
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+
 
 @Document("pet")
 class Pet {
@@ -11,7 +13,7 @@ class Pet {
     var name:String? = null   // ( obligatorio )
     var image:String? = null   // ( obligatorio )
     var age:Int? = null   // ( por rangos ) ( obligatorio )
-    var date:Date? = null   // de Ingreso ( opcional )
+    var date:LocalDate? = null   // de Ingreso ( opcional )
     var type:String? = null   // ( obligatorio )
     var breed:String? = null   // ( opcional )
     var state:String? = null   // ( En adopcion, en transito o perdido ) ( obligatorio )
@@ -32,7 +34,7 @@ class Pet {
         this.name = name
         this.image = image
         this.age = age
-        this.date = if(date != null) Date(date) else null
+        this.date = parseLocalDate(date)
         this.type = type
         this.breed = if(date != null) breed else "Sin Raza"
         this.state = state
@@ -40,4 +42,12 @@ class Pet {
         this.description = description
     }
 
+    fun parseLocalDate(date : String?): LocalDate? {
+        return if (date != null){
+            val formatter = DateTimeFormatter.ofPattern("dd-MM-YYYY")
+            LocalDate.parse(date, formatter)
+        }else {
+            null
+        }
+    }
 }

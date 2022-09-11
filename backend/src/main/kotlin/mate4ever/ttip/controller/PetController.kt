@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.*
 @EnableAutoConfiguration
 class PetController {
     @Autowired
-    private val petService: PetService? = null
+    private lateinit var petService: PetService
 //    @LogExecutionTime
     @PostMapping("/api/transfer/make")
     fun createPet(@RequestBody pet:Pet): ResponseEntity<*> {
         return try {
-            petService!!.createPet(pet)
+            petService.createPet(pet)
             ResponseEntity<Pet>(pet,null,HttpStatus.OK)
         }catch (e:Exception) {
             ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)
@@ -26,10 +26,10 @@ class PetController {
     }
 
 //    @LogExecutionTime
-    @GetMapping("/api/transfer/id")
-    fun getPet(@RequestParam(required = true) id : String): ResponseEntity<*> {
+    @GetMapping("/api/transfer/{id}")
+    fun getPet(@PathVariable(required = true) id : String): ResponseEntity<*> {
         return try {
-            val pet = petService!!.findById(id)
+            val pet = petService.findById(id)
             ResponseEntity<Pet>(pet,null,HttpStatus.OK)
         }catch (e:Exception) {
             ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)
@@ -38,16 +38,18 @@ class PetController {
     }
     @GetMapping("/api/transfer/all")
     fun getAllPets(): MutableIterable<Pet?> {
-        return petService!!.findAll()
+        return petService.findAll()
+    }
+
+    @GetMapping("/api/transfer/one")
+    fun findone(): Pet? {
+        return petService.findAll().first()
     }
 
     @GetMapping("/api/transfer/search")
     fun searchBy(@RequestParam(required = true) query: String) : ResponseEntity<*> {
-        return try {
-            val pets = petService!!.search(query)
-            ResponseEntity<List<Pet?>>(pets,null,HttpStatus.OK)
-        }catch (e:Exception) {
-            ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)
-        }
+            val petsResponse = petService.search(query)
+            print(petsResponse)
+            return ResponseEntity<List<*>>(petsResponse,null,HttpStatus.OK)
     }
 }

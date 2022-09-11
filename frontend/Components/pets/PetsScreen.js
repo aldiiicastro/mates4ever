@@ -1,24 +1,21 @@
 import * as React from 'react';
 import {ScrollView} from 'react-native';
-import PetsCards from "./PetsCards";
 import {useEffect, useState} from "react";
-import {fetchPets, fetchSearch} from "../../server/Api";
-import {Searchbar} from "react-native-paper";
+import {fetchSearch} from "../../server/Api";
+import {Searchbar, Title} from "react-native-paper";
+import PetsStatesView from "./PetsStatesView";
 
-export default function Pets() {
+export default function Pets({ navigation }) {
     const [searchQuery, setSearchQuery] = useState('')
-    const [pets, setPets] = useState(null)
     const [petsSearching, setPetsSearching] = useState(null)
-    const allPets = () => {fetchPets().then((response) => {setPets(response.data)})}
     const search = query => {
         setSearchQuery(query)
         fetchSearch(query).then((response) => {
-            setPetsSearching(response.data)
+            setPetsSearching(response)
         })
     }
 
-
-    useEffect(() => {allPets()}, []);
+    useEffect(() => {search('')}, []);
 
     return (
         <React.Fragment>
@@ -29,7 +26,7 @@ export default function Pets() {
                 value={searchQuery}
             />
             <ScrollView >
-                {(!petsSearching) ? <PetsCards pets={pets}/> :  (<PetsCards pets={petsSearching}/>)}
+                {(petsSearching && petsSearching.length) ? <PetsStatesView navigation={navigation} pets={petsSearching}/> : <Title>No hay mascotas</Title>}
             </ScrollView>
         </React.Fragment>)
 }
