@@ -17,6 +17,7 @@ export default function Pets() {
         })
     }
 
+
     useEffect(() => {allPets()}, []);
 
     return (
@@ -28,7 +29,7 @@ export default function Pets() {
                 value={searchQuery}
             />
             <ScrollView >
-                    { (!petsSearching ) ?  <PetsCards pets={pets}/>:<PetsCards pets={petsSearching}></PetsCards> }
+                {(!petsSearching) ? <PetsCards pets={pets}/> :  (<PetsCards pets={petsSearching}/>)}
             </ScrollView>
         </React.Fragment>)
 }
