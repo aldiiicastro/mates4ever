@@ -9,14 +9,14 @@ import org.springframework.stereotype.Component
 @Component
 class PetDataLoader: CommandLineRunner {
     @Autowired
-    private var petRepository: PetRepository? = null
+    private lateinit var petRepository: PetRepository
 
     @Throws(Exception::class)
     override fun run(vararg args: String?) {
         loadPetData()
     }
     fun loadPetData() {
-        petRepository!!.deleteAll()
+        petRepository.deleteAll()
         val pets = listOf(
             Pet("Mía", "https://github.com/aldiiicastro/mates4ever/blob/main/frontend/assets/gatitos/Mia.jpg?raw=true", 5, null,"Gato", null, "Transito", "Octavio", "Tenemos muchos animales y necesitamos que alguien pueda transitarlo o adoptarlo"),
             Pet("Siria", "https://github.com/aldiiicastro/mates4ever/blob/main/frontend/assets/gatitos/Siria.jpg?raw=true", 15, null,"Gato", null, "Transito", "Maite", "Tenemos muchos animales y necesitamos que alguien pueda transitarlo o adoptarlo"),
@@ -44,6 +44,6 @@ class PetDataLoader: CommandLineRunner {
             Pet("Linda", "https://github.com/aldiiicastro/mates4ever/blob/main/frontend/assets/perritos/Linda.jpg?raw=true", 8, null,"Perro", null, "Perdido", "Óliver", "Lo encontre en la puerta de mi casa"),
             Pet("Nugget", "https://github.com/aldiiicastro/mates4ever/blob/main/frontend/assets/perritos/Nugget.jpg?raw=true", 3, null,"Perro", null, "Perdido", "Mireya", "Lo encontre en la puerta de mi casa"),
             Pet("Flash", "https://github.com/aldiiicastro/mates4ever/blob/main/frontend/assets/perritos/Flash.jpg?raw=true", 5, null,"Perro", null, "Perdido", "Aída", "Lo encontre en la puerta de mi casa"))
-        pets.forEach { pet: Pet -> petRepository!!.insert(pet) }
+        pets.forEach { pet: Pet -> petRepository.insert(pet) }
     }
 }

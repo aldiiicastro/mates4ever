@@ -16,13 +16,8 @@ class PetController {
 //    @LogExecutionTime
     @PostMapping("/api/transfer/make")
     fun createPet(@RequestBody pet:Pet): ResponseEntity<*> {
-        return try {
-            petService.createPet(pet)
-            ResponseEntity<Pet>(pet,null,HttpStatus.OK)
-        }catch (e:Exception) {
-            ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)
-        }
-//        return petService!!.createPet(pet)!!
+        petService.createPet(pet)
+        return ResponseEntity<Pet>(pet,null,HttpStatus.OK)
     }
 
 //    @LogExecutionTime
@@ -31,19 +26,14 @@ class PetController {
         return try {
             val pet = petService.findById(id)
             ResponseEntity<Pet>(pet,null,HttpStatus.OK)
-        }catch (e:Exception) {
-            ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)
+        }catch (e:IllegalArgumentException) {
+            ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.message)
         }
-//        return petService!!.findById(id)
     }
+
     @GetMapping("/api/transfer/all")
     fun getAllPets(): MutableIterable<Pet?> {
         return petService.findAll()
-    }
-
-    @GetMapping("/api/transfer/one")
-    fun findone(): Pet? {
-        return petService.findAll().first()
     }
 
     @GetMapping("/api/transfer/search")

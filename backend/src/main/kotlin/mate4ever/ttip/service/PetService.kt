@@ -4,15 +4,18 @@ import mate4ever.ttip.model.Pet
 import mate4ever.ttip.repository.PetRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.util.*
 
 @Service
 class PetService {
     @Autowired
     private lateinit var petRepository: PetRepository
 
-    fun findById(id : String): Pet? {
-        return petRepository.findItemById(id)
+    fun findById(id : String): Pet {
+        val pet = petRepository.findItemById(id)
+        if (pet == null){
+            throw IllegalArgumentException("No existe ninguna mascota con ese id en la base de datos")
+        }
+        return pet
     }
 
     fun findAll(): MutableIterable<Pet?> {
