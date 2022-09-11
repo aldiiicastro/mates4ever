@@ -26,8 +26,8 @@ class PetController {
     }
 
 //    @LogExecutionTime
-    @GetMapping("/api/transfer/id")
-    fun getPet(@RequestParam(required = true) id : String): ResponseEntity<*> {
+    @GetMapping("/api/transfer/{id}")
+    fun getPet(@PathVariable(required = true) id : String): ResponseEntity<*> {
         return try {
             val pet = petService!!.findById(id)
             ResponseEntity<Pet>(pet,null,HttpStatus.OK)
@@ -41,11 +41,16 @@ class PetController {
         return petService!!.findAll()
     }
 
+    @GetMapping("/api/transfer/one")
+    fun findone(): Pet? {
+        return petService!!.findAll().first()
+    }
+
     @GetMapping("/api/transfer/search")
     fun searchBy(@RequestParam(required = true) query: String) : ResponseEntity<*> {
         return try {
             val pets = petService!!.search(query)
-            ResponseEntity<List<Pet?>>(pets,null,HttpStatus.OK)
+            ResponseEntity<List<*>>(pets,null,HttpStatus.OK)
         }catch (e:Exception) {
             ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.message)
         }
