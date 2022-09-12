@@ -26,7 +26,7 @@ export default function Pets({ navigation }) {
                 value={searchQuery}
             />
             <ScrollView >
-                {(petsSearching && petsSearching.length) ? <PetsStatesView navigation={navigation} pets={petsSearching}/> : <Title>No hay mascotas</Title>}
+                {(petsSearching && petsSearching.length) ? <PetsStatesView navigation={navigation} pets={petsSearching} search={searchQuery}/> : <Title>No hay mascotas</Title>}
             </ScrollView>
         </React.Fragment>)
 }
