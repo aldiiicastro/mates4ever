@@ -9,21 +9,16 @@ export const fetchPets = async () => {
     return await axios.get(url)
 }
 
-export const fetchSearch = async (string) => {
-    const url = `${baseUrl}/api/transfer/search?query=${string}`;
+export const fetchSearch = async (query) => {
+    const url = `${baseUrl}/api/transfer/search?query=${query}`;
     const response = await axios.get(url);
     const pets = []
-    response.data.forEach((pet) => pets.push((new Pet(pet.name, pet.image, pet.age, pet.date, pet.type, pet.breed, pet.state, pet.tutor, pet.description))))
+    response.data.forEach((pet) => pets.push((new Pet(pet.id,pet.name, pet.image, pet.age, pet.date, pet.type, pet.breed, pet.state, pet.tutor, pet.description))))
     return pets
 }
 
 export const getPetById  = async (id) => {
     const url = `${baseUrl}/api/transfer/${id}`;
-    return await axios.get(url)
-}
-
-export const getOnePet  = async (id) => {
-    const url = `${baseUrl}/api/transfer/one`;
     return await axios.get(url)
 }
 

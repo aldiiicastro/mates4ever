@@ -1,4 +1,5 @@
 export default class Pet{
+    id;
     name;
     image;
     age;
@@ -8,8 +9,9 @@ export default class Pet{
     state;
     tutor;
     description;
-    constructor(name, image, age, date, type, breed, state, tutor, description) {
-        this.name = name,
+    constructor(id,name, image, age, date, type, breed, state, tutor, description) {
+            this.id = id,
+            this.name = name,
             this.image = image,
             this.age = age,
             this.date = date,

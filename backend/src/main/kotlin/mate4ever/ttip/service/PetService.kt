@@ -10,18 +10,15 @@ class PetService {
     @Autowired
     private lateinit var petRepository: PetRepository
 
-    fun findById(id : String): Pet {
-        val pet = petRepository.findItemById(id)
-        if (pet == null){
-            throw IllegalArgumentException("No existe ninguna mascota con ese id en la base de datos")
-        }
-        return pet
+    fun findById(id: String): Pet {
+        return petRepository.findItemById(id)
+            ?: throw IllegalArgumentException("No existe ninguna mascota con ese id en la base de datos")
     }
 
     fun findAll(): MutableIterable<Pet?> {
         return petRepository.findAll()
     }
-    fun createPet(pet: Pet): Pet? {
+    fun createPet(pet: Pet): Pet {
         return petRepository.insert(pet)
     }
     fun search(query: String): List<Pet?> {

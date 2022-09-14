@@ -36,15 +36,15 @@ class Pet {
         this.age = age
         this.date = parseLocalDate(date)
         this.type = type
-        this.breed = if(date != null) breed else "Sin Raza"
+        this.breed = if(breed != null) breed else "Sin Raza"
         this.state = state
         this.tutor = tutor
         this.description = description
     }
 
-    fun parseLocalDate(date : String?): LocalDate? {
+    private fun parseLocalDate(date : String?): LocalDate? {
         return if (date != null){
-            val formatter = DateTimeFormatter.ofPattern("dd-MM-YYYY")
+            val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
             LocalDate.parse(date, formatter)
         }else {
             null

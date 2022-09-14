@@ -15,7 +15,7 @@ export default function PetsStatesView(props) {
         setState(state)
         return props.pets.filter(function (pet){return pet.isThisState(state)})
     }
-
+    useEffect(() => {setPets(props.pets)}, [props.pets])
     const statesButtons = (buttonState, index) => {
         return ((state !== buttonState) ?
             <TouchableOpacity  key={index} style ={buttonStyles.buttonStyle} onPress={() =>  setPets(filterState(buttonState))}>

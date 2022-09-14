@@ -39,7 +39,6 @@ class PetController {
     @GetMapping("/api/transfer/search")
     fun searchBy(@RequestParam(required = true) query: String) : ResponseEntity<*> {
             val petsResponse = petService.search(query)
-            print(petsResponse)
             return ResponseEntity<List<*>>(petsResponse,null,HttpStatus.OK)
     }
 }
