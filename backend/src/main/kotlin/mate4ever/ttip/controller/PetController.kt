@@ -14,14 +14,14 @@ class PetController {
     @Autowired
     private lateinit var petService: PetService
 //    @LogExecutionTime
-    @PostMapping("/api/transfer/make")
+    @PostMapping("/api/pet/make")
     fun createPet(@RequestBody pet:Pet): ResponseEntity<*> {
         petService.createPet(pet)
         return ResponseEntity<Pet>(pet,null,HttpStatus.OK)
     }
 
 //    @LogExecutionTime
-    @GetMapping("/api/transfer/{id}")
+    @GetMapping("/api/pet/{id}")
     fun getPet(@PathVariable(required = true) id : String): ResponseEntity<*> {
         return try {
             val pet = petService.findById(id)
@@ -31,12 +31,12 @@ class PetController {
         }
     }
 
-    @GetMapping("/api/transfer/all")
+    @GetMapping("/api/pet/all")
     fun getAllPets(): MutableIterable<Pet?> {
         return petService.findAll()
     }
 
-    @GetMapping("/api/transfer/search")
+    @GetMapping("/api/pet/search")
     fun searchBy(@RequestParam(required = true) query: String) : ResponseEntity<*> {
             val petsResponse = petService.search(query)
             return ResponseEntity<List<*>>(petsResponse,null,HttpStatus.OK)

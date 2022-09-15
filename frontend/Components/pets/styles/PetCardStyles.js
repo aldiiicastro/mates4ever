@@ -74,7 +74,8 @@ const petDetails = StyleSheet.create({
       marginHorizontal: 12,
       borderTopLeftRadius: 20,
       borderTopRightRadius: 20,
-      marginTop: 30,
+      marginTop: 10,
+      paddingBottom: 30,
       paddingTop: 30,
     },
  

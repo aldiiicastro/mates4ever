@@ -17,7 +17,6 @@ export default function PetDetails({navigation, id }) {
     }, [id]);
     return (
         <ScrollView vertical style={{ backgroundColor: "#fff", width: "100%" }}>
-            <Back navigation={navigation} />
             <View style={petDetails.imageContainer}>
                 <Image
                     source={{ uri:pet.image }}
@@ -30,7 +29,7 @@ export default function PetDetails({navigation, id }) {
                         flexDirection: 'row',
                         alignItems: 'flex-end',
                 }}>
-                <Text style={{fontSize: 30, fontWeight: 'bold'}}>{pet.name}</Text>
+                <Text data-testid="name" style={{fontSize: 30, fontWeight: 'bold'}}>{pet.name}</Text>
                 </View>
                 <View
                     style={{
@@ -40,12 +39,13 @@ export default function PetDetails({navigation, id }) {
                         justifyContent: 'space-between',
                         alignItems: 'center',
                 }}>
-                <Text style={{fontSize: 18, fontWeight: 'bold'}}>Edad: {pet.age}</Text>
-                <Tag value={pet.state}/>
+                <Text data-testid="age" style={{fontSize: 18, fontWeight: 'bold'}}>Edad: {pet.age}</Text>
+                <Tag data-testid="tag" value={pet.state}/>
                 </View>
                 <View style={{paddingHorizontal: 20, marginTop: 10}}>
                 <Text style={{fontSize: 20, fontWeight: 'bold'}}>Descripción</Text>
                 <Text
+                    data-testid="description"
                     style={{
                     color: 'grey',
                     fontSize: 16,

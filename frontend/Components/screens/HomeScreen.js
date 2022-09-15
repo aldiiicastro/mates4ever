@@ -5,9 +5,6 @@ import PetsScreen from "../pets/PetsScreen";
 export default function HomeScreen({ navigation }) {
     return (
         <View testID={"homeScreenView"} style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Text
-                onPress={() => alert('This is the "Home" screen.')}
-                style={{ fontSize: 26, fontWeight: 'bold' }}></Text>
             <PetsScreen navigation={navigation}></PetsScreen>
         </View>
     );
