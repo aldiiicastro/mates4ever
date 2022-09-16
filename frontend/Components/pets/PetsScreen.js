@@ -1,9 +1,10 @@
 import * as React from 'react';
-import {ScrollView} from 'react-native';
+import {Alert, ScrollView} from 'react-native';
 import {useEffect, useState} from "react";
 import {fetchSearch} from "../../server/Api";
 import {Searchbar, Title} from "react-native-paper";
 import PetsStatesView from "./PetsStatesView";
+import Pet from "../../model/Pet";
 
 export default function Pets({ navigation }) {
     const [searchQuery, setSearchQuery] = useState('')
@@ -11,8 +12,13 @@ export default function Pets({ navigation }) {
     const search = query => {
         setSearchQuery(query)
         fetchSearch(query).then((response) => {
-            setPetsSearching(response)
-        })
+            if (response.status !== 200) {
+                throw new Error('Algo salio mal')
+            }
+            const pets = []
+            response.data.forEach((pet) => pets.push((new Pet(pet))))
+            setPetsSearching(pets)
+        }).catch((error)=> console.log(error))
     }
 
     useEffect(() => {search('')}, []);
@@ -22,7 +28,7 @@ export default function Pets({ navigation }) {
             <Searchbar
                 placeholder="Escribe aquí..."
                 onChangeText={(text) => search(text)}
-                onClear={(text) => search('')}
+                onClear={() => search('')}
                 value={searchQuery}
             />
             <ScrollView >

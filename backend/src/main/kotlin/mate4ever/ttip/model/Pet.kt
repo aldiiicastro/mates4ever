@@ -10,14 +10,14 @@ import java.time.format.DateTimeFormatter
 class Pet {
     @Id
     var id: String? = null
-    var name:String? = null   // ( obligatorio )
-    var image:String? = null   // ( obligatorio )
-    var age:Int? = null   // ( por rangos ) ( obligatorio )
+    var name: String     // ( obligatorio )
+    var image:String   // ( obligatorio )
+    var age:Int   // ( por rangos ) ( obligatorio )
     var date:LocalDate? = null   // de Ingreso ( opcional )
-    var type:String? = null   // ( obligatorio )
+    var type:String    // ( obligatorio )
     var breed:String? = null   // ( opcional )
-    var state:String? = null   // ( En adopcion, en transito o perdido ) ( obligatorio )
-    var tutor:String? = null   // ( obligatorio )
+    var state:String    // ( En adopcion, en transito o perdido ) ( obligatorio )
+    var tutor:String    // ( obligatorio )
     var description:String? = null   // ( opcional )
 
     constructor(
@@ -36,7 +36,7 @@ class Pet {
         this.age = age
         this.date = parseLocalDate(date)
         this.type = type
-        this.breed = if(breed != null) breed else "Sin Raza"
+        this.breed = breed ?: "Sin Raza"
         this.state = state
         this.tutor = tutor
         this.description = description

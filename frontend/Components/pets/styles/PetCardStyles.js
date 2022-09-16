@@ -44,7 +44,7 @@ const petCardStyle = StyleSheet.create({
         borderBottomRightRadius: 18,
     },
     card_title: {
-       textAlign: "center"
+        textAlign: "center"
     },
     card_text: {
         color: colors.white,
@@ -52,7 +52,6 @@ const petCardStyle = StyleSheet.create({
         paddingLeft: 10
     },
 });
-
 const petDetails = StyleSheet.create({
     header: {
       paddingHorizontal: 20,

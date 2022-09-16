@@ -9,18 +9,20 @@ export default class Pet{
     state;
     tutor;
     description;
-    constructor(id,name, image, age, date, type, breed, state, tutor, description) {
-            this.id = id,
-            this.name = name,
-            this.image = image,
-            this.age = age,
-            this.date = date,
-            this.type = type,
-            this.breed = breed,
-            this.state = state,
-            this.tutor = tutor,
-            this.description = description;
+
+    constructor(pet) {
+            this.id = pet.id,
+            this.name = pet.name,
+            this.image = pet.image,
+            this.age = pet.age,
+            this.date = pet.date,
+            this.type = pet.type,
+            this.breed = pet.breed,
+            this.state = pet.state,
+            this.tutor = pet.tutor,
+            this.description = pet.description;
     }
+
     isThisState(stateToAsk) {return stateToAsk === this.state}
     isLost() {return this.state === 'Perdido'}
 }
