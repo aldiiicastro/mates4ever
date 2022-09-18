@@ -1,7 +1,6 @@
-import {Card, Paragraph, Title} from "react-native-paper";
 import {petCardStyle} from "./styles/PetCardStyles";
+import {Card, Paragraph, Title} from "react-native-paper";
 import {Text, View} from "react-native";
-import * as React from "react";
 
 export default function PetCard(props) {
     return props.pets.map((pet, index) => {

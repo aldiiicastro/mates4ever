@@ -1,11 +1,9 @@
 import * as React from 'react';
-import {View, Image, Text,} from 'react-native';
-import {ScrollView} from 'react-native';
+import {View, Image, Text, ScrollView} from 'react-native';
 import {useEffect, useState} from "react";
 import {getPetById} from "../../server/Api";
 import {petDetails} from "./styles/PetCardStyles";
 import Tag from '../common/Tag';
-import Back from '../common/Back';
 
 
 

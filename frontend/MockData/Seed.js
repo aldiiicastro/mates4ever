@@ -1,3 +1,5 @@
+import Pet from "../model/Pet";
+
 export const getManyMocksPets = [
     {
         "id": "632247d0c96a911e5f8a48fe",
