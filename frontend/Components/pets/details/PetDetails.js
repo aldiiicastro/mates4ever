@@ -1,20 +1,20 @@
 import * as React from 'react';
 import {View, Image, Text, ScrollView} from 'react-native';
 import {useEffect, useState} from "react";
-import {getPetById} from "../../server/Api";
-import {petDetails} from "./styles/PetCardStyles";
-import Tag from '../common/Tag';
-
-
+import {getPetById} from "../../../server/Api.js";
+import {petDetails} from "../../../styles/PetStyle.js";
+import Tag from '../../common/Tag.js';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export default function PetDetails({navigation, id }) {
     const [pet, setPet] = useState({})
-    
+
     useEffect(() => {
         getPetById(id).then((response) => {setPet(response.data)})
     }, [id]);
     return (
         <ScrollView vertical style={{ backgroundColor: "#fff", width: "100%" }}>
+            <Icon name="arrow-back" size={25} style={{marginLeft: 20, marginTop:15}} onPress={() => navigation.goBack()}/>
             <View style={petDetails.imageContainer}>
                 <Image
                     source={{ uri:pet.image }}

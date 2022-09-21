@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View } from 'react-native';
-import { petDetails } from '../pets/styles/PetCardStyles';
+import { petDetails } from '../../styles/PetStyle.js';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export default function Back({navigation: { goBack }}) {

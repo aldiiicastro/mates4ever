@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { View, Text } from 'react-native';
-import PetDetails from '../pets/PetDetails';
+import { View } from 'react-native';
+import PetDetails from '../pets/details/PetDetails.js';
 
 export default function DetailsScreen({ navigation, route}) {
     return (
