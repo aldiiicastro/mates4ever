@@ -7,12 +7,13 @@ import Pet from "../../model/Pet.js"
 import PetsStatesView from "../pets/PetsStatesView.js"
 import {Title} from "react-native-paper"
 import {petScreenStyle} from "../../styles/PetScreenStyle.js";
-import textInput from "react-native-paper/src/components/TextInput/TextInput";
+import * as Font from 'expo-font';
 
 export default function PetScreen({navigation}) {
     const [petsSearching, setPetsSearching] = useState([])
     const [isAlreadyShownAlert, setIsAlreadyShownAlert] = useState(false)
     let textInput = ''
+
     //searching pets in de database. Catching the error if fetch has a problem, showing an alert.
     const search = async query => {
         try {
@@ -32,12 +33,16 @@ export default function PetScreen({navigation}) {
         }
     }
     //[] means that useEffect runs in the first render.
-    useEffect(() => {search('')}, []);
+    useEffect(() => {
+
+            search('')
+
+        }, []);
     return (
             <SafeAreaView style={petScreenStyle.safeAreaView}>
                 <View style={petScreenStyle.header}>
                     <View>
-                        <Text style={petScreenStyle.titleText}>
+                        <Text style={[petScreenStyle.titleText]}>
                             Mates4Ever
                         </Text>
                     </View>
