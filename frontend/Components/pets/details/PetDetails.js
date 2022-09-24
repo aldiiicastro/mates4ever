@@ -27,7 +27,7 @@ export default function PetDetails({navigation, id }) {
                         flexDirection: 'row',
                         alignItems: 'flex-end',
                 }}>
-                <Text data-testid="name" style={{fontSize: 30, fontWeight: 'bold'}}>{pet.name}</Text>
+                <Text testID={"pet-details-name"} style={{fontSize: 30, fontWeight: 'bold'}}>{pet.name}</Text>
                 </View>
                 <View
                     style={{
@@ -37,13 +37,13 @@ export default function PetDetails({navigation, id }) {
                         justifyContent: 'space-between',
                         alignItems: 'center',
                 }}>
-                <Text data-testid="age" style={{fontSize: 18, fontWeight: 'bold'}}>Edad: {pet.age}</Text>
-                <Tag data-testid="tag" value={pet.state}/>
+                <Text testID={"pet-details-age"} style={{fontSize: 18, fontWeight: 'bold'}}>Edad: {pet.age}</Text>
+                <Tag  value={pet.state}/>
                 </View>
                 <View style={{paddingHorizontal: 20, marginTop: 10}}>
-                <Text style={{fontSize: 20, fontWeight: 'bold'}}>Descripción</Text>
+                <Text testID={"pet-details-description-field"} style={{fontSize: 20, fontWeight: 'bold'}}>Descripción</Text>
                 <Text
-                    data-testid="description"
+                    testID={"pet-details-description"}
                     style={{
                     color: 'grey',
                     fontSize: 16,

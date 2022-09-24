@@ -7,7 +7,7 @@ export default function Tag(props) {
 
     return (
         <View style={petDetails.tag}>
-            <Text
+            <Text testID={"pet-details-state"}
               style={{
                 marginLeft: 15,
                 color: colors.violet,
