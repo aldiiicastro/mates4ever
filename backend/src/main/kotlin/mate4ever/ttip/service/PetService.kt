@@ -37,4 +37,12 @@ class PetService {
     private fun criteriaForm(fieldName: String, value: String) : Criteria{
         return Criteria.where(fieldName).regex(value, "i")
     }
+
+    fun deleteAll() {
+        return petRepository.deleteAll()
+    }
+
+    fun deleteById(id: String) {
+        return petRepository.deleteById(id)
+    }
 }

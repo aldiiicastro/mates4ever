@@ -1,32 +1,30 @@
 package mate4ever.ttip.serviceTests
 
-import mate4ever.ttip.model.Pet
+import mate4ever.ttip.dataHelpers.PetFactory
 import mate4ever.ttip.service.PetService
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.http.HttpStatus
 import java.lang.IllegalArgumentException
 
 @SpringBootTest
 class PetServiceTest {
     @Autowired
     private lateinit var petService: PetService
-
-
+    private var petFactory : PetFactory = PetFactory()
     @Test
     fun createAndFindPet() {
-        var pet = Pet("Firu", "image", 5, null,"Dog", "none", "Lost", "Anto", "Lo encontre en la puerta de mi casa")
+        var pet = petFactory.anyPet()
         pet = petService.createPet(pet)
         val findPet = petService.findById(pet.id!!)
         assert(findPet.name == pet.name)
 
     }
-
     @Test
     fun createAndFindPetWithNullParameters() {
-        var pet = Pet("Firu", "image", 5, null,"Dog", null, "Lost", "Anto", null)
+        var pet = petFactory.anyPet("Firu", "image", 5, null,"Dog", null, "Lost", "Anto", null)
         pet = petService.createPet(pet)
         val findPet = petService.findById(pet.id!!)
         assert(findPet.name == pet.name)
@@ -39,19 +37,28 @@ class PetServiceTest {
 
     @Test
     fun getAllPetsCorrect() {
+        val pet = petFactory.anyPet()
+        petService.createPet(pet)
         val findPets = petService.findAll() as List<*>
-        assert(findPets.size == 26)
+        assert(findPets.size == 1)
     }
 
     @Test
     fun searchCats() {
+        val pet = petFactory.anyPet()
+        petService.createPet(pet)
         val findPets = petService.search("Gato")
-        assert(findPets.size == 9)
+        assert(findPets.size == 1)
     }
 
     @Test
     fun searchBadWord() {
         val findPets = petService.search("Gatoss")
         assert(findPets.isEmpty())
+    }
+
+    @AfterEach
+    fun tearDown() {
+        petService.deleteAll()
     }
 }

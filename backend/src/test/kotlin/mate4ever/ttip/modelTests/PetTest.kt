@@ -10,8 +10,8 @@ import java.time.format.DateTimeFormatter
 class PetTest {
     private val petFactory : PetFactory = PetFactory()
     @Test
-    fun createUserTest() {
-        var pet = petFactory.anyPet()
+    fun createPetTest() {
+        val pet = petFactory.anyPet(date="14-09-2022")
         assert(pet.name == "Gatito")
         assert(pet.image == "Example")
         assert(pet.age == 4)
