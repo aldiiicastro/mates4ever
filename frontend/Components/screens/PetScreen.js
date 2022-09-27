@@ -7,6 +7,8 @@ import PetsStatesView from "../pets/PetsStatesView.js"
 import {Title} from "react-native-paper"
 import {petScreenStyle} from "../../styles/PetScreenStyle.js";
 import {fetchSearch} from "../../server/Api";
+import {style} from "../../styles/Commons";
+
 
 export default function PetScreen({navigation}) {
     const [petsSearching, setPetsSearching] = useState([])
@@ -36,7 +38,7 @@ export default function PetScreen({navigation}) {
     //[] means that useEffect runs in the first render.
     useEffect(() => {search('')}, []);
     return (
-            <SafeAreaView style={petScreenStyle.safeAreaView}>
+            <SafeAreaView style={[petScreenStyle.safeAreaView, style.fullContainer ]}>
                 <View style={petScreenStyle.header}>
                     <View>
                         <Text style={[petScreenStyle.titleText]}>

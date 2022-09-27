@@ -23,6 +23,16 @@ const style = StyleSheet.create({
         color: colors.yellow,
         fontWeight: 'bold',
     },
+    floatButton:{
+        backgroundColor: colors.yellow,
+        // position:"absolute",
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: 65,
+        height: 65,
+        bottom: 5,
+        borderRadius: 100,  
+    }
 
 });
 

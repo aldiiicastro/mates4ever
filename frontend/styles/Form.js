@@ -21,7 +21,6 @@ const form = StyleSheet.create({
 
     },
     inputFont: {
-        fontFamily:"Ebrima",
         color: colors.black,
     },
     btnSubmit: {

@@ -25,7 +25,7 @@ export default function PetCreation({navigation}) {
         <ScrollView style={style.fullContainer}>
             <View style={petScreenStyle.header}>
                 <View style={form.alignItems}>
-                    <Icon name="arrow-back" size={25} onPress={() => navigation.goBack()}/>
+                    <Icon name="arrow-back" style={{marginStart: 10}} size={25} onPress={() => navigation.goBack()}/>
                     <Text style={[style.titleText]}>
                         Cargar una mascota
                     </Text>
