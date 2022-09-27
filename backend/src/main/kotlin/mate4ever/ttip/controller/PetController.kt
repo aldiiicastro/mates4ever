@@ -13,22 +13,19 @@ import org.springframework.web.bind.annotation.*
 class PetController {
     @Autowired
     private lateinit var petService: PetService
-//    @LogExecutionTime
+
+    //    @LogExecutionTime
     @PostMapping("/api/pet/make")
-    fun createPet(@RequestBody pet:Pet): ResponseEntity<*> {
+    fun createPet(@RequestBody pet: Pet): ResponseEntity<*> {
         petService.createPet(pet)
-        return ResponseEntity<Pet>(pet,null,HttpStatus.OK)
+        return ResponseEntity<Pet>(pet, null, HttpStatus.OK)
     }
 
-//    @LogExecutionTime
+    //    @LogExecutionTime
     @GetMapping("/api/pet/{id}")
-    fun getPet(@PathVariable(required = true) id : String): ResponseEntity<*> {
-        return try {
-            val pet = petService.findById(id)
-            ResponseEntity<Pet>(pet,null,HttpStatus.OK)
-        }catch (e:IllegalArgumentException) {
-            ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.message)
-        }
+    fun getPet(@PathVariable(required = true) id: String): ResponseEntity<*> {
+        val pet = petService.findById(id)
+        return ResponseEntity<Pet>(pet, null, HttpStatus.OK)
     }
 
     @GetMapping("/api/pet/all")
@@ -37,8 +34,8 @@ class PetController {
     }
 
     @GetMapping("/api/pet/search")
-    fun searchBy(@RequestParam(required = true) query: String) : ResponseEntity<*> {
-            val petsResponse = petService.search(query)
-            return ResponseEntity<List<*>>(petsResponse,null,HttpStatus.OK)
+    fun searchBy(@RequestParam(required = true) query: String): ResponseEntity<*> {
+        val petsResponse = petService.search(query)
+        return ResponseEntity<List<*>>(petsResponse, null, HttpStatus.OK)
     }
 }
