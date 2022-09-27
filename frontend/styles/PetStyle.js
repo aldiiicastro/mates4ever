@@ -44,6 +44,43 @@ const petCardStyle = StyleSheet.create({
     }
 });
 
+const petCardStyleExample = StyleSheet.create({
+    container: {
+        // height: 150,
+        backgroundColor: "#ffe361",
+        width,
+        margin: 10,
+        borderRadius: 5,
+        padding: 10,
+    },
+    viewState: {
+        paddingHorizontal:15,
+        backgroundColor: "#ffe361",
+        borderRadius: 5,
+        position:'absolute',
+        right:0,
+        top: -5
+        
+    },
+    viewStateLost: {
+        height: 25,
+        width: 100,
+        backgroundColor: colors.red,
+        borderRadius: 5,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    textState: {fontSize: 18, color: colors.violet, fontWeight: 'bold'},
+    textStateLost: {fontSize: 18, color: colors.white, fontWeight: 'bold'},
+    imageView: {
+        height: 100,
+        alignItems: 'center',
+    },
+    image: {flex: 1, resizeMode: 'contain', width: "100%"},
+    textName: {fontWeight: 'bold', fontSize: 17, marginTop: 10},
+  
+});
+
 
 const petDetails = StyleSheet.create({
     header: {
@@ -106,5 +143,6 @@ const petsStatesStyle = StyleSheet.create({
 export {
     petCardStyle,
     petDetails,
-    petsStatesStyle
+    petsStatesStyle,
+    petCardStyleExample
 }

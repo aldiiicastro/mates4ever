@@ -4,131 +4,127 @@ import {Text, StyleSheet, View, TextInput, Button, SafeAreaView} from 'react-nat
 import { Picker } from '@react-native-picker/picker';
 import {Checkbox} from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
-const COLORS = {
-    white: '#fff',
-    dark: '#000',
-    red: '#F52A2A',
-    light: '#F1F1F1',
-    green: "#ffdf4c",
-};
+import { colors } from "../../../styles/Colors";
+import { ScrollView } from "react-native-gesture-handler";
+import {form} from "../../../styles/Form";
+import {style} from "../../../styles/Commons";
+import { petScreenStyle } from "../../../styles/PetScreenStyle";
+
 export default function PetCreation({navigation}) {
-    const [age, setAge] = useState('Año');
-    const [state, setState] = useState('Adopción');
-    const [isSelected, setSelection] = useState(false);
+    const [name, setName] = useState('');
+    const [age, setAge] = useState('');
+    const [state, setState] = useState('');
+    const [type, setType] = useState('');
+    const [breed, setBreed] = useState('');
+    const [vaccine, setVaccine] = useState(false);
+    const [castrated, setCastrated] = useState(false);
+    const [medicalHistory, setMedicalHistory] = useState('');
+    const [description, setDescription] = useState('');
 
     return (
-        <SafeAreaView style={{flex: 1, paddingHorizontal: 20, backgroundColor: COLORS.white, width: "100%"}}>
-            <Icon name="arrow-back" size={25} style={{ marginTop:15}} onPress={() => navigation.goBack()}/>
-            <View style={{marginTop: 30, flexDirection: 'column'}}>
-                <Text style={{fontSize: 30, color: COLORS.green, fontWeight: 'bold'}}>Cargar una mascota</Text>
-                <View style={style.searchContainer}>
-                    <TextInput style={style.input}
-                               placeholder="Nombre" />
-                </View>
-                <View  style={style.searchContainer}>
-                    <TextInput style={style.input}
-                        secureTextEntry={true}
-                        placeholder="Edad en números"
-                    />
-                </View>
-                <View >
-                    <Picker
-                        style={{backgroundColor: COLORS.light, marginTop: 2}}
-                        selectedValue={age}
-                        onValueChange={currentAge => setAge(currentAge)}>
-                        <Picker.Item label="Año" value="Año" />
-                        <Picker.Item label="Meses" value="Meses" />
-                    </Picker>
-                    <Text>
-                        Seleccionado: {age}
+        <ScrollView style={style.fullContainer}>
+            <View style={petScreenStyle.header}>
+                <View style={form.alignItems}>
+                    <Icon name="arrow-back" size={25} onPress={() => navigation.goBack()}/>
+                    <Text style={[style.titleText]}>
+                        Cargar una mascota
                     </Text>
                 </View>
-                <View  style={style.searchContainer}>
-                    <TextInput style={style.input}
-                               secureTextEntry={true}
-                               placeholder="Raza"
-                    />
+            </View>
+            <View style={[style.marginX, style.bgWhite]}>
+                <View style={form.inputLineBox}>
+                    <TextInput 
+                        itemStyle={style.inputFont}
+                        onChangeText={setName}
+                        value={name}
+                        placeholder="Nombre"
+                        activeUnderlineColor={colors.red}
+                        />
+                        
                 </View>
-                <View  style={style.searchContainer}>
-                    <TextInput style={style.input}
-                               secureTextEntry={true}
-                               placeholder="Foto"
-                    />
+                <View style={form.inputLineBox}>
+                    <TextInput
+                        itemStyle={style.inputFont}
+                        onChangeText={setAge}
+                        value={age}
+                        placeholder="Fecha aproximada de nacimiento" />
                 </View>
-                <View >
+                <View style={form.pickerLineBox}>
                     <Picker
-                        style={{backgroundColor: COLORS.light, marginTop: 2}}
+                        itemStyle={form.inputFont}
                         selectedValue={state}
-                        onValueChange={currentState => setState(currentState)}>
-                        <Picker.Item label="Adopción" value="Adopción" />
+                        onValueChange={currentAge => setState(currentAge)}>
+                        <Picker.Item label="Tipo de publicacion" value={null} />
                         <Picker.Item label="Transito" value="Transito" />
+                        <Picker.Item label="Adopción" value="Adopción" />
                         <Picker.Item label="Perdido" value="Perdido" />
                     </Picker>
-                    <Text>
-                        Seleccionado: {state}
-                    </Text>
                 </View>
-                <View style={style.checkboxContainer}>
+                <View style={form.pickerLineBox}>
+                    <Picker
+                        style={form.inputFont}
+                        selectedValue={type}
+                        onValueChange={currentState => setType(currentState)}>
+                        <Picker.Item label="Tipo de animal" value={null} />
+                        <Picker.Item label="Perro" value="Perro" />
+                        <Picker.Item label="Gato" value="Gato" />
+                        <Picker.Item label="Otro" value="Otro" />
+                    </Picker>
+                </View>
+                <View style={form.inputLineBox}>
+                    <TextInput
+                        style={style.inputFont}
+                        onChangeText={setBreed}
+                        value={breed}
+                        placeholder="Tiene raza? Cual?" />
+                </View>
+                <View style={form.inputLineBox}>
+                    <TextInput
+                        multiline
+                        numberOfLines={4}
+                        style={style.inputFont}
+                        onChangeText={setDescription}
+                        value={description}
+                        placeholder="Fecha aproximada de nacimiento" />
+                </View>
+                <View style={form.inputLineBox}>
+                    <TextInput
+                        multiline
+                        numberOfLines={4}
+                        style={style.inputFont}
+                        onChangeText={setMedicalHistory}
+                        value={medicalHistory}
+                        placeholder="Fecha aproximada de nacimiento" />
+                </View>
+                <View style={form.alignItems}>
                     <Checkbox
-                        value={isSelected}
-                        onValueChange={setSelection}
-                        style={style.checkbox}
+                        color={colors.yellow}
+                        status={vaccine ? 'checked' : 'unchecked'}
+                        onPress={() => {
+                          setVaccine(!vaccine);
+                        }}
                     />
                     <Text style={style.label}>¿Tiene las vacunas al día?</Text>
                 </View>
-                <View style={style.checkboxContainer}>
+                <View style={form.alignItems}>
                     <Checkbox
-                        value={isSelected}
-                        onValueChange={setSelection}
-                        style={style.checkbox}
+                        color={colors.yellow}
+                        status={castrated ? 'checked' : 'unchecked'}
+                        onPress={() => {
+                          setCastrated(!castrated);
+                        }}
                     />
                     <Text style={style.label}>¿Esta castrado?</Text>
                 </View>
+                <View style={form.btnSubmit}>
+                    <Button color={colors.yellow} title="Publicar"></Button>
+                </View>
             </View>
-        </SafeAreaView>
+        </ScrollView>
     );
 };
 
-const style = StyleSheet.create({
-    searchContainer: {
-        height: 60,
-        backgroundColor: COLORS.light,
-        borderRadius: 10,
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    input: {
-        fontSize: 18,
-        marginLeft: 5,
-        fontWeight: 'bold',
-        flex: 1,
-        color: COLORS.dark,
-    },
-    sortBtn: {
-        marginLeft: 10,
-        height: 50,
-        width: 50,
-        borderRadius: 10,
-        backgroundColor: COLORS.green,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    container: {
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-    },
-    checkboxContainer: {
-        flexDirection: "row",
-        marginBottom: 20,
-    },
-    checkbox: {
-        alignSelf: "center",
-    },
-    label: {
-        margin: 8,
-    },
-});
+
 
 
 

@@ -19,7 +19,7 @@ export default function PetScreen({navigation}) {
         try {
             const response = await fetchSearch(query)
             const pets = []
-            response.forEach((pet) => pets.push((new Pet(pet))))
+            response.forEach((pet) => pets.push((new Pet(pet)))) //map
             setPetsSearching(pets)
         } catch (error) {
             setPetsSearching([])
@@ -54,10 +54,11 @@ export default function PetScreen({navigation}) {
                         <Icon name="close" size={20} style={petScreenStyle.iconClose} onPress={( ) => {
                             textInput.clear()
                             search('')
+                            navigation.navigate('Perfil')
                         }}/>
                     </View>
                     <View style={petScreenStyle.sortBtn}>
-                        <Icon name="sort" size={30} style={petScreenStyle.iconSrt} />
+                        <Icon name="sort" size={30} style={petScreenStyle.iconSrt} onPress={() => navigation.navigate('Perfil')}/>
                     </View>
                 </View>
             <ScrollView horizontal={true} >

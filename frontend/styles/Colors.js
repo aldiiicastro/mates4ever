@@ -9,7 +9,7 @@ const colors = {
     light_violet: "rgba(160,122,190,0.76)",
     red : "rgb(171,72,72)",
     light_yellow : "rgb(250,235,161)",
-    yellow: "rgba(255,222,66,0.79)",
+    yellow: "rgba(255,222,66,1)",
 }
 
 export {colors}

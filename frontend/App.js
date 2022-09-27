@@ -3,6 +3,7 @@ import HomeScreen from "./Components/screens/HomeScreen";
 import DetailsScreen from "./Components/screens/DetailsScreen.js";
 import CreatePetScreen from "./Components/screens/CreatePetScreen.js";
 import LoginScreen from "./Components/login/LoginScreen.js";
+import UserProfile from "./Components/screens/UserProfile";
 import RegisterScreen from "./Components/login/RegisterScreen";
 import SplashScreen from "./Components/login/SplashScreen";
 import {NavigationContainer} from "@react-navigation/native";
@@ -40,6 +41,7 @@ function App() {
             <Stack.Screen name={"Auth"} component={Auth} options={{headerShown: false}}/>
             <Stack.Screen name={"Inicio"} component={HomeScreen} />
             <Stack.Screen name={"Detalles"} component={DetailsScreen} />
+            <Stack.Screen name={"Perfil"} component={UserProfile}/>
             <Stack.Screen name={"Agregar"} component={CreatePetScreen}/>
         </Stack.Navigator>
       </NavigationContainer>
