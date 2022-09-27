@@ -7,12 +7,12 @@ class PetFactory() {
         name: String = "Gatito",
         image: String = "Example",
         age: Int = 4,
-        date: String? = "14-09-2022",
+        date: String? = null,
         type: String = "Gato",
-        breed: String = "Siames",
+        breed: String? = "Siames",
         state: String = "Perdido",
         tutor:String = "Aldi",
-        description: String = "Se perdio en Bernal"): Pet {
+        description: String? = "Se perdio en Bernal"): Pet {
 
         return Pet(name, image, age, date, type, breed, state, tutor, description)
     }

@@ -1,12 +1,11 @@
 import React, {useState, createRef} from 'react'
-import {View, Text, ScrollView, Image, Keyboard, TouchableOpacity, KeyboardAvoidingView,} from 'react-native'
+import {View, Text, ScrollView, TouchableOpacity, KeyboardAvoidingView,} from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import Loader from "../Loader.js"
 import {loginScreenStyle} from "../../styles/LoginScreenStyle"
 import ImageView from "./ImageView"
 import PasswordInput from "./PasswordInput"
 import GenericInput from "./GenericInput";
-
 
 const LoginScreen = ({navigation}) => {
     const [userEmail, setUserEmail] = useState('')

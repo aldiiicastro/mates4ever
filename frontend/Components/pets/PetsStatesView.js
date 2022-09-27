@@ -16,7 +16,7 @@ export default function PetsStatesView(props) {
 
     const statesButtons = (buttonState, index) => {
         return (
-            <TouchableOpacity  key={index} activeOpacity={0.8} onPress={() =>  setPets(filterState(buttonState))}>
+            <TouchableOpacity  testID={`button-${buttonState}`} key={index} activeOpacity={0.8} onPress={() =>  setPets(filterState(buttonState))}>
                 <Text style={[petsStatesStyle.categoryText, state === buttonState && petsStatesStyle.categoryTextSelected]}>{buttonState}</Text>
             </TouchableOpacity>)
     }

@@ -6,21 +6,21 @@ import {petCardStyle} from "../../../styles/PetStyle.js";
 export default function PetCard(props) {
     const pet = props.pet
     return (
-        <TouchableOpacity activeOpacity={0.8} onPress={() => props.navigation.navigate('Detalles', pet.id)}>
+        <TouchableOpacity testID={`pet-details-${pet.id}` } activeOpacity={0.8} onPress={() => props.navigation.navigate('Detalles', pet.id)}>
             <View style={petCardStyle.container}>
                 <View style={petCardStyle.imageView}>
                     <Image source={{uri: pet.image}} style={petCardStyle.image}/>
                     <View style={pet.isLost() ? petCardStyle.viewStateLost : petCardStyle.viewState}>
-                        <Text style={pet.isLost() ? petCardStyle.textStateLost : petCardStyle.textState}>
+                        <Text testID={`pet-state-${pet.id}`} style={pet.isLost() ? petCardStyle.textStateLost : petCardStyle.textState}>
                             {pet.state}
                         </Text>
                     </View>
                 </View>
-                <Text style={petCardStyle.textName}>
+                <Text  testID={`pet-name-${pet.id}`} style={petCardStyle.textName}>
                     {pet.name}
                 </Text>
                 <View style={petCardStyle.ageView}>
-                    <Text style={petCardStyle.textAge}>
+                    <Text  testID={`pet-age-${pet.id}`} style={petCardStyle.textAge}>
                         Edad: {pet.age}
                     </Text>
                 </View>

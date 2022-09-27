@@ -38,4 +38,10 @@ class PetController {
         val petsResponse = petService.search(query)
         return ResponseEntity<List<*>>(petsResponse, null, HttpStatus.OK)
     }
+    fun deleteAll() {
+        return petService.deleteAll()
+    }
+    fun deleteById(id: String) {
+        return petService.deleteById(id)
+    }
 }

@@ -1,7 +1,8 @@
 package mate4ever.ttip.repositoryTests
 
-import mate4ever.ttip.model.Pet
+import mate4ever.ttip.dataHelpers.PetFactory
 import mate4ever.ttip.repository.PetRepository
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -10,10 +11,11 @@ import org.springframework.boot.test.context.SpringBootTest
 class PetRepositoryTest {
     @Autowired
     private lateinit var petRepository: PetRepository
+    private var petFactory : PetFactory = PetFactory()
 
     @Test
     fun createAndFindPet() {
-        var pet = Pet("Firu", "image", 5, null,"Dog", "none", "Lost", "Anto", "Lo encontre en la puerta de mi casa")
+        var pet =petFactory.anyPet()
         pet = petRepository.insert(pet)
         val findPet = petRepository.findItemById(pet.id!!)
         assert(findPet!!.name == pet.name)
@@ -21,7 +23,7 @@ class PetRepositoryTest {
 
     @Test
     fun createAndFindPetWithNullParameters() {
-        var pet = Pet("Firu", "image", 5, null,"Dog", null, "Lost", "Anto", null)
+        var pet = petFactory.anyPet("Firu", "image", 5, null,"Dog", null, "Lost", "Anto", null)
         pet = petRepository.insert(pet)
         val findPet = petRepository.findItemById(pet.id!!)
         assert(findPet!!.name == pet.name)
@@ -30,13 +32,20 @@ class PetRepositoryTest {
     @Test
     fun getByWrongID() {
         val pet = petRepository.findItemById("29")
-        println(pet == null)
+        assert(pet == null)
     }
 
     @Test
     fun getAllPetsCorrect() {
+        val pet = petFactory.anyPet()
+        petRepository.insert(pet)
         val findPets = petRepository.findAll()
-        assert(findPets.size == 26)
+        assert(findPets.size == 1)
+    }
+
+    @AfterEach
+    fun tearDown() {
+        petRepository.deleteAll()
     }
 
 }
