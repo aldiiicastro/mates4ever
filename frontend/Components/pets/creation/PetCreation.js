@@ -1,6 +1,6 @@
 import * as React from "react";
 import {useState} from 'react';
-import {Text, StyleSheet, View, TextInput, Button, SafeAreaView} from 'react-native';
+import {Text, Image, View, TextInput, Button, SafeAreaView, TouchableHighlight} from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import {Checkbox} from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -9,8 +9,10 @@ import { ScrollView } from "react-native-gesture-handler";
 import {form} from "../../../styles/Form";
 import {style} from "../../../styles/Commons";
 import { petScreenStyle } from "../../../styles/PetScreenStyle";
+import * as ImagePicker from 'expo-image-picker';
 
 export default function PetCreation({navigation}) {
+    const [image, setImage] = useState(null);
     const [name, setName] = useState('');
     const [age, setAge] = useState('');
     const [state, setState] = useState('');
@@ -20,6 +22,53 @@ export default function PetCreation({navigation}) {
     const [castrated, setCastrated] = useState(false);
     const [medicalHistory, setMedicalHistory] = useState('');
     const [description, setDescription] = useState('');
+
+    const pickImage = async () => {
+        // No permissions request is necessary for launching the image library
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 4],
+            quality: 1,
+        });
+    
+        if (!(result.cancelled)) {
+          setImage(result.uri);
+        }
+        setImage(result)
+    };
+
+    
+    
+    const createFormData = () => {
+        const data = new FormData();
+
+        data.append('photo', {
+          name: image.fileName,
+          type: image.type,
+          uri: Platform.OS === 'ios' ? image.uri.replace('file://', '') : image.uri,
+        });
+        console.log(data["_parts"])
+        
+        return data;
+      };
+
+    const publish = () => {
+        const data = {
+            'name': name,
+            'age': age,
+            'state': state,
+            'type': type,
+            'breed': breed,
+            'vaccine': vaccine,
+            'castrated': castrated,
+            'medicalHistory': medicalHistory,
+            'description': description,
+
+        }
+
+        console.log(image)
+    }
 
     return (
         <ScrollView style={style.fullContainer}>
@@ -31,10 +80,21 @@ export default function PetCreation({navigation}) {
                     </Text>
                 </View>
             </View>
+            <View style={form.image} on>
+                <TouchableHighlight onPress={pickImage}>
+                    {image ? 
+                    <Image source={{ uri: image }} style={ form.imageSize }/> 
+                    : 
+                    <Image source={require('../../../assets/DefaultPet.png')} style={ form.imageSize } />}
+                </TouchableHighlight>
+                <View style={form.imageIcon} >
+                    <Icon name="create" size={28} onPress={pickImage}  />
+                </View>
+            </View>
             <View style={[style.marginX, style.bgWhite]}>
                 <View style={form.inputLineBox}>
                     <TextInput 
-                        itemStyle={style.inputFont}
+                        style={form.input}
                         onChangeText={setName}
                         value={name}
                         placeholder="Nombre"
@@ -44,14 +104,14 @@ export default function PetCreation({navigation}) {
                 </View>
                 <View style={form.inputLineBox}>
                     <TextInput
-                        itemStyle={style.inputFont}
+                        style={form.input}
                         onChangeText={setAge}
                         value={age}
                         placeholder="Fecha aproximada de nacimiento" />
                 </View>
                 <View style={form.pickerLineBox}>
                     <Picker
-                        itemStyle={form.inputFont}
+                        style={form.inputFont}
                         selectedValue={state}
                         onValueChange={currentAge => setState(currentAge)}>
                         <Picker.Item label="Tipo de publicacion" value={null} />
@@ -73,7 +133,7 @@ export default function PetCreation({navigation}) {
                 </View>
                 <View style={form.inputLineBox}>
                     <TextInput
-                        style={style.inputFont}
+                        style={form.input}
                         onChangeText={setBreed}
                         value={breed}
                         placeholder="Tiene raza? Cual?" />
@@ -82,19 +142,19 @@ export default function PetCreation({navigation}) {
                     <TextInput
                         multiline
                         numberOfLines={4}
-                        style={style.inputFont}
+                        style={form.input}
                         onChangeText={setDescription}
                         value={description}
-                        placeholder="Fecha aproximada de nacimiento" />
+                        placeholder={"Cuentanos un poco sobre " + (name ? name : "el/ella") } />
                 </View>
                 <View style={form.inputLineBox}>
                     <TextInput
                         multiline
                         numberOfLines={4}
-                        style={style.inputFont}
+                        style={form.input}
                         onChangeText={setMedicalHistory}
                         value={medicalHistory}
-                        placeholder="Fecha aproximada de nacimiento" />
+                        placeholder="Tiene algun problema medico? Algo que quieras destacar?" />
                 </View>
                 <View style={form.alignItems}>
                     <Checkbox
@@ -117,7 +177,7 @@ export default function PetCreation({navigation}) {
                     <Text style={style.label}>¿Esta castrado?</Text>
                 </View>
                 <View style={form.btnSubmit}>
-                    <Button color={colors.yellow} title="Publicar"></Button>
+                    <Button color={colors.yellow} title="Publicar" onPress={ publish }></Button>
                 </View>
             </View>
         </ScrollView>

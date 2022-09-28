@@ -1,8 +1,34 @@
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import { colors } from "./Colors";
 
 
 const form = StyleSheet.create({
+    imageSize:{
+        width: Dimensions.get('window').width - 75, 
+        height: Dimensions.get('window').width - 95,
+
+    },
+    input: {
+        width: Dimensions.get('window').width-75,
+        height: 40
+
+    },
+    image:{
+        marginHorizontal: 30,
+        paddingVertical : 5,
+        flex: 1, 
+        alignItems: 'center', 
+        justifyContent: 'center'
+    },
+    imageIcon:{ 
+        position:"absolute",
+        bottom:0,
+        right:0,
+        backgroundColor: colors.light_violet,
+        padding: 5,
+        borderTopLeftRadius: 10,
+        borderBottomRightRadius: 10
+    },
     inputLineBox: {
         borderBottomColor: colors.grey,
         borderBottomWidth: 1,
@@ -30,6 +56,8 @@ const form = StyleSheet.create({
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
+        backgroundColor: colors.yellow,
+
     },
     alignItems: {
         flexDirection: 'row',
