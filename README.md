@@ -18,7 +18,7 @@ npm run ios
 ó
 npm run android
 ``` 
-E
+
 ### Backend
 ``` 
 cd backend
