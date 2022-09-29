@@ -11,6 +11,7 @@ import {StatusBar} from "react-native";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {colors} from "./styles/Colors.js";
 
+
 const Stack = createNativeStackNavigator();
 const Auth = () => {
     return (
@@ -36,7 +37,7 @@ function App() {
   return (
       <NavigationContainer>
         <StatusBar barStyle="dark-content" backgroundColor={colors.beige} />
-        <Stack.Navigator screenOptions={{header: () => null}} initialRouteName="SplashScreen">
+        <Stack.Navigator screenOptions={{header: () => null}} initialRouteName="Inicio">
             <Stack.Screen name={"SplashScreen"} component={SplashScreen} options={{headerShown: false}}/>
             <Stack.Screen name={"Auth"} component={Auth} options={{headerShown: false}}/>
             <Stack.Screen name={"Inicio"} component={HomeScreen} />

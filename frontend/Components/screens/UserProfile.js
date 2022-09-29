@@ -12,6 +12,7 @@ import ContactCard from '../common/ContactCard'
 import Icon from "react-native-vector-icons/MaterialIcons";
 import PetCardEjemplo from '../pets/card/PetCardEjemplo';
 import Pet from '../../model/Pet';
+import { petScreenStyle } from '../../styles/PetScreenStyle';
 
 function Profile3 () {
   
@@ -107,6 +108,10 @@ function Profile3 () {
           <View style={profileStyles.cardContainer}>
             {renderContactHeader()}
             {renderContact()}
+
+        <Icon name="logout" size={25} style={petScreenStyle.iconSearch} onPress={() => {
+                            AsyncStorage.clear()
+                            navigation.navigate("Auth")}}/>
             {renderPetsPosts()}
           </View>
         </View>

@@ -9,6 +9,7 @@ import {petScreenStyle} from "../../styles/PetScreenStyle.js";
 import {fetchSearch} from "../../server/Api";
 import {style} from "../../styles/Commons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import PerfilButton from '../drawerlayout/PerfilButton.js';
 
 
 export default function PetScreen({navigation}) {
@@ -42,9 +43,7 @@ export default function PetScreen({navigation}) {
                         <Text style={petScreenStyle.titleText}>
                             Mates4Ever
                         </Text>
-                        <Icon name="logout" size={25} style={petScreenStyle.iconSearch} onPress={() => {
-                            AsyncStorage.clear()
-                            navigation.navigate("Auth")}}/>
+                        <PerfilButton navigation={navigation}></PerfilButton>
                     </View>
                 </View>
                 <View style={petScreenStyle.searchView}>
@@ -54,11 +53,11 @@ export default function PetScreen({navigation}) {
                         <Icon name="close" size={20} style={petScreenStyle.iconClose} onPress={( ) => {
                             textInput.clear()
                             search('')
-                            navigation.navigate('Perfil')
+                            
                         }}/>
                     </View>
                     <View style={petScreenStyle.sortBtn}>
-                        <Icon name="sort" size={30} style={petScreenStyle.iconSrt} onPress={() => navigation.navigate('Perfil')}/>
+                        <Icon name="sort" size={30} style={petScreenStyle.iconSrt} />
                     </View>
                 </View>
             <ScrollView horizontal={true} >

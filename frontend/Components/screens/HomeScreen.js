@@ -4,6 +4,7 @@ import PetScreen from "./PetScreen.js";
 import {colors} from "../../styles/Colors.js";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {style} from "../../styles/Commons";
+import PerfilButton from '../drawerlayout/PerfilButton.js';
 
 export default function HomeScreen({ navigation }) {
     return (
