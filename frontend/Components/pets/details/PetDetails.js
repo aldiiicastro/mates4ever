@@ -10,7 +10,7 @@ export default function PetDetails({navigation, id }) {
     const [pet, setPet] = useState({})
 
     useEffect(() => {
-        getPetById(id).then((response) => {setPet(response.data)})
+        getPetById(id).then((response) => {setPet(response.data)}).catch((error) => console.log(error))
     }, [id]);
     return (
         <ScrollView vertical style={{ backgroundColor: "#fff", width: "100%" }}>

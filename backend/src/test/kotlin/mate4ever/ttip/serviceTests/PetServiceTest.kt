@@ -1,6 +1,7 @@
 package mate4ever.ttip.serviceTests
 
 import mate4ever.ttip.dataHelpers.PetFactory
+import mate4ever.ttip.exceptions.PetNotFoundException
 import mate4ever.ttip.service.PetService
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
@@ -16,28 +17,28 @@ class PetServiceTest {
     private var petFactory : PetFactory = PetFactory()
     @Test
     fun createAndFindPet() {
-        var pet = petFactory.anyPet()
-        pet = petService.createPet(pet)
+        var petDTO = petFactory.anyPetDTO()
+        var pet = petService.createPet(petDTO)
         val findPet = petService.findById(pet.id!!)
         assert(findPet.name == pet.name)
 
     }
     @Test
     fun createAndFindPetWithNullParameters() {
-        var pet = petFactory.anyPet("Firu", "image", 5, null,"Dog", null, "Lost", "Anto", null)
-        pet = petService.createPet(pet)
+        var petDTO = petFactory.anyPetDTO("Firu", "image", null,"Dog", null, "Lost", "Anto", description = null)
+        val pet = petService.createPet(petDTO)
         val findPet = petService.findById(pet.id!!)
         assert(findPet.name == pet.name)
     }
 
     @Test
     fun getByWrongID() {
-        assertThrows<IllegalArgumentException>("No existe ninguna mascota con ese id en la base de datos"){petService.findById("29")}
+        assertThrows<PetNotFoundException>("No existe ninguna mascota con ese id en la base de datos"){petService.findById("29")}
     }
 
     @Test
     fun getAllPetsCorrect() {
-        val pet = petFactory.anyPet()
+        val pet = petFactory.anyPetDTO()
         petService.createPet(pet)
         val findPets = petService.findAll() as List<*>
         assert(findPets.size == 1)
@@ -45,7 +46,7 @@ class PetServiceTest {
 
     @Test
     fun searchCats() {
-        val pet = petFactory.anyPet()
+        val pet = petFactory.anyPetDTO()
         petService.createPet(pet)
         val findPets = petService.search("Gato")
         assert(findPets.size == 1)

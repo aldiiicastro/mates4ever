@@ -10,11 +10,13 @@ import {form} from "../../../styles/Form";
 import {style} from "../../../styles/Commons";
 import { petScreenStyle } from "../../../styles/PetScreenStyle";
 import * as ImagePicker from 'expo-image-picker';
+import {createPet} from "../../../server/Api.js";
+
 
 export default function PetCreation({navigation}) {
     const [image, setImage] = useState(null);
     const [name, setName] = useState('');
-    const [age, setAge] = useState('');
+    const [age, setAge] = useState(null);
     const [state, setState] = useState('');
     const [type, setType] = useState('');
     const [breed, setBreed] = useState('');
@@ -48,15 +50,16 @@ export default function PetCreation({navigation}) {
           type: image.type,
           uri: Platform.OS === 'ios' ? image.uri.replace('file://', '') : image.uri,
         });
-        console.log(data["_parts"])
+        // console.log(data["_parts"])
         
         return data;
       };
 
     const publish = () => {
-        const data = {
+        const pet = {
             'name': name,
-            'age': age,
+            "image":"sada",
+            'birth': age,
             'state': state,
             'type': type,
             'breed': breed,
@@ -64,10 +67,10 @@ export default function PetCreation({navigation}) {
             'castrated': castrated,
             'medicalHistory': medicalHistory,
             'description': description,
-
+            "tutor": "yo",
         }
-
-        console.log(image)
+        
+        createPet(pet).then((response) => { console.log(response) }).catch(error => console.log(error))
     }
 
     return (

@@ -1,5 +1,6 @@
 package mate4ever.ttip.controller
 
+import mate4ever.ttip.dto.PetRequestDto
 import mate4ever.ttip.model.Pet
 import mate4ever.ttip.service.PetService
 import org.springframework.beans.factory.annotation.Autowired
@@ -15,9 +16,9 @@ class PetController {
     private lateinit var petService: PetService
 
     //    @LogExecutionTime
-    @PostMapping("/api/pet/make")
-    fun createPet(@RequestBody pet: Pet): ResponseEntity<*> {
-        petService.createPet(pet)
+    @PostMapping("/api/pet/create")
+    fun createPet(@RequestBody petDTO: PetRequestDto): ResponseEntity<*> {
+        val pet = petService.createPet(petDTO)
         return ResponseEntity<Pet>(pet, null, HttpStatus.OK)
     }
 

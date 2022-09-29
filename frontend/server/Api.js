@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl = 'http://192.168.100.23:8090';
+const baseUrl = 'http://192.168.0.6:8090';
 
 export const fetchSearch = async (query) => {
     const url = `${baseUrl}/api/pet/search?query=${query}`;
@@ -12,4 +12,8 @@ export const getPetById  = async (id) => {
     return await axios.get(url)
 }
 
+export const createPet = async (pet) => {
+    const url = `${baseUrl}/api/pet/create`;
+    return await axios.post(url, pet)
+}
 

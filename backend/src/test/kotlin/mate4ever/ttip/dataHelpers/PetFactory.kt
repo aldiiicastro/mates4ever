@@ -1,19 +1,40 @@
 package mate4ever.ttip.dataHelpers
 
+import mate4ever.ttip.dto.PetRequestDto
 import mate4ever.ttip.model.Pet
+import java.time.LocalDate
 
 class PetFactory() {
-    fun anyPet(
+    fun anyPetDTO(
         name: String = "Gatito",
         image: String = "Example",
-        age: Int = 4,
-        date: String? = null,
+        birth: String? = null,
         type: String = "Gato",
         breed: String? = "Siames",
         state: String = "Perdido",
         tutor:String = "Aldi",
+        vaccine:Boolean = true,
+        castrated:Boolean = true,
+        medicalHistory:String? = null,
+        description: String? = "Se perdio en Bernal"): PetRequestDto {
+
+        return PetRequestDto(name, image, birth, type, breed, state, tutor,  vaccine, castrated, medicalHistory, description)
+    }
+
+    fun anyPet(
+        name: String = "Gatito",
+        image: String = "Example",
+        birth: LocalDate? = null,
+        type: String = "Gato",
+        breed: String? = "Siames",
+        state: String = "Perdido",
+        tutor:String = "Aldi",
+        vaccine:Boolean = true,
+        castrated:Boolean = true,
+        medicalHistory:String? = null,
         description: String? = "Se perdio en Bernal"): Pet {
 
-        return Pet(name, image, age, date, type, breed, state, tutor, description)
+        return Pet(name, image, birth, type, breed, state, tutor,  vaccine, castrated, medicalHistory, description)
     }
+
 }

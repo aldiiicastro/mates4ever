@@ -25,7 +25,7 @@ class UserServiceTest {
 
     @BeforeEach
     fun setUp(){
-        pet = petService.createPet(petFactory.anyPet())
+        pet = petService.createPet(petFactory.anyPetDTO())
     }
 
     @Test
