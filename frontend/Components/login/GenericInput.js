@@ -9,13 +9,14 @@ export default function GenericInput(props) {
                 onChangeText={props.onChange}
                 underlineColorAndroid="#f000"
                 placeholder={props.placeHolder}
-                placeholderTextColor="rgba(160,122,190,0.76)"
+                placeholderTextColor="grey"
                 autoCapitalize="sentences"
                 returnKeyType="next"
                 keyboardType={props.keyboardType}
                 onSubmitEditing={props.inputRef}
                 blurOnSubmit={false}
                 ref={props.reference}
+                secureTextEntry={props.secureTextEntry}
             />
         </View>
     )

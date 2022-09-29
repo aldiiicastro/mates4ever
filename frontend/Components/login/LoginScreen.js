@@ -6,19 +6,20 @@ import {loginScreenStyle} from "../../styles/LoginScreenStyle"
 import ImageView from "./ImageView"
 import PasswordInput from "./PasswordInput"
 import GenericInput from "./GenericInput";
+import {getUserByEmail} from "../../server/Api";
 
 const LoginScreen = ({navigation}) => {
     const [userEmail, setUserEmail] = useState('')
     const [userPassword, setUserPassword] = useState('')
     const [loading, setLoading] = useState(false)
-    const [errortext, setErrortext] = useState('')
+    const [errorText, setErrorText] = useState('')
     const emailInputRef = createRef()
     const passwordInputRef = createRef()
 
     const handleSubmitPress = () => {
-        setErrortext('')
+        setErrorText('')
         if (!userEmail) {
-            alert('Please fill Email')
+            alert('Por favor completar email')
             return
         }
         if (!userPassword) {
@@ -27,44 +28,15 @@ const LoginScreen = ({navigation}) => {
         }
         setLoading(true)
         let dataToSend = {email: userEmail, password: userPassword}
-        let formBody = []
-        for (let key in dataToSend) {
-            let encodedKey = encodeURIComponent(key)
-            let encodedValue = encodeURIComponent(dataToSend[key])
-            formBody.push(encodedKey + '=' + encodedValue)
-        }
-        formBody = formBody.join('&')
-
-        fetch('http://localhost:3000/api/user/login', {
-            method: 'POST',
-            body: formBody,
-            headers: {
-                //Header Defination
-                'Content-Type':
-                    'application/x-www-form-urlencodedcharset=UTF-8',
-            },
+        getUserByEmail(dataToSend).then(response => {
+            setLoading(false)
+            AsyncStorage.setItem('user_id', response.data.email)
+            navigation.navigate('Inicio')
+        }).catch((error) => {
+            setLoading(false)
+            setErrorText(error.response.data)
         })
-            .then((response) => response.json())
-            .then((responseJson) => {
-                //Hide Loader
-                setLoading(false)
-                console.log(responseJson)
-                // If server response message same as Data Matched
-                if (responseJson.status === 'success') {
-                    AsyncStorage.setItem('user_id', responseJson.data.email)
-                    console.log(responseJson.data.email)
-                    navigation.replace('DrawerNavigationRoutes')
-                } else {
-                    setErrortext(responseJson.msg)
-                    console.log('Please check your email id or password')
-                }
-            })
-            .catch((error) => {
-                //Hide Loader
-                setLoading(false)
-            })
     }
-
     return (
         <View style={loginScreenStyle.mainBody}>
             <Loader loading={loading} />
@@ -78,11 +50,11 @@ const LoginScreen = ({navigation}) => {
                 <View>
                     <KeyboardAvoidingView enabled>
                         <ImageView/>
-                        <GenericInput placeHolder={"Ingresar mail"} onChange={(UserEmail) => setUserEmail(UserEmail)} inputRef={() => passwordInputRef.current && passwordInputRef.current.focus()} keyboardType={"email-address"} reference={emailInputRef}/>
+                        <GenericInput placeHolder={"Ingresar mail"} onChange={(UserEmail) => setUserEmail(UserEmail)} inputRef={() => passwordInputRef.current && passwordInputRef.current.focus()} keyboardType={"email-address"} reference={emailInputRef} secureTextEntry={false}/>
                         <PasswordInput onChange={(UserPassword) => setUserPassword(UserPassword)} passwordInputRef={passwordInputRef}/>
-                        {errortext !== '' ? (
+                        {errorText !== '' ? (
                             <Text style={loginScreenStyle.errorTextStyle}>
-                                {errortext}
+                                {errorText}
                             </Text>
                         ) : null}
                         <TouchableOpacity

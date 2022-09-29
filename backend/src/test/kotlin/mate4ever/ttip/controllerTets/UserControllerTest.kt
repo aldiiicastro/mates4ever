@@ -6,9 +6,11 @@ import mate4ever.ttip.dataHelpers.PetFactory
 import mate4ever.ttip.dataHelpers.UserFactory
 import mate4ever.ttip.model.Pet
 import mate4ever.ttip.model.User
+import mate4ever.ttip.model.UserDTO
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.HttpStatus
@@ -25,14 +27,14 @@ class UserControllerTest {
 
     @BeforeEach
     fun setUp(){
-        pet = petController.createPet(petFactory.anyPet()).body as Pet
+        pet = petController.createPet(petFactory.anyPetDTO()).body as Pet
     }
 
     @Test
     fun createAndFindPet() {
         var user = userFactory.anyUser(pets = listOf(pet))
         user = userController.createUser(user).body as User
-        val findPet = userController.getUser(user.id!!).body as User
+        val findPet = userController.getUserBy(user.id!!).body as User
         assert(findPet.name == user.name)
 
     }
@@ -41,16 +43,36 @@ class UserControllerTest {
     fun createAndFindPetWithNullParameters() {
         var user = userFactory.anyUser(phone = null, image =null, pets =listOf(pet))
         user = userController.createUser(user).body as User
-        val findPet = userController.getUser(user.id!!).body as User
+        val findPet = userController.getUserBy(user.id!!).body as User
         assert(findPet.name == user.name)
     }
 
     @Test
     fun getByWrongID() {
-        val pet = userController.getUser("29").statusCode
-        assert(pet == HttpStatus.NOT_FOUND)
+        val user = userController.getUserBy("29").statusCode
+        assert(user == HttpStatus.NOT_FOUND)
     }
-
+    @Test
+    fun getUserLogin() {
+        var user = userFactory.anyUser(pets =listOf(pet))
+        user = userController.createUser(user).body as User
+        val findUser = userController.getUser(UserDTO("aldana@gmail.com", "contrasena...")).body as User
+        assert(findUser.name == user.name)
+    }
+    @Test
+    fun getUserLoginWrongPassword() {
+        var user = userFactory.anyUser(pets =listOf(pet))
+        userController.createUser(user)
+        var status = userController.getUser(UserDTO("aldana@gmail.com", "contrasena45...")).statusCode
+        assert(status == HttpStatus.NOT_FOUND)
+    }
+    @Test
+    fun getUserLoginWrongEmail() {
+        var user = userFactory.anyUser(pets =listOf(pet))
+        userController.createUser(user)
+        var status = userController.getUser(UserDTO("aldanadd@gmail.com", "contrasena...")).statusCode
+        assert(status == HttpStatus.NOT_FOUND)
+    }
     @Test
     fun getAllPetsIsEmpty() {
         val findPets = userController.getAllUsers() as List<*>

@@ -11,12 +11,14 @@ import {style} from "../../../styles/Commons";
 import { petScreenStyle } from "../../../styles/PetScreenStyle";
 import * as ImagePicker from 'expo-image-picker';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import {createPet} from "../../../server/Api.js";
+
 
 export default function PetCreation({navigation}) {
     const [image, setImage] = useState(null);
     const [imageUri, setImageUri] = useState(null);
     const [name, setName] = useState('');
-    const [age, setAge] = useState('');
+    const [age, setAge] = useState(null);
     const [state, setState] = useState('');
     const [type, setType] = useState('');
     const [breed, setBreed] = useState('');
@@ -50,14 +52,16 @@ export default function PetCreation({navigation}) {
           type: imageUri.type,
           uri: Platform.OS === 'ios' ? imageUri.uri.replace('file://', '') : imageUri.uri,
         });
+        // console.log(data["_parts"])
         
         return data;
       };
 
     const publish = () => {
-        const data = {
+        const pet = {
             'name': name,
-            'age': age,
+            "image":"sada",
+            'birth': age,
             'state': state,
             'type': type,
             'breed': breed,
@@ -65,9 +69,9 @@ export default function PetCreation({navigation}) {
             'castrated': castrated,
             'medicalHistory': medicalHistory,
             'description': description,
-
+            "tutor": "yo",
         }
-        console.log(image)
+        createPet(pet).then((response) => { console.log(response) }).catch(error => console.log(error))
     }
     
       const handleConfirm = (date) => {

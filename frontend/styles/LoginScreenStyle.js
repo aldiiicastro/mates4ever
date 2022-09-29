@@ -5,7 +5,7 @@ const loginScreenStyle = StyleSheet.create({
     mainBody: {
         flex: 1,
         justifyContent: 'center',
-        backgroundColor: colors.beige,
+        backgroundColor: colors.yellow,
         alignContent: 'center',
     },
     SectionStyle: {
@@ -17,7 +17,7 @@ const loginScreenStyle = StyleSheet.create({
         margin: 10,
     },
     buttonStyle: {
-        backgroundColor: colors.yellow,
+        backgroundColor: colors.white,
         borderWidth: 0,
         height: 40,
         alignItems: 'center',
