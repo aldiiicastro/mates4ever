@@ -10,9 +10,11 @@ import {form} from "../../../styles/Form";
 import {style} from "../../../styles/Commons";
 import { petScreenStyle } from "../../../styles/PetScreenStyle";
 import * as ImagePicker from 'expo-image-picker';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 export default function PetCreation({navigation}) {
     const [image, setImage] = useState(null);
+    const [imageUri, setImageUri] = useState(null);
     const [name, setName] = useState('');
     const [age, setAge] = useState('');
     const [state, setState] = useState('');
@@ -22,6 +24,7 @@ export default function PetCreation({navigation}) {
     const [castrated, setCastrated] = useState(false);
     const [medicalHistory, setMedicalHistory] = useState('');
     const [description, setDescription] = useState('');
+    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
@@ -33,22 +36,20 @@ export default function PetCreation({navigation}) {
         });
     
         if (!(result.cancelled)) {
-          setImage(result.uri);
+          setImageUri(result.uri);
+          setImage(result)
         }
-        setImage(result)
     };
 
-    
     
     const createFormData = () => {
         const data = new FormData();
 
         data.append('photo', {
-          name: image.fileName,
-          type: image.type,
-          uri: Platform.OS === 'ios' ? image.uri.replace('file://', '') : image.uri,
+          name: imageUri.fileName,
+          type: imageUri.type,
+          uri: Platform.OS === 'ios' ? imageUri.uri.replace('file://', '') : imageUri.uri,
         });
-        console.log(data["_parts"])
         
         return data;
       };
@@ -66,9 +67,14 @@ export default function PetCreation({navigation}) {
             'description': description,
 
         }
-
         console.log(image)
     }
+    
+      const handleConfirm = (date) => {
+        console.warn("A date has been picked: ", date.toLocalDateString());
+        setAge(date.toLocalDateString())
+        setDatePickerVisibility(false)
+      };
 
     return (
         <ScrollView style={style.fullContainer}>
@@ -81,9 +87,9 @@ export default function PetCreation({navigation}) {
                 </View>
             </View>
             <View style={form.image} on>
-                <TouchableHighlight onPress={pickImage}>
-                    {image ? 
-                    <Image source={{ uri: image }} style={ form.imageSize }/> 
+                <TouchableHighlight onPress={setDatePickerVisibility}>
+                    {imageUri ? 
+                    <Image source={{ uri: imageUri }} style={ form.imageSize }/> 
                     : 
                     <Image source={require('../../../assets/DefaultPet.png')} style={ form.imageSize } />}
                 </TouchableHighlight>
@@ -101,6 +107,20 @@ export default function PetCreation({navigation}) {
                         activeUnderlineColor={colors.red}
                         />
                         
+                </View>
+                <View>
+                    <Button title="Show Date Picker" onPress={showDatePicker} />
+                    <DateTimePickerModal
+                        isVisible={isDatePickerVisible}
+                        mode="date"
+                        onConfirm={handleConfirm}
+                        onCancel={hideDatePicker}
+                    />
+                    <View>
+                        <Text placeholder="Fecha aproximada de nacimiento">
+                            { age }
+                        </Text>
+                    </View>
                 </View>
                 <View style={form.inputLineBox}>
                     <TextInput
