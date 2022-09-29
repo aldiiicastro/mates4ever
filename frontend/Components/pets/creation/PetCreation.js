@@ -10,13 +10,16 @@ import {form} from "../../../styles/Form";
 import {style} from "../../../styles/Commons";
 import { petScreenStyle } from "../../../styles/PetScreenStyle";
 import * as ImagePicker from 'expo-image-picker';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 import {createPet} from "../../../server/Api.js";
 
 
 export default function PetCreation({navigation}) {
     const [image, setImage] = useState(null);
+    const [imageUri, setImageUri] = useState(null);
     const [name, setName] = useState('');
     const [age, setAge] = useState(null);
+    const [ageDate, setAgeDate] = useState(new Date());
     const [state, setState] = useState('');
     const [type, setType] = useState('');
     const [breed, setBreed] = useState('');
@@ -24,6 +27,7 @@ export default function PetCreation({navigation}) {
     const [castrated, setCastrated] = useState(false);
     const [medicalHistory, setMedicalHistory] = useState('');
     const [description, setDescription] = useState('');
+    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
@@ -35,20 +39,19 @@ export default function PetCreation({navigation}) {
         });
     
         if (!(result.cancelled)) {
-          setImage(result.uri);
+          setImageUri(result.uri);
+          setImage(result)
         }
-        setImage(result)
     };
 
-    
     
     const createFormData = () => {
         const data = new FormData();
 
         data.append('photo', {
-          name: image.fileName,
-          type: image.type,
-          uri: Platform.OS === 'ios' ? image.uri.replace('file://', '') : image.uri,
+          name: imageUri.fileName,
+          type: imageUri.type,
+          uri: Platform.OS === 'ios' ? imageUri.uri.replace('file://', '') : imageUri.uri,
         });
         // console.log(data["_parts"])
         
@@ -69,10 +72,25 @@ export default function PetCreation({navigation}) {
             'description': description,
             "tutor": "yo",
         }
-        
         createPet(pet).then((response) => { console.log(response) }).catch(error => console.log(error))
     }
-
+    const showDatePicker = () => {
+        setDatePickerVisibility(true);
+      };
+    
+      const hideDatePicker = () => {
+        setDatePickerVisibility(false);
+      };
+    
+      const handleConfirm = (date) => {
+        setAge(getAge(date))
+        setAgeDate(date)
+        hideDatePicker();
+      };
+    const getAge = (dateInput) => {
+        const dateArray = dateInput.toLocaleDateString().split("/")
+        return ([dateArray[1], dateArray[0], dateArray[2]].join('/'))
+    }
     return (
         <ScrollView style={style.fullContainer}>
             <View style={petScreenStyle.header}>
@@ -85,8 +103,8 @@ export default function PetCreation({navigation}) {
             </View>
             <View style={form.image} on>
                 <TouchableHighlight onPress={pickImage}>
-                    {image ? 
-                    <Image source={{ uri: image }} style={ form.imageSize }/> 
+                    {imageUri ? 
+                    <Image source={{ uri: imageUri }} style={ form.imageSize }/> 
                     : 
                     <Image source={require('../../../assets/DefaultPet.png')} style={ form.imageSize } />}
                 </TouchableHighlight>
@@ -105,12 +123,16 @@ export default function PetCreation({navigation}) {
                         />
                         
                 </View>
-                <View style={form.inputLineBox}>
-                    <TextInput
-                        style={form.input}
-                        onChangeText={setAge}
-                        value={age}
-                        placeholder="Fecha aproximada de nacimiento" />
+                <View>
+                    {/* <Button title="Show Date Picker" onPress={showDatePicker} /> */}
+                    <DateTimePickerModal
+                        isVisible={isDatePickerVisible}
+                        mode="date"
+                        date={ageDate}
+                        onConfirm={handleConfirm}
+                        onCancel={hideDatePicker}
+                    />
+                    <Text style={[form.inputLineBox]} onPress={showDatePicker}>{age ? age : "Fecha aproximada de nacimiento"}</Text>
                 </View>
                 <View style={form.pickerLineBox}>
                     <Picker
