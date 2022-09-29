@@ -11,9 +11,8 @@ const registerScreenStyle = StyleSheet.create({
         margin: 10,
     },
     buttonStyle: {
-        backgroundColor: colors.yellow,
+        backgroundColor: colors.white,
         borderWidth: 0,
-        borderColor: colors.yellow,
         height: 40,
         alignItems: 'center',
         borderRadius: 30,
@@ -29,12 +28,12 @@ const registerScreenStyle = StyleSheet.create({
     },
     inputStyle: {
         flex: 1,
-        color: colors.violet,
         paddingLeft: 15,
         paddingRight: 15,
         borderWidth: 1,
         borderRadius: 30,
-        borderColor: colors.grey,
+        backgroundColor: colors.white,
+        borderColor: colors.violet,
         fontSize: 17,
     },
     errorTextStyle: {
@@ -55,7 +54,7 @@ const registerScreenStyle = StyleSheet.create({
     },
     unsuccessfulView: {
         flex: 1,
-        backgroundColor: colors.beige
+        backgroundColor: colors.yellow
     },
     contentContainerStyle:{
         justifyContent: 'center',

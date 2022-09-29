@@ -9,12 +9,12 @@ export default function PasswordInput(props) {
                 onChangeText={props.onChange}
                 underlineColorAndroid="#f000"
                 placeholder="Ingresar contraseña"
-                placeholderTextColor="rgba(160,122,190,0.76)"
-                ref={props.passwordInputRef}
-                onSubmitEditing={Keyboard.dismiss}
+                placeholderTextColor="grey"
                 returnKeyType="next"
-                secureTextEntry={true}
+                onSubmitEditing={Keyboard.dismiss}
                 blurOnSubmit={false}
+                ref={props.passwordInputRef}
+                secureTextEntry={true}
             />
         </View>
     )

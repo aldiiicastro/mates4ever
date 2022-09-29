@@ -1,6 +1,7 @@
 package mate4ever.ttip.serviceTests
 
 import mate4ever.ttip.dataHelpers.PetFactory
+import mate4ever.ttip.exceptions.PetNotFoundException
 import mate4ever.ttip.service.PetService
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
@@ -32,7 +33,7 @@ class PetServiceTest {
 
     @Test
     fun getByWrongID() {
-        assertThrows<IllegalArgumentException>("No existe ninguna mascota con ese id en la base de datos"){petService.findById("29")}
+        assertThrows<PetNotFoundException>("No existe ninguna mascota con ese id en la base de datos"){petService.findById("29")}
     }
 
     @Test

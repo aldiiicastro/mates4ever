@@ -8,20 +8,19 @@ import {Title} from "react-native-paper"
 import {petScreenStyle} from "../../styles/PetScreenStyle.js";
 import {fetchSearch} from "../../server/Api";
 import {style} from "../../styles/Commons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 export default function PetScreen({navigation}) {
     const [petsSearching, setPetsSearching] = useState([])
     const [isAlreadyShownAlert, setIsAlreadyShownAlert] = useState(false)
     let textInput = ''
-
+    // const ast = AsyncStorage.getItem('user_id').then((value) => value)
     //searching pets in de database. Catching the error if fetch has a problem, showing an alert.
     const search = async query => {
         try {
             fetchSearch(query).then(response => {
-                console.log(response)
-                const pets = []
-                response.data.forEach((pet) => pets.push((new Pet(pet))))
+                const pets = response.data.map((pet) =>(new Pet(pet)))
                 setPetsSearching(pets)
             })
         } catch (error) {
@@ -30,8 +29,7 @@ export default function PetScreen({navigation}) {
                 (            Alert.alert(
                     "Error",
                     "Hubo un error al conectarse con la base. Por favor comuniquese con el administrador.",
-                    [{text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
-                        {text: "OK", onPress: () => console.log("OK Pressed")}])) : ''
+                    [{text: "OK", onPress: () => console.log("OK Pressed")}])) : ''
             setIsAlreadyShownAlert(true)
         }
     }
@@ -41,9 +39,12 @@ export default function PetScreen({navigation}) {
             <SafeAreaView style={[petScreenStyle.safeAreaView, style.fullContainer ]}>
                 <View style={petScreenStyle.header}>
                     <View>
-                        <Text style={[petScreenStyle.titleText]}>
+                        <Text style={petScreenStyle.titleText}>
                             Mates4Ever
                         </Text>
+                        <Icon name="logout" size={25} style={petScreenStyle.iconSearch} onPress={() => {
+                            AsyncStorage.clear()
+                            navigation.navigate("Auth")}}/>
                     </View>
                 </View>
                 <View style={petScreenStyle.searchView}>

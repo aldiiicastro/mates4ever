@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {View, TouchableOpacity} from 'react-native';
 import PetScreen from "./PetScreen.js";
-import {FloatingAction} from "react-native-floating-action";
 import {colors} from "../../styles/Colors.js";
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {style} from "../../styles/Commons";
