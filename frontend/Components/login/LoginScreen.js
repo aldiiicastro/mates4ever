@@ -4,7 +4,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import Loader from "../Loader.js"
 import {loginScreenStyle} from "../../styles/LoginScreenStyle"
 import ImageView from "./ImageView"
-import PasswordInput from "./PasswordInput"
 import GenericInput from "./GenericInput";
 import {getUserByEmail} from "../../server/Api";
 
@@ -51,7 +50,7 @@ const LoginScreen = ({navigation}) => {
                     <KeyboardAvoidingView enabled>
                         <ImageView/>
                         <GenericInput placeHolder={"Ingresar mail"} onChange={(UserEmail) => setUserEmail(UserEmail)} inputRef={() => passwordInputRef.current && passwordInputRef.current.focus()} keyboardType={"email-address"} reference={emailInputRef} secureTextEntry={false}/>
-                        <PasswordInput onChange={(UserPassword) => setUserPassword(UserPassword)} passwordInputRef={passwordInputRef}/>
+                        <GenericInput placeHolder={"Ingresar contraseña"} onChange={(UserPassword) => setUserPassword(UserPassword)} inputRef={() => {}} keyboardType={"default"} reference={passwordInputRef} secureTextEntry={true}/>
                         {errorText !== '' ? (
                             <Text style={loginScreenStyle.errorTextStyle}>
                                 {errorText}

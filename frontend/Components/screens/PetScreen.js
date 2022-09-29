@@ -44,7 +44,7 @@ export default function PetScreen({navigation}) {
                         </Text>
                         <Icon name="logout" size={25} style={petScreenStyle.iconSearch} onPress={() => {
                             AsyncStorage.clear()
-                            navigation.navigate("Auth")}}/>
+                            navigation.navigate("Login")}}/>
                     </View>
                 </View>
                 <View style={petScreenStyle.searchView}>
