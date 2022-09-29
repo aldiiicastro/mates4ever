@@ -14,10 +14,11 @@ import org.springframework.web.bind.annotation.*
 class UserController {
     @Autowired
     private lateinit var userService: UserService
-    @PostMapping("/api/user/make")
+    @PostMapping("/api/user/create")
     fun createUser(@RequestBody user: User): ResponseEntity<*> {
         userService.createUser(user)
-        return ResponseEntity<User>(user,null, HttpStatus.OK)
+        var userDTO = UserDTO(user.email, user.password)
+        return ResponseEntity<UserDTO>(userDTO,null, HttpStatus.OK)
     }
     @GetMapping("/api/user/{id}")
     fun getUserBy(@PathVariable(required = true) id : String): ResponseEntity<*> {
