@@ -20,4 +20,8 @@ export const getPetById  = async (id) => {
     return await axios.get(url)
 }
 
+export const createPet = async (pet) => {
+    const url = `${baseUrl}/api/pet/create`;
+    return await axios.post(url, pet)
+}
 

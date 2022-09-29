@@ -7,47 +7,19 @@ import java.time.format.DateTimeFormatter
 
 
 @Document("pet")
-class Pet {
+class Pet(
+    var name: String,
+    var image: String,
+    var birth: LocalDate?,
+    var type: String,
+    var breed: String?,
+    var state: String,
+    var tutor: String,
+    var vaccine: Boolean,
+    var castrated: Boolean,
+    var medicalHistory: String?,
+    var description: String?
+) {
     @Id
     var id: String? = null
-    var name: String     // ( obligatorio )
-    var image:String   // ( obligatorio )
-    var age:Int   // ( por rangos ) ( obligatorio )
-    var date:LocalDate? = null   // de Ingreso ( opcional )
-    var type:String    // ( obligatorio )
-    var breed:String? = null   // ( opcional )
-    var state:String    // ( En adopcion, en transito o perdido ) ( obligatorio )
-    var tutor:String    // ( obligatorio )
-    var description:String? = null   // ( opcional )
-
-    constructor(
-        name:String,
-        image:String,
-        age:Int,
-        date:String?,
-        type:String,
-        breed:String?,
-        state:String,
-        tutor:String,
-        description:String?
-    ) : super() {
-        this.name = name
-        this.image = image
-        this.age = age
-        this.date = parseLocalDate(date)
-        this.type = type
-        this.breed = breed ?: "Sin Raza"
-        this.state = state
-        this.tutor = tutor
-        this.description = description
-    }
-
-    private fun parseLocalDate(date : String?): LocalDate? {
-        return if (date != null){
-            val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
-            LocalDate.parse(date, formatter)
-        }else {
-            null
-        }
-    }
 }

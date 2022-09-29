@@ -27,7 +27,7 @@ class UserControllerTest {
 
     @BeforeEach
     fun setUp(){
-        pet = petController.createPet(petFactory.anyPet()).body as Pet
+        pet = petController.createPet(petFactory.anyPetDTO()).body as Pet
     }
 
     @Test
