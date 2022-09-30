@@ -25,7 +25,7 @@ const SplashScreen = ({navigation}) => {
             //else send to Home Screen
             AsyncStorage.getItem('user_id').then((value) =>
                 navigation.replace(
-                    value === null ? 'Auth' : 'HomeScreen'
+                    value === null ? 'Auth' : 'Inicio'
                 ),
             );
         }, 5000);
