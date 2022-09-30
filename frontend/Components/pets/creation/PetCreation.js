@@ -41,27 +41,23 @@ export default function PetCreation({navigation}) {
         if (!(result.cancelled)) {
           setImageUri(result.uri);
           setImage(result)
+          console.log(image)
         }
     };
 
     
     const createFormData = () => {
-        const data = new FormData();
-
-        data.append('photo', {
+        return {
           name: imageUri.fileName,
           type: imageUri.type,
           uri: Platform.OS === 'ios' ? imageUri.uri.replace('file://', '') : imageUri.uri,
-        });
-        // console.log(data["_parts"])
-        
-        return data;
+        }
       };
 
     const publish = () => {
         const pet = {
             'name': name,
-            "image":"sada",
+            "image": imageUri,
             'birth': age,
             'state': state,
             'type': type,
@@ -72,7 +68,11 @@ export default function PetCreation({navigation}) {
             'description': description,
             "tutor": "yo",
         }
-        createPet(pet).then((response) => { console.log(response) }).catch(error => console.log(error))
+
+        createPet(pet).then((response) => { 
+            console.log(response)
+            navigation.navigate('Inicio') 
+        }).catch(error => console.log(error))
     }
     const showDatePicker = () => {
         setDatePickerVisibility(true);
@@ -89,7 +89,7 @@ export default function PetCreation({navigation}) {
       };
     const getAge = (dateInput) => {
         const dateArray = dateInput.toLocaleDateString().split("/")
-        return ([dateArray[1], dateArray[0], dateArray[2]].join('/'))
+        return ([dateArray[1], dateArray[0], dateInput.getFullYear()].join('/'))
     }
     return (
         <ScrollView style={style.fullContainer}>

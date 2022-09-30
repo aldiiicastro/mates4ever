@@ -18,16 +18,16 @@ class PetControllerTest {
     private var petFactory : PetFactory = PetFactory()
     @Test
     fun createAndFindPet() {
-        var pet = petFactory.anyPet()
-        pet = petController.createPet(pet).body as Pet
+        var petDTO = petFactory.anyPetDTO()
+        val pet = petController.createPet(petDTO).body as Pet
         val findPet = petController.getPet(pet.id!!).body as Pet
         assert(findPet.name == pet.name)
 
     }
     @Test
     fun createAndFindPetWithNullParameters() {
-        var pet = petFactory.anyPet("Firu", "image", 5, null,"Dog", null, "Lost", "Anto", null)
-        pet = petController.createPet(pet).body as Pet
+        val petDTO = petFactory.anyPetDTO("Firu", "image", null,"Dog", null, "Lost", "Anto", true, true,null , null)
+        val pet = petController.createPet(petDTO).body as Pet
         val findPet = petController.getPet(pet.id!!).body as Pet
         assert(findPet.name == pet.name)
     }
@@ -37,14 +37,14 @@ class PetControllerTest {
     }
     @Test
     fun getAllPetsCorrect() {
-        val pet = petFactory.anyPet()
+        val pet = petFactory.anyPetDTO()
         petController.createPet(pet).body as Pet
         val findPets = petController.getAllPets() as List<*>
         assert(findPets.size == 1)
     }
     @Test
     fun searchCats() {
-        val pet = petFactory.anyPet()
+        val pet = petFactory.anyPetDTO()
         petController.createPet(pet).body as Pet
         val findPets = petController.searchBy("Gato").body as List<*>
         assert(findPets.size == 1)

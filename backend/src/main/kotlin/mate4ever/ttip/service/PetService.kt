@@ -74,8 +74,8 @@ class PetService {
 
     private fun parseLocalDate(date: String?): LocalDate? {
         return if (date != null) {
-            val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
-            LocalDate.parse(date, formatter)
+            val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+                LocalDate.parse(date, formatter)
         } else {
             null
         }
