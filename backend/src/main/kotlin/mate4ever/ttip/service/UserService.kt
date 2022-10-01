@@ -33,6 +33,12 @@ class UserService {
         return mongoTemplate.findOne(query, User::class.java)
             ?: throw UserIncorrectArgumentsException("El mail o la contraseña son incorrectos")
     }
+
+    @Transactional(readOnly = true)
+    fun findUserbyEmail(email: String): User? {
+        return userRepository.findByEmail(email)
+    }
+
     @Transactional(readOnly = true)
     fun findAllUsers(): MutableList<User?> {
         return userRepository.findAll()

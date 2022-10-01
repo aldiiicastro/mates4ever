@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, useEffect, useState } from 'react'
 import {
   Image,
   ImageBackground,
@@ -13,10 +13,24 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import PetCardEjemplo from '../pets/card/PetCardEjemplo';
 import Pet from '../../model/Pet';
 import { petScreenStyle } from '../../styles/PetScreenStyle';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getUserByEmail2 } from '../../server/Api';
 
-function Profile3 () {
-  
-  const pet = 
+function Profile () {
+  const [user, setUser] = useState({})
+
+  useEffect(() => {
+    AsyncStorage.getItem('user_id').then((value) => {
+      console.log(value)
+      getUserByEmail2(value).then((response) => {
+        console.log(response)
+        setUser(response.data)
+      }).catch((error) => console.log( error))
+    });
+  }, []);
+
+
+  const pet =
     new Pet({
       id : "1",
       name : "emma",
@@ -29,32 +43,32 @@ function Profile3 () {
       tutor : "Mates4Ever",
       description :  "adad"
     })
-  
+
   const renderContactHeader = () => {
     return (
       <View style={profileStyles.headerContainer}>
-        <View style={profileStyles.coverContainer}> 
+        <View style={profileStyles.coverContainer}>
           <ImageBackground
-            source={{uri: "https://www.aboutespanol.com/thmb/0vdI-sxY7RGXpvRlMnnk3qa4bhc=/300x169/smart/filters:no_upscale()/Color-Amarillo-56a036e53df78cafdaa08301.jpg"}}
+            source={require('../../assets/BackgroundUser.png')}
             style={profileStyles.coverImage}
           />
             <View style={profileStyles.profileImageContainer}>
-              <Image
-                source={{uri: "https://raw.githubusercontent.com/aldiiicastro/mates4ever/main/frontend/assets/Logo.png"}}
-                style={profileStyles.profileImage}
-              />
-            </View> 
+              {user.image ?
+                <Image source={{ uri: user.image }} style={ profileStyles.profileImage }/>
+                :
+                <Image source={require('../../assets/DefaultUser.png')} style={ profileStyles.profileImage } />
+              }
+            </View>
             <View style={profileStyles.coverMetaContainer}>
-              <Text style={profileStyles.coverName}>{"Mates4Ever"}</Text>
+              <Text style={profileStyles.coverName}>{ user.name } { user.lastname }</Text>
               {/* <Icon
                   name="location-pin"
                   size={25}
                   // style={ styles.emailIcon }
                 /> */}
-              <Text style={profileStyles.coverBio}> {"Quilmes, Buenos Aires"}</Text>
+              <Text style={profileStyles.coverBio}> { user.location } </Text>
             </View>
         </View>
-        
       </View>
     )
   }
@@ -62,13 +76,16 @@ function Profile3 () {
   const renderContact = () => {
     return (
       <View >
-          <ContactCard 
-            contact={"+54 11 12345678"}
-            // onPress={onPressPhone}
-            icon={"local-phone"}
-          />
-          <ContactCard 
-            contact={"Mates4Ever@gmail.com"}
+          {
+            user.phone &&
+            <ContactCard
+              contact={"+54 11 12345678"}
+              // onPress={onPressPhone}
+              icon={"local-phone"}
+            />
+          }
+          <ContactCard
+            contact={ user.email }
             // onPress={onPressEmail}
             icon={"email"}
           />
@@ -94,32 +111,39 @@ function Profile3 () {
         </View>
         <View style={profileStyles.masonryContainer}>
           <View>
-            <PetCardEjemplo pet={pet} />
+            {user.pets.map( pet => <PetCardEjemplo pet={pet} /> )}
           </View>
         </View>
       </View>
     )
-  } 
+  }
 
-  
+  const renderLogOut = () => {
     return (
-      <ScrollView style={profileStyles.scroll}>
-        <View style={[profileStyles.container]}>
-          <View style={profileStyles.cardContainer}>
-            {renderContactHeader()}
-            {renderContact()}
+      <View style={{ flexDirection: 'row', justifyContent: 'flex-start'}}>
+      <Icon name="logout" size={25} style={petScreenStyle.iconSearch} onPress={() => {
+        AsyncStorage.clear()
+        navigation.navigate("Auth")}}/>
+      <Text style={{ fontSize: 20 }}>Salir</Text>
+    </View>
+    )
+  }
 
-        <Icon name="logout" size={25} style={petScreenStyle.iconSearch} onPress={() => {
-                            AsyncStorage.clear()
-                            navigation.navigate("Auth")}}/>
-            {renderPetsPosts()}
-          </View>
+  return (
+    <ScrollView style={profileStyles.scroll}>
+      <View style={[profileStyles.container]}>
+        <View style={profileStyles.cardContainer}>
+          {renderContactHeader()}
+          {renderContact()}
+          {renderLogOut()}
+          {user.pets ? renderPetsPosts() : null}
         </View>
-      </ScrollView>
+      </View>
+    </ScrollView>
     )
 }
 
-export default Profile3
+export default Profile
 
 
 

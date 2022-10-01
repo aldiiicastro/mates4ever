@@ -37,7 +37,7 @@ export default function PetCreation({navigation}) {
             aspect: [4, 4],
             quality: 1,
         });
-    
+
         if (!(result.cancelled)) {
           setImageUri(result.uri);
           setImage(result)
@@ -45,7 +45,6 @@ export default function PetCreation({navigation}) {
         }
     };
 
-    
     const createFormData = () => {
         return {
           name: imageUri.fileName,
@@ -69,24 +68,25 @@ export default function PetCreation({navigation}) {
             "tutor": "yo",
         }
 
-        createPet(pet).then((response) => { 
+        createPet(pet).then((response) => {
             console.log(response)
-            navigation.navigate('Inicio') 
+            navigation.navigate('Inicio')
         }).catch(error => console.log(error))
     }
     const showDatePicker = () => {
         setDatePickerVisibility(true);
-      };
-    
-      const hideDatePicker = () => {
+    };
+
+    const hideDatePicker = () => {
         setDatePickerVisibility(false);
-      };
-    
-      const handleConfirm = (date) => {
+    };
+
+    const handleConfirm = (date) => {
         setAge(getAge(date))
         setAgeDate(date)
         hideDatePicker();
-      };
+    };
+
     const getAge = (dateInput) => {
         const dateArray = dateInput.toLocaleDateString().split("/")
         return ([dateArray[1], dateArray[0], dateInput.getFullYear()].join('/'))
@@ -103,9 +103,9 @@ export default function PetCreation({navigation}) {
             </View>
             <View style={form.image} on>
                 <TouchableHighlight onPress={pickImage}>
-                    {imageUri ? 
-                    <Image source={{ uri: imageUri }} style={ form.imageSize }/> 
-                    : 
+                    {imageUri ?
+                    <Image source={{ uri: imageUri }} style={ form.imageSize }/>
+                    :
                     <Image source={require('../../../assets/DefaultPet.png')} style={ form.imageSize } />}
                 </TouchableHighlight>
                 <View style={form.imageIcon} >
@@ -114,14 +114,14 @@ export default function PetCreation({navigation}) {
             </View>
             <View style={[style.marginX, style.bgWhite]}>
                 <View style={form.inputLineBox}>
-                    <TextInput 
+                    <TextInput
                         style={form.input}
                         onChangeText={setName}
                         value={name}
                         placeholder="Nombre"
                         activeUnderlineColor={colors.red}
                         />
-                        
+
                 </View>
                 <View>
                     {/* <Button title="Show Date Picker" onPress={showDatePicker} /> */}
