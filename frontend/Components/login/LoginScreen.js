@@ -28,6 +28,7 @@ const LoginScreen = ({navigation}) => {
         setLoading(true)
         let dataToSend = {email: userEmail, password: userPassword}
         getUserByEmail(dataToSend).then(response => {
+            console.log(response)
             setLoading(false)
             AsyncStorage.setItem('user_id', response.data.email)
             navigation.navigate('Inicio')

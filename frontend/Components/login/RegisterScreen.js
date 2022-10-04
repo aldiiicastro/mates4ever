@@ -17,7 +17,7 @@ const RegisterScreen = ({navigation}) => {
     const [province, setProvince] = useState('')
     const [userPassword, setUserPassword] = useState('')
     const [errorText, setErrorText] = useState('')
-
+const [userNameError, setUserNameError] = useState(false)
     const emailInputRef = createRef()
     const phoneNumberInputRef = createRef()
     const locationInputRef = createRef()
@@ -27,27 +27,7 @@ const RegisterScreen = ({navigation}) => {
     const rePasswordInputRef = createRef()
     const lastnameInputRef = createRef()
     const handleSubmitButton = () => {
-        setErrorText('')
-        if (!userName) {
-            alert('Por favor, escriba su nombre')
-            return
-        }
-        if (!userEmail) {
-            alert('Por favor, escriba su mail')
-            return
-        }
-        if (!userPassword) {
-            alert('Por favor, escriba su contraseña')
-            return
-        }
-        if (!location) {
-            alert('Por favor, escriba su localidad')
-            return
-        }
-        if (!province) {
-            alert('Por favor, escriba su provincia')
-            return
-        }
+
         const dataToSend = {
             name: userName,
             lastname: lastname,
@@ -59,9 +39,7 @@ const RegisterScreen = ({navigation}) => {
         }
         createUser(dataToSend).then(response => {
             setLoading(false)
-            console.log(response.data)
             AsyncStorage.setItem('user_id', response.data.email)
-            // setIsRegistrationSuccess(true)
             navigation.navigate('Inicio')
         }).catch((error) => {
             setLoading(false)
@@ -75,7 +53,23 @@ const RegisterScreen = ({navigation}) => {
             <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={registerScreenStyle.contentContainerStyle}>
                <ImageView/>
                 <KeyboardAvoidingView enabled>
-                    <GenericInput placeHolder={"Ingresar nombre"} onChange={(UserName) => setUserName(UserName)} inputRef={() => lastnameInputRef.current && lastnameInputRef.current.focus()} keyboardType={"default"}  reference={createRef()} secureTextEntry={false}/>
+                    <GenericInput placeHolder={"Ingresar nombre"}
+                                  error={userNameError}
+                                  onChange={(UserName) => {
+                                    setUserName(UserName)
+                                    setUserNameError('')
+                                  }}
+                                  inputRef={() => lastnameInputRef.current && lastnameInputRef.current.focus()}
+                                  keyboardType={"default"}
+                                  reference={createRef()}
+                                  secureTextEntry={false}/>
+                    {userNameError ?         (
+                        <Text style={registerScreenStyle.errorTextStyle}>
+                            Escriba su nombre
+                        </Text>
+                    ) :
+                null
+                    }
                     <GenericInput placeHolder={"Ingresar apellido"} onChange={(LastName) => setLastname(LastName)} inputRef={() => emailInputRef.current && emailInputRef.current.focus()} keyboardType={"default"}  reference={lastnameInputRef} secureTextEntry={false}/>
                     <GenericInput placeHolder={"Ingresar mail"} onChange={(UserEmail) => setUserEmail(UserEmail)} inputRef={() => reEmailInputRef.current && reEmailInputRef.current.focus()} keyboardType={"email-address"} reference={emailInputRef} secureTextEntry={false}/>
                     <GenericInput placeHolder={"Repita su email"} onChange={(UserEmail) => setUserEmail(UserEmail)} inputRef={() => phoneNumberInputRef.current && phoneNumberInputRef.current.focus()} keyboardType={"email-address"} reference={reEmailInputRef} secureTextEntry={false}/>

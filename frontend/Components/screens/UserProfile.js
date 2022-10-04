@@ -16,7 +16,7 @@ import { petScreenStyle } from '../../styles/PetScreenStyle';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getUserByEmail2 } from '../../server/Api';
 
-function Profile () {
+function Profile ({navigation}) {
   const [user, setUser] = useState({})
 
   useEffect(() => {

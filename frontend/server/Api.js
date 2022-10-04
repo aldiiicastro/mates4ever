@@ -1,6 +1,6 @@
 import axios from 'axios';
-
-const baseUrl = 'http://192.168.0.3:8090';
+//const baseUrl = 'http://192.168.0.3:8080';
+const baseUrl = 'http://192.168.0.66:8070';
 
 export const fetchSearch = async (query) => {
     const url = `${baseUrl}/api/pet/search?query=${query}`;
@@ -9,6 +9,7 @@ export const fetchSearch = async (query) => {
 
 export const getUserByEmail = async (userData) => {
     const url = `${baseUrl}/api/user/userData`;
+    console.log("hola")
   return await axios.post(url, {email: userData.email, password: userData.password})
 }
 
@@ -35,3 +36,8 @@ export const createUser = async (user) => {
 export const getProvince = async() => {
     return await axios.get("https://apis.datos.gob.ar/georef/api/provincias")
 }
+
+export const getMunicipalities = async(municipality) => {
+    return await axios.get(`https://apis.datos.gob.ar/georef/api/municipios?provincia=${municipality}&max=100`)
+}
+
