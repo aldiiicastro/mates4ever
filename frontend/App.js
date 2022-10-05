@@ -2,10 +2,10 @@ import * as React from 'react';
 import HomeScreen from "./Components/screens/HomeScreen";
 import DetailsScreen from "./Components/screens/DetailsScreen.js";
 import CreatePetScreen from "./Components/screens/CreatePetScreen.js";
-import LoginScreen from "./Components/login/LoginScreen.js";
+import LoginScreen from "./Components/screens/LoginScreen.js";
 import UserProfile from "./Components/screens/UserProfile";
-import Register from "./Components/login/Register";
-import SplashScreen from "./Components/login/SplashScreen";
+import RegisterScreen from "./Components/screens/RegisterScreen";
+import SplashScreen from "./Components/common/login/SplashScreen";
 import {NavigationContainer} from "@react-navigation/native";
 import {StatusBar} from "react-native";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -17,7 +17,7 @@ const Auth = () => {
     return (
         <Stack.Navigator initialRouteName="LoginScreen">
             <Stack.Screen name={"Login"} component={LoginScreen} options={{headerShown: false}}/>
-            <Stack.Screen name={"Registro"} component={Register}
+            <Stack.Screen name={"Registro"} component={RegisterScreen}
                 options={{
                     title: 'Registro', //Set Header Title
                     headerStyle: {

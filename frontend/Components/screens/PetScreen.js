@@ -8,9 +8,7 @@ import {Title} from "react-native-paper"
 import {petScreenStyle} from "../../styles/PetScreenStyle.js";
 import {fetchSearch} from "../../server/Api";
 import {style} from "../../styles/Commons";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import PerfilButton from '../drawerlayout/PerfilButton.js';
-
 
 export default function PetScreen({navigation}) {
     const [petsSearching, setPetsSearching] = useState([])
@@ -34,6 +32,7 @@ export default function PetScreen({navigation}) {
             setIsAlreadyShownAlert(true)
         }
     }
+
     //[] means that useEffect runs in the first render.
     useEffect(() => {search('')}, []);
     return (
@@ -53,7 +52,7 @@ export default function PetScreen({navigation}) {
                         <Icon name="close" size={20} style={petScreenStyle.iconClose} onPress={( ) => {
                             textInput.clear()
                             search('')
-                            
+
                         }}/>
                     </View>
                     <View style={petScreenStyle.sortBtn}>
