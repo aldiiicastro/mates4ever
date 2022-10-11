@@ -1,16 +1,16 @@
+import React, {createRef, forwardRef, useEffect, useState} from 'react'
 import { Form, FormItem } from 'react-native-form-component'
-import React, {createRef, useEffect, useState} from 'react'
-import { Picker } from 'react-native-form-component';
-import {ScrollView, Text, View} from "react-native";
-import ImageView from "../common/login/ImageView";
-import {colors} from "../../styles/Colors";
-import {createUser, getMunicipalities, getProvince} from "../../server/Api";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import {registerScreenStyle} from "../../styles/RegisterScreenStyle";
-import Loader from "../Loader";
-import FormItemGeneric from "../common/login/FormItemGeneric";
+import { Picker } from 'react-native-form-component'
+import {ScrollView, Text, View} from "react-native"
+import AsyncStorage from "@react-native-async-storage/async-storage"
+import ImageView from "../common/login/ImageView"
+import FormItemGeneric from "../common/login/FormItemGeneric"
+import Loader from "../Loader"
+import {registerScreenStyle} from "../../styles/RegisterScreenStyle"
+import {colors} from "../../styles/Colors"
+import {createUser, getMunicipalities, getProvince} from "../../server/Api"
 
-export default function RegisterScreen({navigation}) {
+const RegisterScreen = forwardRef(({ navigation }, ref) => {
     const [userName, setUserName] = useState('')
     const [lastName, setLastName] = useState('')
     const [userEmail, setUserEmail] = useState('')
@@ -21,18 +21,20 @@ export default function RegisterScreen({navigation}) {
     const [province, setProvince] = useState('')
     const [provinces, setProvinces] = useState('')
     const [userPassword, setUserPassword] = useState('')
+    const [userConfirmPassword, setUserConfirmPassword] = useState('')
     const [errorText, setErrorText] = useState('')
     const [loading, setLoading] = useState(true)
-    const userNameInputRef = createRef()
     const emailInputRef = createRef()
+    const reEmailInputRef = createRef()
     const phoneNumberInputRef = createRef()
-    const municipalityInputRef = createRef()
     const provinceInputRef = createRef()
     const passwordInputRef = createRef()
+    const rePasswordInputRef = createRef()
     const lastNameInputRef = createRef()
 
 
     const handleSubmitButton = () => {
+        setLoading(true)
         const dataToSend = {
             name: userName,
             lastname: lastName,
@@ -43,9 +45,11 @@ export default function RegisterScreen({navigation}) {
             password: userPassword,
         }
         createUser(dataToSend).then(response => {
+            setLoading(false)
             AsyncStorage.setItem('user_id', response.data.email)
             navigation.navigate('Inicio')
         }).catch((error) => {
+            setLoading(false)
             setErrorText(error.response.data)
         })
     }
@@ -78,6 +82,7 @@ export default function RegisterScreen({navigation}) {
 
     return (
         <View style={{ flex: 1, backgroundColor: colors.yellow, padding: 24 }}>
+            <Loader loading={loading} />
             {loading ?
                 <Loader loading={loading} /> :
                 <ScrollView>
@@ -88,7 +93,7 @@ export default function RegisterScreen({navigation}) {
                             label={"Nombre"}
                             onChange={(firstname) => setUserName(firstname)}
                             inputRef={() => lastNameInputRef.current && lastNameInputRef.current.focus()}
-                            ref={userNameInputRef}
+                            ref={ref}
                             keyboardType={'default'}
                         />
                         <FormItemGeneric
@@ -103,35 +108,57 @@ export default function RegisterScreen({navigation}) {
                             value={userEmail}
                             label={"Email"}
                             onChange={(userEmail) => setUserEmail(userEmail)}
-                            inputRef={() => phoneNumberInputRef.current && phoneNumberInputRef.current.focus()}
+                            inputRef={() => reEmailInputRef.current && reEmailInputRef.current.focus()}
                             ref={emailInputRef}
                             keyboardType={'email-address'}
                         />
-                        <FormItemGeneric
+                        <FormItem
                             value={userConfirmEmail}
                             label={"Confirmar Email"}
-                            onChange={(userConfirmEmail) => setUserConfirmEmail(userConfirmEmail)}
-                            customValidation={() =>Validation()}
-                            inputRef={() => phoneNumberInputRef.current && phoneNumberInputRef.current.focus()}
-                            ref={emailInputRef}
+                            onChangeText={(userConfirmEmail) => setUserConfirmEmail(userConfirmEmail)}
+                            onSubmitEditing={() => phoneNumberInputRef.current && phoneNumberInputRef.current.focus()}
+                            ref={reEmailInputRef}
                             keyboardType={'email-address'}
+                            customValidation={() => {
+                               return {status: (userConfirmEmail === userEmail), message:'No coinciden los emails'}
+                            }}
+                            showErrorIcon={false}
+                            asterik
+                            floatingLabel
+                            isRequired
                         />
-                        <FormItemGeneric
+                        <FormItem
                             value={phoneNumber}
                             label="Número de teléfono"
-                            onChange={(phoneNumber) => setPhoneNumber(phoneNumber)}
-                            inputRef={() => passwordInputRef.current && passwordInputRef.current.focus()}
+                            onChangeText={(phoneNumber) => setPhoneNumber(phoneNumber)}
+                            onSubmitEditing={() => passwordInputRef.current && passwordInputRef.current.focus()}
+                            showErrorIcon={false}
                             ref={phoneNumberInputRef}
-                            keyboardType={'numeric'}
-
+                            keyboardType={'phone-pad'}
+                            floatingLabel
                         />
                         <FormItem
                             value={userPassword}
                             label="Contraseña"
                             onChangeText={(userPassword) => setUserPassword(userPassword)}
-                            inputRef={() => provinceInputRef.current && provinceInputRef.current.focus()}
+                            inputRef={() => rePasswordInputRef.current && rePasswordInputRef.current.focus()}
                             ref={passwordInputRef}
                             showErrorIcon={false}
+                            asterik
+                            floatingLabel
+                            isRequired
+                            secureTextEntry
+                        />
+                        <FormItem
+                            value={userConfirmPassword}
+                            label="Confirmar contraseña"
+                            onChangeText={(userPassword) => setUserConfirmPassword(userPassword)}
+                            inputRef={() => provinceInputRef.current && provinceInputRef.current.focus()}
+                            ref={rePasswordInputRef}
+                            showErrorIcon={false}
+                            customValidation={() => {
+                                return {status: (userConfirmPassword === userPassword), message:'No coinciden las contraseñas'}
+                            }}
                             asterik
                             floatingLabel
                             isRequired
@@ -143,8 +170,6 @@ export default function RegisterScreen({navigation}) {
                             placeholder="Sin selección"
                             selectedValue={province}
                             onSelection={(item) => setProvinceAndMunicipality(item.value)}
-                            inputRef={() => municipalityInputRef.current && municipalityInputRef.current.focus()}
-                            ref={provinceInputRef}
                             asterik
                         />
                         { !province ?
@@ -152,7 +177,8 @@ export default function RegisterScreen({navigation}) {
                                 items={[]}
                                 label="Elegir la ciudad"
                                 placeholder="Sin selección"
-                                ref={municipalityInputRef}
+                                selectedValue={}
+                                onSelection={}
                                 asterik
                             />
                             : < Picker
@@ -161,7 +187,6 @@ export default function RegisterScreen({navigation}) {
                             placeholder="Sin selección"
                             selectedValue={municipality}
                             onSelection={(item) => setMunicipality(item.value)}
-                            ref={municipalityInputRef}
                             asterik
                             />}
                         {errorText !== '' ? (
@@ -170,7 +195,10 @@ export default function RegisterScreen({navigation}) {
                             </Text>
                         ) : null}
                     </Form>
-                </ScrollView> }
+                </ScrollView>
+            }
         </View>
-    );
-}
+    )
+})
+
+export default RegisterScreen

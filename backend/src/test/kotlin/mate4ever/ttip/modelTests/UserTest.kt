@@ -17,7 +17,7 @@ class UserTest {
         assert(user.email == "aldana@gmail.com")
         assert(user.password == "contrasena...")
         assert(user.phone == 1139538873)
-        assert(user.location == "Quilmes")
+        assert(user.municipality == "Quilmes")
         assert(user.province == "Buenos Aires")
         assert(user.pets!!.size == 1)
         assert(user.pets!![0].name == "Gatito")

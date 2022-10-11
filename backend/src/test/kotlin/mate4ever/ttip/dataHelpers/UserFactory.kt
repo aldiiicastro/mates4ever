@@ -11,10 +11,11 @@ class UserFactory {
         email:String = "aldana@gmail.com",
         password: String = "contrasena...",
         phone: Int? = 1139538873,
-        location: String = "Quilmes",
+        province: String="Buenos Aires",
+        municipality: String = "Quilmes",
         image: String? =  "Example",
         pets:List<Pet>
     ): User {
-        return User(id, name, lastname, email, password, phone, location, image, pets)
+        return User(id, name, lastname, email, password, phone, municipality, province,image, pets)
     }
 }

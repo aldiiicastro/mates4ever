@@ -11,4 +11,4 @@ import javax.persistence.UniqueConstraint
     uniqueConstraints = [UniqueConstraint(columnNames = arrayOf("email"))]
 )
 
-class User(@Id var id: String?, var name: String, var lastname: String,@Column(nullable = false, unique = true)  var email:String, var password: String, var phone: Number?, var location: String, var province: String, var image: String?, var pets: List<Pet>?)
+class User(@Id var id: String?, var name: String, var lastname: String,@Column(nullable = false, unique = true)  var email:String, var password: String, var phone: Number?, var municipality: String, var province: String, var image: String?, var pets: List<Pet>?)

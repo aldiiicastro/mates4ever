@@ -17,7 +17,7 @@ class UserController {
     @PostMapping("/api/user/create")
     fun createUser(@RequestBody user: User): ResponseEntity<*> {
         userService.createUser(user)
-        var userDTO = UserDTO(user.email, user.password)
+        val userDTO = UserDTO(user.email, user.password)
         return ResponseEntity<UserDTO>(userDTO,null, HttpStatus.OK)
     }
     @GetMapping("/api/user/{id}")
@@ -26,9 +26,9 @@ class UserController {
         return ResponseEntity<User>(user,null, HttpStatus.OK)
     }
 
-    @PostMapping("/api/user/userData")
-    fun getUser(@RequestBody userData : UserDTO): ResponseEntity<*> {
-        val user = userService.findUser(userData)
+    @GetMapping("/api/user/email/{email}")
+    fun getUser(@PathVariable(required = true) email: String): ResponseEntity<*> {
+        val user = userService.findUserbyEmail(email)
         return ResponseEntity<UserDTO>(UserDTO(user!!.email, user.password),null, HttpStatus.OK)
     }
 

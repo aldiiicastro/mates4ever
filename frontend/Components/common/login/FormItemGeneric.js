@@ -1,20 +1,21 @@
 import {FormItem} from "react-native-form-component";
-import React from "react";
+import React, {forwardRef} from "react";
 
-export default function FormItemGeneric(props) {
+const FormItemGeneric = forwardRef(({ ...props }, ref) => {
     return(
             <FormItem
                 value={props.value}
                 label={props.label}
                 onChangeText={props.onChange}
                 onSubmitEditing={props.inputRef}
-                showErrorIcon={false}
-                ref={props.ref}
+                ref={ref}
                 keyboardType={props.keyboardType}
-                customValidation={props.customValidation}
+                showErrorIcon={false}
                 asterik
                 floatingLabel
                 isRequired
             />
     )
-}
+})
+
+export default FormItemGeneric
