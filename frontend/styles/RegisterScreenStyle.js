@@ -3,7 +3,7 @@ import {colors} from "./Colors";
 
 const registerScreenStyle = StyleSheet.create({
     SectionStyle: {
-        flexDirection: 'row',
+
         height: 40,
         marginTop: 5,
         marginLeft: 35,
@@ -26,6 +26,16 @@ const registerScreenStyle = StyleSheet.create({
         paddingVertical: 10,
         fontSize: 16,
     },
+    inputErrorStyle: {
+        flex: 1,
+        paddingLeft: 15,
+        paddingRight: 15,
+        borderWidth: 1,
+        borderRadius: 30,
+        backgroundColor: colors.white,
+        borderColor: colors.red,
+        fontSize: 17,
+    },
     inputStyle: {
         flex: 1,
         paddingLeft: 15,
@@ -37,9 +47,11 @@ const registerScreenStyle = StyleSheet.create({
         fontSize: 17,
     },
     errorTextStyle: {
+        marginTop: -8,
         color: 'red',
         textAlign: 'center',
-        fontSize: 14,
+        fontSize: 13,
+        marginBottom: 3,
     },
     successTextStyle: {
         color: colors.violet,

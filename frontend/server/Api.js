@@ -1,6 +1,8 @@
 import axios from 'axios'
-
-const baseUrl = 'http://10.12.1.103:8090'
+import bcrypt from "react-native-bcrypt";
+import isaac from "isaac"
+//const baseUrl = 'http://192.168.0.3:8080'
+const baseUrl = 'http://192.168.0.66:8070'
 
 export const fetchSearch = async (query) => {
     const url = `${baseUrl}/api/pet/search?query=${query}`
@@ -18,20 +20,30 @@ export const getUserByEmail = async (email) => {
 }
 
 export const getPetById  = async (id) => {
-    const url = `${baseUrl}/api/pet/${id}`;
+    const url = `${baseUrl}/api/pet/${id}`
     return await axios.get(url)
 }
 
 export const createPet = async (pet) => {
-    const url = `${baseUrl}/api/pet/create`;
+    const url = `${baseUrl}/api/pet/create`
     return await axios.post(url, pet)
 }
 
 export const createUser = async (user) => {
-    const url = `${baseUrl}/api/user/create`;
+    bcrypt.setRandomFallback((len) => {
+        const buf = new Uint8Array(len);
+        return buf.map(() => Math.floor(isaac.random() * 256));
+    })
+    user.password= bcrypt.hashSync(user.password, 10)
+    const url = `${baseUrl}/api/user/create`
     return await axios.post(url, user)
 }
 
 export const getProvince = async() => {
     return await axios.get("https://apis.datos.gob.ar/georef/api/provincias")
 }
+
+export const getMunicipalities = async(municipality) => {
+    return await axios.get(`https://apis.datos.gob.ar/georef/api/municipios?provincia=${municipality}&max=100`)
+}
+

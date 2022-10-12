@@ -28,6 +28,9 @@ export default function PetCreation({navigation}) {
     const [medicalHistory, setMedicalHistory] = useState('');
     const [description, setDescription] = useState('');
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+    const [submitedform, setSubmitedform] = useState(false);
+    const [errors, setErrors] = useState({});
+
 
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
@@ -71,7 +74,7 @@ export default function PetCreation({navigation}) {
         createPet(pet).then((response) => {
             console.log(response)
             navigation.navigate('Inicio')
-        }).catch(error => console.log(error))
+        }).catch((response) => setErrors(response.errors) )
     }
     const showDatePicker = () => {
         setDatePickerVisibility(true);
@@ -113,6 +116,9 @@ export default function PetCreation({navigation}) {
                 </View>
             </View>
             <View style={[style.marginX, style.bgWhite]}>
+                {(!errors.image && submitedform) &&
+                    <Text style={form.errorText}>{errors.image}</Text>
+                }
                 <View style={form.inputLineBox}>
                     <TextInput
                         style={form.input}
@@ -123,6 +129,11 @@ export default function PetCreation({navigation}) {
                         />
 
                 </View>
+
+                {(!errors.name && submitedform) &&
+                    <Text style={form.errorText}>{errors.name}</Text>
+                }
+
                 <View>
                     {/* <Button title="Show Date Picker" onPress={showDatePicker} /> */}
                     <DateTimePickerModal

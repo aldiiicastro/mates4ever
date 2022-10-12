@@ -6,6 +6,7 @@ const colors = {
     grey: 'grey',
     black: '#000',
     transBlack: "rgba(0,0,0, 0.3)",
+    trans: "rgba(0,0,0,0)",
     violet: "#814aab",
     light_violet: "#af98c1",
     red : "rgb(171,72,72)",

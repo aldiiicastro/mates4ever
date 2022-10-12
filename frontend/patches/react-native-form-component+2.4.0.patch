@@ -1,0 +1,80 @@
+diff --git a/node_modules/react-native-form-component/src/components/FormItem/index.tsx b/node_modules/react-native-form-component/src/components/FormItem/index.tsx
+index 459cd85..9722e02 100644
+--- a/node_modules/react-native-form-component/src/components/FormItem/index.tsx
++++ b/node_modules/react-native-form-component/src/components/FormItem/index.tsx
+@@ -58,7 +58,7 @@ const FormItem = forwardRef(({ children, ...props }: Props, ref: any) => {
+     setState: () => {
+       let validation;
+       if (props.customValidation) validation = props.customValidation();
+-      setHasError(containsError(keyboardType, isRequired!, value, validation));
++      setHasError(containsError(keyboardType, isRequired!, value, validation, hideText));
+     },
+     focus: () => inputRef.current.focus(),
+     blur: () => inputRef.current.blur(),
+@@ -70,7 +70,7 @@ const FormItem = forwardRef(({ children, ...props }: Props, ref: any) => {
+   const handleBlur = (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
+     let validation;
+     if (props.customValidation) validation = props.customValidation();
+-    setHasError(containsError(keyboardType, isRequired!, value, validation));
++    setHasError(containsError(keyboardType, isRequired!, value, validation, hideText));
+     if (props.onBlur) props.onBlur(e);
+   };
+ 
+@@ -272,6 +272,15 @@ const validateNumber = (number: string) => {
+ const validateDecimalNumber = (number: string) => {
+   return /^\d+.*\d*/.test(number) && !number.endsWith('.');
+ };
++// ^	The password string will start this way
++// (?=.*[a-z])	The string must contain at least 1 lowercase alphabetical character
++// (?=.*[A-Z])	The string must contain at least 1 uppercase alphabetical character
++// (?=.*[0-9])	The string must contain at least 1 numeric character
++// (?=.*[!@#$%^&*])	The string must contain at least one special character, but we are escaping reserved RegEx characters to avoid conflict
++// (?=.{8,})	The string must be eight characters or longer
++const validatePassword = (password: string) => {
++  return /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/.test(password);
++}
+ 
+ const validatePhoneNumber = (number: string) =>
+   /^\+{0,1}\d+$/.test(number.replace(/ /g, ''));
+@@ -280,8 +289,10 @@ export const containsError = (
+   keyboardType: KeyboardTypeOptions = 'default',
+   isRequired: boolean,
+   value: string,
+-  extraValidation?: Validation
++  extraValidation?: Validation,
++  password: boolean
+ ) => {
++
+   if (extraValidation && !extraValidation.status) {
+     return {
+       status: true,
+@@ -292,18 +303,22 @@ export const containsError = (
+   }
+ 
+   if (keyboardType == 'email-address' && !validateEmail(value))
+-    return { status: true, message: 'Enter a valid email' };
+-  if (isRequired && !value) return { status: true, message: 'Cannot be empty' };
++    return { status: true, message: 'Ingresar un email válido' };
++  if (isRequired && !value) return { status: true, message: 'No puede ser vacío' };
+   if (
+     keyboardType == 'number-pad' ||
+     (keyboardType == 'numeric' && !validateNumber(value))
+   )
+-    return { status: true, message: 'Invalid number' };
+-  if (keyboardType == 'phone-pad' && !validatePhoneNumber(value))
+-    return { status: true, message: 'Invalid phone number' };
+-  if (keyboardType == 'decimal-pad' && !validateDecimalNumber(value))
+-    return { status: true, message: 'Invalid number' };
++    return { status: true, message: 'Ingresar un número válido' };
++  if (keyboardType == 'phone-pad' && (value.length <= 10 ))
++    return { status: true, message: 'El número de teléfono debe contener al menos 8 números' };
++  if (isRequired && keyboardType == 'phone-pad' && !validatePhoneNumber(value))
++    return { status: true, message: 'Ingresar un número de teléfono válido' };
+ 
++  if (keyboardType == 'decimal-pad' && !validateDecimalNumber(value))
++    return { status: true, message: 'Ingresar un número válido' };
++  if (password && !validatePassword(value))
++    return {status: true, message: 'La contraseña debe contener 8 caracteres incluyendo: al menos 1 mayúscula, una miniscula, un numero'}
+   return { status: false, message: '' };
+ };
+ 

@@ -1,22 +1,20 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react'
 import {View, SafeAreaView, Text, Alert, ScrollView} from 'react-native'
 import {TextInput} from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import Pet from "../../model/Pet.js"
 import PetsStatesView from "../pets/PetsStatesView.js"
 import {Title} from "react-native-paper"
-import {petScreenStyle} from "../../styles/PetScreenStyle.js";
-import {fetchSearch} from "../../server/Api";
-import {style} from "../../styles/Commons";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import PerfilButton from '../drawerlayout/PerfilButton.js';
-
+import {petScreenStyle} from "../../styles/PetScreenStyle.js"
+import {fetchSearch} from "../../server/Api"
+import {style} from "../../styles/Commons"
+import PerfilButton from '../drawerlayout/PerfilButton.js'
 
 export default function PetScreen({navigation}) {
     const [petsSearching, setPetsSearching] = useState([])
     const [isAlreadyShownAlert, setIsAlreadyShownAlert] = useState(false)
     let textInput = ''
-    // const ast = AsyncStorage.getItem('user_id').then((value) => value)
+
     //searching pets in de database. Catching the error if fetch has a problem, showing an alert.
     const search = async query => {
         try {
@@ -34,8 +32,9 @@ export default function PetScreen({navigation}) {
             setIsAlreadyShownAlert(true)
         }
     }
+
     //[] means that useEffect runs in the first render.
-    useEffect(() => {search('')}, []);
+    useEffect(() => {search('')}, [])
     return (
             <SafeAreaView style={[petScreenStyle.safeAreaView, style.fullContainer ]}>
                 <View style={petScreenStyle.header}>
@@ -53,7 +52,7 @@ export default function PetScreen({navigation}) {
                         <Icon name="close" size={20} style={petScreenStyle.iconClose} onPress={( ) => {
                             textInput.clear()
                             search('')
-                            
+
                         }}/>
                     </View>
                     <View style={petScreenStyle.sortBtn}>
@@ -65,6 +64,6 @@ export default function PetScreen({navigation}) {
                     <View><View style={petScreenStyle.categoryContainer} testID={'view-container-general'}><Title testID={'no-pets'}>No hay mascotas</Title></View></View>)}
             </ScrollView>
         </SafeAreaView>
-    );
-};
+    )
+}
 

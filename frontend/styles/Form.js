@@ -4,23 +4,23 @@ import { colors } from "./Colors";
 
 const form = StyleSheet.create({
     imageSize:{
-        width: Dimensions.get('window').width - 75, 
+        width: Dimensions.get('window').width - 75,
         height: Dimensions.get('window').width - 95,
 
     },
     input: {
         width: Dimensions.get('window').width-75,
-        height: 40
-
+        height: 40,
+        borderColor: colors.grey,
     },
     image:{
         marginHorizontal: 30,
         paddingVertical : 5,
-        flex: 1, 
-        alignItems: 'center', 
+        flex: 1,
+        alignItems: 'center',
         justifyContent: 'center'
     },
-    imageIcon:{ 
+    imageIcon:{
         position:"absolute",
         bottom:0,
         right:0,
@@ -63,6 +63,12 @@ const form = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
     },
+    errorText: {
+        fontSize: 14,
+        color: 'red',
+        marginBottom: 20,
+        marginLeft: 10
+      }
 });
 
 export {form}
