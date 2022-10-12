@@ -14,18 +14,18 @@ import PetCardEjemplo from '../pets/card/PetCardEjemplo';
 import Pet from '../../model/Pet';
 import { petScreenStyle } from '../../styles/PetScreenStyle';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getUserByEmail2 } from '../../server/Api';
+import { getUserByEmail } from '../../server/Api';
 
-function Profile () {
+function Profile ({navigation}) {
   const [user, setUser] = useState({})
 
   useEffect(() => {
     AsyncStorage.getItem('user_id').then((value) => {
-      console.log(value)
-      getUserByEmail2(value).then((response) => {
-        console.log(response)
+      console.log(value) 
+      getUserByEmail(value).then((response) => {
+        console.log(response.data)
         setUser(response.data)
-      }).catch((error) => console.log( error))
+      }).catch((error) => console.log(error))
     });
   }, []);
 

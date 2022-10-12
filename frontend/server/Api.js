@@ -1,19 +1,19 @@
-import axios from 'axios';
+import axios from 'axios'
 
-const baseUrl = 'http://192.168.0.3:8090';
+const baseUrl = 'http://10.12.1.103:8090'
 
 export const fetchSearch = async (query) => {
-    const url = `${baseUrl}/api/pet/search?query=${query}`;
+    const url = `${baseUrl}/api/pet/search?query=${query}`
     return await axios.get(url)
 }
 
-export const getUserByEmail = async (userData) => {
+export const loginUser = async (userData) => {
     const url = `${baseUrl}/api/user/userData`;
   return await axios.post(url, {email: userData.email, password: userData.password})
 }
 
-export const getUserByEmail2 = async (email) => {
-    const url = `${baseUrl}/api/user/${email}`;
+export const getUserByEmail = async (email) => {
+    const url = `${baseUrl}/api/user/email/${email}`;
   return await axios.get(url)
 }
 

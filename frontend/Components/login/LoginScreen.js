@@ -5,7 +5,7 @@ import Loader from "../Loader.js"
 import {loginScreenStyle} from "../../styles/LoginScreenStyle"
 import ImageView from "./ImageView"
 import GenericInput from "./GenericInput";
-import {getUserByEmail} from "../../server/Api";
+import {loginUser} from "../../server/Api";
 
 const LoginScreen = ({navigation}) => {
     const [userEmail, setUserEmail] = useState('')
@@ -27,7 +27,7 @@ const LoginScreen = ({navigation}) => {
         }
         setLoading(true)
         let dataToSend = {email: userEmail, password: userPassword}
-        getUserByEmail(dataToSend).then(response => {
+        loginUser(dataToSend).then(response => {
             setLoading(false)
             AsyncStorage.setItem('user_id', response.data.email)
             navigation.navigate('Inicio')
