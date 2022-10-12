@@ -177,8 +177,8 @@ const RegisterScreen = forwardRef(({ navigation }, ref) => {
                                 items={[]}
                                 label="Elegir la ciudad"
                                 placeholder="Sin selección"
-                                selectedValue={}
-                                onSelection={}
+                                selectedValue="Sin selección"
+                                onSelection={province}
                                 asterik
                             />
                             : < Picker

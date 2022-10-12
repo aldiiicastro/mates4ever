@@ -37,7 +37,7 @@ function App() {
   return (
       <NavigationContainer>
         <StatusBar barStyle="dark-content" backgroundColor={colors.beige} />
-        <Stack.Navigator screenOptions={{header: () => null}} initialRouteName="SplashScreen">
+        <Stack.Navigator screenOptions={{header: () => null}} initialRouteName="Inicio">
             <Stack.Screen name={"SplashScreen"} component={SplashScreen} options={{headerShown: false}}/>
             <Stack.Screen name={"Auth"} component={Auth} options={{headerShown: false}}/>
             <Stack.Screen name={"Inicio"} component={HomeScreen} />

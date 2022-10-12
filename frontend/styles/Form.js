@@ -63,6 +63,12 @@ const form = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
     },
+    errorText: {
+        fontSize: 14,
+        color: 'red',
+        marginBottom: 20,
+        marginLeft: 10
+      }
 });
 
 export {form}
