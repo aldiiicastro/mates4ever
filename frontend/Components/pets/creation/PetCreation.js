@@ -34,6 +34,14 @@ export default function PetCreation({navigation}) {
 
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
+        if (Platform.OS !== "web") {
+            const {
+                status,
+            } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+            if (status !== "granted") {
+                alert("Sorry, we need camera roll permissions to make this work!");
+            }
+        }
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
@@ -46,6 +54,11 @@ export default function PetCreation({navigation}) {
           setImage(result)
           console.log(image)
         }
+
+        let response = await fetch(result.uri);
+        let blob = await response.blob();
+
+        console.log("holaa: ", response)
     };
 
     const createFormData = () => {
@@ -56,7 +69,7 @@ export default function PetCreation({navigation}) {
         }
       };
 
-    const publish = () => {
+    const publish = async () => {
         const pet = {
             'name': name,
             "image": imageUri,
@@ -116,9 +129,9 @@ export default function PetCreation({navigation}) {
                 </View>
             </View>
             <View style={[style.marginX, style.bgWhite]}>
-                {(!errors.image && submitedform) &&
+                {/* {(!errors.image && submitedform) &&
                     <Text style={form.errorText}>{errors.image}</Text>
-                }
+                } */}
                 <View style={form.inputLineBox}>
                     <TextInput
                         style={form.input}
@@ -129,10 +142,10 @@ export default function PetCreation({navigation}) {
                         />
 
                 </View>
-
+{/* 
                 {(!errors.name && submitedform) &&
                     <Text style={form.errorText}>{errors.name}</Text>
-                }
+                } */}
 
                 <View>
                     {/* <Button title="Show Date Picker" onPress={showDatePicker} /> */}
