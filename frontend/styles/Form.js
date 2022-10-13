@@ -32,20 +32,21 @@ const form = StyleSheet.create({
     inputLineBox: {
         borderBottomColor: colors.grey,
         borderBottomWidth: 1,
-        backgroundColor: colors.white,
-        margin: 10 ,
-        padding: 10,
+        // padding: 10,
         flexDirection: 'row',
         alignItems: 'center',
     },
     pickerLineBox: {
+        width: Dimensions.get('window').width - 100,
         borderBottomColor: colors.grey,
         borderBottomWidth: 1,
-        backgroundColor: colors.white,
-        margin: 10 ,
+        marginBottom: 10 ,
+        paddingTop: 30,
+        height: 50,
         color:colors.grey,
 
     },
+    
     inputFont: {
         color: colors.black,
     },

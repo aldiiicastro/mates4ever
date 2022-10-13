@@ -1,7 +1,6 @@
-import * as React from "react";
-import {useState} from 'react';
-import {Text, Image, View, TextInput, Button, TouchableHighlight} from 'react-native';
-import { Picker } from '@react-native-picker/picker';
+import React, {useState, createRef} from "react";
+import { Form, FormItem, Picker } from 'react-native-form-component'
+import {Text, Image, View, TouchableHighlight} from 'react-native';
 import {Checkbox} from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { colors } from "../../../styles/Colors";
@@ -19,14 +18,16 @@ export default function PetCreation({navigation}) {
     const [name, setName] = useState('');
     const [age, setAge] = useState(null);
     const [ageDate, setAgeDate] = useState(new Date());
-    const [state, setState] = useState('');
-    const [type, setType] = useState('');
+    const [state, setState] = useState('Adopción');
+    const [type, setType] = useState('Perro');
     const [breed, setBreed] = useState('');
     const [vaccine, setVaccine] = useState(false);
     const [castrated, setCastrated] = useState(false);
     const [medicalHistory, setMedicalHistory] = useState('');
     const [description, setDescription] = useState('');
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+
+    const nameInputRef = createRef()
 
     const pickAnImage = async () => {
         const pickerResult = await pickImage()
@@ -36,6 +37,9 @@ export default function PetCreation({navigation}) {
     }
 
     const uploadedImage = async () => {
+        if (!image){
+            return ""
+        }
         const uuid = await handleImagePicked(image)
         return uuid
     }
@@ -54,6 +58,7 @@ export default function PetCreation({navigation}) {
             'description': description,
             "tutor": "yo",
         }
+        console.log(pet)
 
         createPet(pet).then((response) => {
             console.log(response)
@@ -99,18 +104,28 @@ export default function PetCreation({navigation}) {
                     <Icon name="create" size={28} onPress={pickAnImage}  />
                 </View>
             </View>
-            <View style={[style.marginX, style.bgWhite]}>
-                <View style={form.inputLineBox}>
-                    <TextInput
-                        style={form.input}
-                        onChangeText={setName}
-                        value={name}
-                        placeholder="Nombre"
-                        activeUnderlineColor={colors.red}
-                        />
 
-                </View>
-                <View>
+            <Form 
+                GenericInput={'Cargar una mascota'} onButtonPress={() => publish()} 
+                buttonStyle={{backgroundColor:colors.violet}} 
+                buttonText="Publicar"
+                style={[style.marginX, style.bgWhite]}>
+                
+                <FormItem
+                    value={name}
+                    label={"Nombre"}
+                    onChangeText={setName}
+                    showErrorIcon={false}
+                    asterik
+                    floatingLabel
+                    isRequired
+                    textInputStyle={form.inputLineBox}
+                    onSubmitEditing={() => nameInputRef.current && nameInputRef.current.focus()}
+                    ref={nameInputRef}
+                    errorBorderColor="white"
+                />
+
+                <View style={{ marginHorizontal: 10, marginBottom: 15 }}>
                     <DateTimePickerModal
                         isVisible={isDatePickerVisible}
                         mode="date"
@@ -120,53 +135,68 @@ export default function PetCreation({navigation}) {
                     />
                     <Text style={[form.inputLineBox]} onPress={showDatePicker}>{age ? age : "Fecha aproximada de nacimiento"}</Text>
                 </View>
-                <View style={form.pickerLineBox}>
-                    <Picker
-                        style={form.inputFont}
-                        selectedValue={state}
-                        onValueChange={currentAge => setState(currentAge)}>
-                        <Picker.Item label="Tipo de publicacion" value={null} />
-                        <Picker.Item label="Transito" value="Transito" />
-                        <Picker.Item label="Adopción" value="Adopción" />
-                        <Picker.Item label="Perdido" value="Perdido" />
-                    </Picker>
-                </View>
-                <View style={form.pickerLineBox}>
-                    <Picker
-                        style={form.inputFont}
-                        selectedValue={type}
-                        onValueChange={currentState => setType(currentState)}>
-                        <Picker.Item label="Tipo de animal" value={null} />
-                        <Picker.Item label="Perro" value="Perro" />
-                        <Picker.Item label="Gato" value="Gato" />
-                        <Picker.Item label="Otro" value="Otro" />
-                    </Picker>
-                </View>
-                <View style={form.inputLineBox}>
-                    <TextInput
-                        style={form.input}
-                        onChangeText={setBreed}
-                        value={breed}
-                        placeholder="Tiene raza? Cual?" />
-                </View>
-                <View style={form.inputLineBox}>
-                    <TextInput
-                        multiline
-                        numberOfLines={4}
-                        style={form.input}
-                        onChangeText={setDescription}
-                        value={description}
-                        placeholder={"Cuentanos un poco sobre " + (name ? name : "el/ella") } />
-                </View>
-                <View style={form.inputLineBox}>
-                    <TextInput
-                        multiline
-                        numberOfLines={4}
-                        style={form.input}
-                        onChangeText={setMedicalHistory}
-                        value={medicalHistory}
-                        placeholder="Tiene algun problema medico? Algo que quieras destacar?" />
-                </View>
+                
+                <Picker
+                    items={[
+                        { label: 'Adopción', value: 'Adopción' },
+                        { label: 'Transito', value: 'Transito' },
+                        { label: 'Perdido', value: 'Perdido' },
+                    ]}
+                    label="Tipo de publicacion"
+                    selectedValue={state}
+                    onSelection={(item) => setState(item.value)}
+                    floatingLabel
+                    asterik
+                    selectedValueStyle={form.pickerLineBox}
+                    labelStyle={{marginStart: 5 }}
+                />
+
+                <Picker
+                    items={[
+                        { label: 'Perro', value: 'Perro' },
+                        { label: 'Gato', value: 'Gato' },
+                        { label: 'Otro', value: 'Otro' },
+                    ]}
+                    label="Tipo de animal"
+                    selectedValue={type}
+                    onSelection={(item) => setType(item.value)}
+                    floatingLabel
+                    asterik
+                    selectedValueStyle={form.pickerLineBox}
+                    labelStyle={{marginStart: 5 }}
+                />
+               
+                <FormItem
+                    value={breed}
+                    label={"Tiene raza? Cual?"}
+                    onChangeText={setBreed}
+                    showErrorIcon={false}
+                    floatingLabel
+                    textInputStyle={form.inputLineBox}
+                />
+               
+                <FormItem
+                    value={description}
+                    label={"Cuentanos un poco sobre " + (name ? name : "el/ella") }
+                    onChangeText={setDescription}
+                    showErrorIcon={false}
+                    textInputStyle={form.inputLineBox}
+                    numberOfLines={4}
+                    floatingLabel
+                    multiline
+                />
+
+                <FormItem
+                    value={medicalHistory}
+                    label={"Tiene algun problema medico? Algo que quieras destacar?"}
+                    onChangeText={setMedicalHistory}
+                    showErrorIcon={false}
+                    textInputStyle={form.inputLineBox}
+                    numberOfLines={4}
+                    floatingLabel
+                    multiline
+                />
+
                 <View style={form.alignItems}>
                     <Checkbox
                         color={colors.yellow}
@@ -182,14 +212,18 @@ export default function PetCreation({navigation}) {
                         color={colors.yellow}
                         status={castrated ? 'checked' : 'unchecked'}
                         onPress={() => {
-                          setCastrated(!castrated);
-                        }}
-                    />
-                    <Text style={style.label}>¿Esta castrado?</Text>
-                </View>
-                <View style={form.btnSubmit}>
-                    <Button color={colors.yellow} title="Publicar" onPress={ publish }></Button>
-                </View>
+                            setCastrated(!castrated);
+                            }}
+                        />
+                        <Text style={style.label}>¿Esta castrado?</Text>
+                    </View>
+
+                </Form>
+
+
+            <View style={[style.marginX, style.bgWhite]}>
+
+        
             </View>
         </ScrollView>
     );
