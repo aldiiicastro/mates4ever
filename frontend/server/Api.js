@@ -2,7 +2,7 @@ import axios from 'axios'
 import bcrypt from "react-native-bcrypt";
 import isaac from "isaac"
 //const baseUrl = 'http://192.168.0.3:8080'
-const baseUrl = 'http://192.168.100.23:8070'
+const baseUrl = 'http://192.168.122.6:8070'
 
 export const fetchSearch = async (query) => {
     const url = `${baseUrl}/api/pet/search?query=${query}`

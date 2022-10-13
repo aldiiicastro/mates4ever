@@ -1,6 +1,6 @@
 import * as React from "react";
 import {useState} from 'react';
-import {Text, Image, View, TextInput, Button, SafeAreaView, TouchableHighlight} from 'react-native';
+import {Text, Image, View, TextInput, Button, TouchableHighlight} from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import {Checkbox} from "react-native-paper";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -9,10 +9,9 @@ import { ScrollView } from "react-native-gesture-handler";
 import {form} from "../../../styles/Form";
 import {style} from "../../../styles/Commons";
 import { petScreenStyle } from "../../../styles/PetScreenStyle";
-import * as ImagePicker from 'expo-image-picker';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import {createPet} from "../../../server/Api.js";
-
+import { handleImagePicked, pickImage } from "../../../server/FirebaseServer";
 
 export default function PetCreation({navigation}) {
     const [image, setImage] = useState(null);
@@ -28,51 +27,23 @@ export default function PetCreation({navigation}) {
     const [medicalHistory, setMedicalHistory] = useState('');
     const [description, setDescription] = useState('');
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-    const [submitedform, setSubmitedform] = useState(false);
-    const [errors, setErrors] = useState({});
 
+    const pickAnImage = async () => {
+        const pickerResult = await pickImage()
+        console.log(pickAnImage)
+        setImage(pickerResult);
+        setImageUri(pickerResult.uri);
+    }
 
-    const pickImage = async () => {
-        // No permissions request is necessary for launching the image library
-        if (Platform.OS !== "web") {
-            const {
-                status,
-            } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-            if (status !== "granted") {
-                alert("Sorry, we need camera roll permissions to make this work!");
-            }
-        }
-        let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.All,
-            allowsEditing: true,
-            aspect: [4, 4],
-            quality: 1,
-        });
-
-        if (!(result.cancelled)) {
-          setImageUri(result.uri);
-          setImage(result)
-          console.log(image)
-        }
-
-        let response = await fetch(result.uri);
-        let blob = await response.blob();
-
-        console.log("holaa: ", response)
-    };
-
-    const createFormData = () => {
-        return {
-          name: imageUri.fileName,
-          type: imageUri.type,
-          uri: Platform.OS === 'ios' ? imageUri.uri.replace('file://', '') : imageUri.uri,
-        }
-      };
-
+    const uploadedImage = async () => {
+        const uuid = await handleImagePicked(image)
+        return uuid
+    }
+    
     const publish = async () => {
         const pet = {
             'name': name,
-            "image": imageUri,
+            "image": await uploadedImage(),
             'birth': age,
             'state': state,
             'type': type,
@@ -118,20 +89,17 @@ export default function PetCreation({navigation}) {
                 </View>
             </View>
             <View style={form.image} on>
-                <TouchableHighlight onPress={pickImage}>
+                <TouchableHighlight onPress={pickAnImage}>
                     {imageUri ?
                     <Image source={{ uri: imageUri }} style={ form.imageSize }/>
                     :
                     <Image source={require('../../../assets/DefaultPet.png')} style={ form.imageSize } />}
                 </TouchableHighlight>
                 <View style={form.imageIcon} >
-                    <Icon name="create" size={28} onPress={pickImage}  />
+                    <Icon name="create" size={28} onPress={pickAnImage}  />
                 </View>
             </View>
             <View style={[style.marginX, style.bgWhite]}>
-                {/* {(!errors.image && submitedform) &&
-                    <Text style={form.errorText}>{errors.image}</Text>
-                } */}
                 <View style={form.inputLineBox}>
                     <TextInput
                         style={form.input}
@@ -142,13 +110,7 @@ export default function PetCreation({navigation}) {
                         />
 
                 </View>
-{/* 
-                {(!errors.name && submitedform) &&
-                    <Text style={form.errorText}>{errors.name}</Text>
-                } */}
-
                 <View>
-                    {/* <Button title="Show Date Picker" onPress={showDatePicker} /> */}
                     <DateTimePickerModal
                         isVisible={isDatePickerVisible}
                         mode="date"
