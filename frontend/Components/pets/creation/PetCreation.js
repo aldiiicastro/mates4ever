@@ -1,16 +1,16 @@
 import React, {useState, createRef} from "react";
-import { Form, FormItem, Picker } from 'react-native-form-component'
-import {Text, Image, View, TouchableHighlight} from 'react-native';
-import {Checkbox} from "react-native-paper";
-import Icon from "react-native-vector-icons/MaterialIcons";
-import { colors } from "../../../styles/Colors";
+import { Form, FormItem } from 'react-native-form-component'
 import { ScrollView } from "react-native-gesture-handler";
-import {form} from "../../../styles/Form";
+
 import {style} from "../../../styles/Commons";
-import { petScreenStyle } from "../../../styles/PetScreenStyle";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
+import {form} from "../../../styles/Form";
+import { colors } from "../../../styles/Colors";
+
 import {createPet} from "../../../server/Api.js";
 import { handleImagePicked, pickImage } from "../../../server/FirebaseServer";
+import Loader from "../../Loader";
+import Back from "../../common/Back";
+import { CalendarForm, ImageForm, MultiLineLabel, SimpleCheckBox, SimpleLineLabel, SimpleLinePicker } from "../../common/login/FormItemGeneric";
 
 export default function PetCreation({navigation}) {
     const [image, setImage] = useState(null);
@@ -26,6 +26,7 @@ export default function PetCreation({navigation}) {
     const [medicalHistory, setMedicalHistory] = useState('');
     const [description, setDescription] = useState('');
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const nameInputRef = createRef()
 
@@ -44,6 +45,7 @@ export default function PetCreation({navigation}) {
     }
     
     const publish = async () => {
+        setLoading(true)
         const pet = {
             'name': name,
             "image": await uploadedImage(),
@@ -60,9 +62,17 @@ export default function PetCreation({navigation}) {
         console.log(pet)
 
         createPet(pet).then((response) => {
-            console.log(response)
+            console.log("hola")
+
+            setLoading(false)
             navigation.navigate('Inicio')
-        }).catch((response) => setErrors(response.errors) )
+
+        }).catch((response) => {
+            console.log("hola")
+            setLoading(false)
+            setErrors(response.errors)
+        } )
+
     }
     const showDatePicker = () => {
         setDatePickerVisibility(true);
@@ -84,25 +94,13 @@ export default function PetCreation({navigation}) {
     }
     return (
         <ScrollView style={style.fullContainer}>
-            <View style={petScreenStyle.header}>
-                <View style={form.alignItems}>
-                    <Icon name="arrow-back" style={{marginStart: 10}} size={25} onPress={() => navigation.goBack()}/>
-                    <Text style={[style.titleText]}>
-                        Cargar una mascota
-                    </Text>
-                </View>
-            </View>
-            <View style={form.image} on>
-                <TouchableHighlight onPress={pickAnImage}>
-                    {imageUri ?
-                    <Image source={{ uri: imageUri }} style={ form.imageSize }/>
-                    :
-                    <Image source={require('../../../assets/DefaultPet.png')} style={ form.imageSize } />}
-                </TouchableHighlight>
-                <View style={form.imageIcon} >
-                    <Icon name="create" size={28} onPress={pickAnImage}  />
-                </View>
-            </View>
+            <Loader loading={loading}/>
+            <Back onPress={() => navigation.goBack()} text="Cargar una mascota" />
+
+            <ImageForm
+                imageUri={imageUri}
+                onPress={pickAnImage}
+            />
 
             <Form 
                 GenericInput={'Cargar una mascota'} onButtonPress={() => publish()} 
@@ -123,19 +121,26 @@ export default function PetCreation({navigation}) {
                     ref={nameInputRef}
                     errorBorderColor="white"
                 />
+                {/* <RequiredLineLabel
+                    value = {name}
+                    label = "Nombre"
+                    onChangeText = {setName}   
+                    ref = {nameInputRef}
+                    inputRef={nameInputRef.current && nameInputRef.current.focus()}
+                /> */}
 
-                <View style={{ marginHorizontal: 10, marginBottom: 15 }}>
-                    <DateTimePickerModal
-                        isVisible={isDatePickerVisible}
-                        mode="date"
-                        date={ageDate}
-                        onConfirm={handleConfirm}
-                        onCancel={hideDatePicker}
-                    />
-                    <Text style={[form.inputLineBox]} onPress={showDatePicker}>{age ? age : "Fecha aproximada de nacimiento"}</Text>
-                </View>
+                <CalendarForm 
+                    isVisible={isDatePickerVisible}
+                    date={ageDate}
+                    onConfirm={handleConfirm}
+                    onCancel={hideDatePicker}
+                    dateText={age}
+                    defaultText="Fecha aproximada de nacimiento"
+                    onPress={showDatePicker}
+
+                />
                 
-                <Picker
+                <SimpleLinePicker 
                     items={[
                         { label: 'Adopción', value: 'Adopción' },
                         { label: 'Transito', value: 'Transito' },
@@ -144,13 +149,8 @@ export default function PetCreation({navigation}) {
                     label="Tipo de publicacion"
                     selectedValue={state}
                     onSelection={(item) => setState(item.value)}
-                    floatingLabel
-                    asterik
-                    selectedValueStyle={form.pickerLineBox}
-                    labelStyle={{marginStart: 5 }}
                 />
-
-                <Picker
+                <SimpleLinePicker 
                     items={[
                         { label: 'Perro', value: 'Perro' },
                         { label: 'Gato', value: 'Gato' },
@@ -159,71 +159,36 @@ export default function PetCreation({navigation}) {
                     label="Tipo de animal"
                     selectedValue={type}
                     onSelection={(item) => setType(item.value)}
-                    floatingLabel
-                    asterik
-                    selectedValueStyle={form.pickerLineBox}
-                    labelStyle={{marginStart: 5 }}
                 />
-               
-                <FormItem
+
+                <SimpleLineLabel 
                     value={breed}
                     label={"Tiene raza? Cual?"}
                     onChangeText={setBreed}
-                    showErrorIcon={false}
-                    floatingLabel
-                    textInputStyle={form.inputLineBox}
                 />
                
-                <FormItem
+                <MultiLineLabel 
                     value={description}
                     label={"Cuentanos un poco sobre " + (name ? name : "el/ella") }
                     onChangeText={setDescription}
-                    showErrorIcon={false}
-                    textInputStyle={form.inputLineBox}
-                    numberOfLines={4}
-                    floatingLabel
-                    multiline
                 />
-
-                <FormItem
+                
+                <MultiLineLabel
                     value={medicalHistory}
                     label={"Tiene algun problema medico? Algo que quieras destacar?"}
                     onChangeText={setMedicalHistory}
-                    showErrorIcon={false}
-                    textInputStyle={form.inputLineBox}
-                    numberOfLines={4}
-                    floatingLabel
-                    multiline
+                />
+                
+                <SimpleCheckBox 
+                    status={vaccine ? 'checked' : 'unchecked'}
+                    onPress={() => { setVaccine(!vaccine) }}
                 />
 
-                <View style={form.alignItems}>
-                    <Checkbox
-                        color={colors.yellow}
-                        status={vaccine ? 'checked' : 'unchecked'}
-                        onPress={() => {
-                          setVaccine(!vaccine);
-                        }}
-                    />
-                    <Text style={style.label}>¿Tiene las vacunas al día?</Text>
-                </View>
-                <View style={form.alignItems}>
-                    <Checkbox
-                        color={colors.yellow}
-                        status={castrated ? 'checked' : 'unchecked'}
-                        onPress={() => {
-                            setCastrated(!castrated);
-                            }}
-                        />
-                        <Text style={style.label}>¿Esta castrado?</Text>
-                    </View>
-
-                </Form>
-
-
-            <View style={[style.marginX, style.bgWhite]}>
-
-        
-            </View>
+                <SimpleCheckBox
+                    status={castrated ? 'checked' : 'unchecked'}
+                    onPress={() => { setCastrated(!castrated) }}
+                />
+            </Form>
         </ScrollView>
     );
 };

@@ -17,9 +17,6 @@ export default function PetCardEjemplo(props) {
                     </View>
                     
                 </View>
-                <Text style={petCardStyleExample.textName}>
-                    {pet.name}
-                </Text>
             </View>
         </TouchableOpacity>
     );

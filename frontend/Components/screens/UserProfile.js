@@ -34,9 +34,9 @@ function Profile ({navigation}) {
     new Pet({
       id : "1",
       name : "emma",
-      image : "https://github.com/aldiiicastro/mates4ever/blob/main/frontend/assets/perritos/Flash.jpg?raw=true",
+      image : "https://firebasestorage.googleapis.com/v0/b/mates4ever-d17cb.appspot.com/o/32c1b815-fce2-4c04-9ea9-ce5b58d65b54?alt=media&token=b68f7da9-decd-429c-a03f-22328ae65b4f",
       age : "2",
-      date : "32",
+      date : "32", 
       type : "Perro",
       breed : "",
       state : "Transito",
@@ -110,7 +110,7 @@ function Profile ({navigation}) {
           </View>
         </View>
         <View style={profileStyles.masonryContainer}>
-          <View>
+          <View >
             {user.pets.map( pet => <PetCardEjemplo pet={pet} /> )}
           </View>
         </View>

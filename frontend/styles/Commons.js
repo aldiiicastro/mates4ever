@@ -15,7 +15,9 @@ const style = StyleSheet.create({
     },
     bgWhite: {
         backgroundColor: colors.white
-
+    },
+    bgYellow: {
+        backgroundColor: colors.yellow
     },
     titleText: {
         marginStart: 10,
@@ -32,7 +34,11 @@ const style = StyleSheet.create({
         height: 65,
         bottom: 5,
         borderRadius: 100,  
-    }
+    },
+    alignItems: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
 
 });
 

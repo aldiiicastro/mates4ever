@@ -4,6 +4,11 @@ import isaac from "isaac"
 // const baseUrl = 'http://192.168.0.8:8080'
 const baseUrl = 'http://192.168.0.8:8070'
 
+const axinst = axios.create({
+    baseURL: 'http://192.168.0.8:8070',
+    timeout: 15000
+})
+
 export const fetchSearch = async (query) => {
     const url = `${baseUrl}/api/pet/search?query=${query}`
     return await axios.get(url)
@@ -25,8 +30,10 @@ export const getPetById  = async (id) => {
 }
 
 export const createPet = async (pet) => {
-    const url = `${baseUrl}/api/pet/create`
-    return await axios.post(url, pet)
+    // const url = `${baseUrl}/api/pet/create`
+    return await axinst.post(
+        '/api/pet/create', 
+        pet)
 }
 
 export const createUser = async (user) => {

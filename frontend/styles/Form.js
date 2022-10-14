@@ -3,15 +3,36 @@ import { colors } from "./Colors";
 
 
 const form = StyleSheet.create({
-    imageSize:{
-        width: Dimensions.get('window').width - 75,
-        height: Dimensions.get('window').width - 95,
-
+    
+    btnSubmit: {
+        marginVertical: 20
     },
+    container: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: colors.yellow,
+    },
+    errorText: {
+        fontSize: 14,
+        color: 'red',
+        marginBottom: 20,
+        marginLeft: 10
+      },
     input: {
         width: Dimensions.get('window').width-75,
         height: 40,
         borderColor: colors.grey,
+    },
+    inputFont: {
+        color: colors.black,
+    },
+    inputLineBox: {
+        borderBottomColor: colors.grey,
+        borderBottomWidth: 1,
+        paddingVertical: 10,
+        flexDirection: 'row',
+        alignItems: 'center',
     },
     image:{
         marginHorizontal: 30,
@@ -29,12 +50,10 @@ const form = StyleSheet.create({
         borderTopLeftRadius: 10,
         borderBottomRightRadius: 10
     },
-    inputLineBox: {
-        borderBottomColor: colors.grey,
-        borderBottomWidth: 1,
-        // padding: 10,
-        flexDirection: 'row',
-        alignItems: 'center',
+    imageSize:{
+        width: Dimensions.get('window').width - 75,
+        height: Dimensions.get('window').width - 95,
+
     },
     pickerLineBox: {
         width: Dimensions.get('window').width - 100,
@@ -46,30 +65,12 @@ const form = StyleSheet.create({
         color:colors.grey,
 
     },
-    
-    inputFont: {
-        color: colors.black,
+    textBold:{
+        fontWeight: 'bold'
     },
-    btnSubmit: {
-        marginVertical: 20
-    },
-    container: {
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: colors.yellow,
-
-    },
-    alignItems: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    errorText: {
-        fontSize: 14,
-        color: 'red',
-        marginBottom: 20,
-        marginLeft: 10
-      }
+    ps5:{
+        paddingStart: 5
+    }
 });
 
 export {form}
