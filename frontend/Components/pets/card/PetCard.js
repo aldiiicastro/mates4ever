@@ -1,7 +1,7 @@
-import {TouchableOpacity} from "react-native";
-import {Image, Text, View} from "react-native";
-import React from "react";
-import {petCardStyle} from "../../../styles/PetStyle.js";
+import {TouchableOpacity} from "react-native"
+import {Image, Text, View} from "react-native"
+import React from "react"
+import {petCardStyle} from "../../../styles/PetStyle.js"
 
 export default function PetCard(props) {
     const pet = props.pet
@@ -30,5 +30,5 @@ export default function PetCard(props) {
                 </View>
             </View>
         </TouchableOpacity>
-    );
+    )
 }

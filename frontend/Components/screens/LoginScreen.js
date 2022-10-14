@@ -1,14 +1,14 @@
 import React, {useState, createRef, forwardRef} from 'react'
-import {View, Text, ScrollView, KeyboardAvoidingView,} from 'react-native'
+import {View, Text, ScrollView, KeyboardAvoidingView, SafeAreaView} from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import Loader from "../Loader.js"
 import {loginScreenStyle} from "../../styles/LoginScreenStyle"
 import ImageView from "../common/login/ImageView"
 import { Form, FormItem } from 'react-native-form-component'
-import {getUserByEmail} from "../../server/Api";
-import {colors} from "../../styles/Colors";
-import FormItemGeneric from "../common/login/FormItemGeneric";
-import bcrypt from "react-native-bcrypt";
+import {getUserByEmail} from "../../server/Api"
+import {colors} from "../../styles/Colors"
+import bcrypt from "react-native-bcrypt"
+import {FormItemGeneric} from "../common/login/FormItemGeneric"
 
 const LoginScreen = forwardRef(({ navigation }, ref) => {
     const [userEmail, setUserEmail] = useState('')
@@ -36,47 +36,52 @@ const LoginScreen = forwardRef(({ navigation }, ref) => {
         })
     }
     return (
-        <View style={loginScreenStyle.mainBody}>
-            <Loader loading={loading} />
-            <ScrollView
-                keyboardShouldPersistTaps="handled"
-                contentContainerStyle={{
-                    flex: 1,
-                    justifyContent: 'center',
-                    alignContent: 'center',
-                }}>
-                <View style={{ flex: 1, backgroundColor: colors.yellow, padding: 24 }}>
-                    <KeyboardAvoidingView enabled>
-                        <ImageView/>
-                        <Form buttonText={'Iniciar sesión'} onButtonPress={() => handleSubmitPress()} buttonStyle={{backgroundColor:colors.violet}}>
-                            <FormItemGeneric
-                                value={userEmail}
-                                label={"Email"}
-                                onChange={(userEmail) => setUserEmail(userEmail)}
-                                inputRef={() => passwordInputRef.current && passwordInputRef.current.focus()}
-                                ref={ref}
-                                keyboardType={'email-address'}
-                            />
-                            <FormItem
-                                value={userPassword}
-                                label="Contraseña"
-                                onChangeText={(userPassword) => setUserPassword(userPassword)}
-                                showErrorIcon={false}
-                                ref={passwordInputRef}
-                                asterik
-                                floatingLabel
-                                isRequired
-                                secureTextEntry
-                            />
-                          {errorText !== '' ? (<Text style={loginScreenStyle.errorTextStyle}>{errorText}</Text>) : null}
-                        </Form>
-                        <Text style={loginScreenStyle.registerTextStyle} onPress={() => navigation.navigate('Registro')}>
-                            ¿Aún no tienes cuenta? Registrate acá
-                        </Text>
-                    </KeyboardAvoidingView>
+        <SafeAreaView style={{flex:1}}>
+
+                <View style={loginScreenStyle.mainBody}>
+                    <Loader loading={loading} />
+                    <ScrollView
+                        keyboardShouldPersistTaps="handled"
+                        contentContainerStyle={{
+                            flex: 1,
+                            justifyContent: 'center',
+                            alignContent: 'center',
+                        }}>
+                        <View style={{ flex: 1, backgroundColor: colors.yellow, padding: 24}}>
+                            <KeyboardAvoidingView  behavior="position" style={{flex:1}}>
+                                <ImageView/>
+                                <Form buttonText={'Iniciar sesión'} onButtonPress={() => handleSubmitPress()} buttonStyle={{backgroundColor:colors.violet}}>
+                                    <FormItemGeneric
+                                        value={userEmail}
+                                        label={"Email"}
+                                        onChange={(userEmail) => setUserEmail(userEmail)}
+                                        inputRef={() => passwordInputRef.current && passwordInputRef.current.focus()}
+                                        ref={ref}
+                                        keyboardType={'email-address'}
+                                    />
+                                    <FormItem
+                                        value={userPassword}
+                                        label="Contraseña"
+                                        onChangeText={(userPassword) => setUserPassword(userPassword)}
+                                        showErrorIcon={false}
+                                        ref={passwordInputRef}
+                                        asterik
+                                        floatingLabel
+                                        isRequired
+                                        secureTextEntry
+                                        initialPassword={true}
+                                    />
+                                  {errorText !== '' ? (<Text style={loginScreenStyle.errorTextStyle}>{errorText}</Text>) : null}
+                                </Form>
+                                <Text style={loginScreenStyle.registerTextStyle} onPress={() => navigation.navigate('Registro')}>
+                                    ¿Aún no tienes cuenta? Registrate acá
+                                </Text>
+                            </KeyboardAvoidingView>
+                        </View>
+                    </ScrollView>
                 </View>
-            </ScrollView>
-        </View>
+
+        </SafeAreaView>
     )
 })
 export default LoginScreen

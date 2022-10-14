@@ -1,12 +1,12 @@
-import {Dimensions, StyleSheet} from "react-native";
-import {colors} from "./Colors.js";
-import {width} from "./Dimension.js";
+import {StyleSheet} from "react-native"
+import {colors} from "./Colors.js"
+import {width} from "./Dimension.js"
 
 const petCardStyle = StyleSheet.create({
     container: {
         height: 190,
         backgroundColor: colors.bg_grey,
-        width,
+        width: width/ 2 - 30,
         marginHorizontal: 2,
         borderRadius: 10,
         marginBottom: 10,
@@ -42,7 +42,7 @@ const petCardStyle = StyleSheet.create({
         justifyContent: 'space-between',
         marginTop: 5,
     }
-});
+})
 
 const petCardStyleExample = StyleSheet.create({
     container: {
@@ -52,7 +52,7 @@ const petCardStyleExample = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         backgroundColor: "#ffe361",
-        width: (Dimensions.get('window').width / 2) - 15,
+        width: (width/ 2) - 15,
         margin: 10,
         borderRadius: 2,
         paddingVertical: 3,
@@ -64,7 +64,7 @@ const petCardStyleExample = StyleSheet.create({
         position:'absolute',
         right:-2,
         top: -3
-        
+
     },
     viewStateLost: {
         height: 25,
@@ -76,26 +76,26 @@ const petCardStyleExample = StyleSheet.create({
     },
     textState: {fontSize: 18, color: colors.violet, fontWeight: 'bold'},
     textStateLost: {
-        fontSize: 18, 
-        color: colors.white, 
+        fontSize: 18,
+        color: colors.white,
         fontWeight: 'bold',
         textTransform: 'uppercase'
     },
     imageView: {
-        height: (Dimensions.get('window').width / 2) - 21,
-        width: (Dimensions.get('window').width / 2) - 21,
-        top:0, 
-        
+        height: (width / 2) - 21,
+        width: (width / 2) - 21,
+        top:0,
+
     },
     image: {flex: 1, resizeMode: 'contain', width: "100%"},
     textName: {
-        fontWeight: 'bold', 
-        fontSize: 17, 
-        marginTop: 10, 
+        fontWeight: 'bold',
+        fontSize: 17,
+        marginTop: 10,
         textTransform: 'capitalize'
     },
-  
-});
+
+})
 
 
 const petDetails = StyleSheet.create({
@@ -131,7 +131,7 @@ const petDetails = StyleSheet.create({
       borderTopLeftRadius: 25,
       borderBottomLeftRadius: 25,
     },
-  });
+  })
 
 const petsStatesStyle = StyleSheet.create({
     categoryContainer: {
@@ -154,7 +154,7 @@ const petsStatesStyle = StyleSheet.create({
         marginTop: 10,
         paddingBottom: 50,
     }
-});
+})
 
 export {
     petCardStyle,

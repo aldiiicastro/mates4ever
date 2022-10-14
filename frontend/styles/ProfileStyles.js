@@ -1,6 +1,13 @@
-import { Dimensions, StyleSheet } from 'react-native'
+import { StyleSheet } from 'react-native'
+import {colors} from "./Colors"
+import {width} from "./Dimension.js"
 
 const profileStyles = StyleSheet.create({
+  header: {
+    backgroundColor: colors.violet,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   cardContainer: {
     flex: 1,
   },
@@ -15,16 +22,17 @@ const profileStyles = StyleSheet.create({
   coverContainer: {
     position: 'relative',
   },
-  coverImage: {
-    height: 200,
-    width: Dimensions.get('window').width,
-  },
+
   coverMetaContainer: {
+    flexDirection: 'row',
+    backgroundColor: 'transparent',
+    paddingLeft: 22,
+  },
+  locationStyle: {
+    flexDirection: 'row',
     backgroundColor: 'transparent',
     paddingBottom: 20,
-    paddingLeft: 22,
-    // marginTop: 300
-
+    paddingLeft: 20,
   },
   coverName: {
     color: '#000',
@@ -82,7 +90,8 @@ const profileStyles = StyleSheet.create({
   profileImageContainer: {
     display: "flex",
     alignItems: "center",
-    marginTop: -150,
+    backgroundColor: colors.violet,
+    width
   },
   sceneContainer: {
     marginTop: 15,

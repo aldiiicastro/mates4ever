@@ -1,20 +1,20 @@
-import {useState} from 'react';
+import {useState} from 'react'
 
 const STATUS = {
     HOVERED: 'hovered',
     NORMAL: 'normal',
-};
+}
 
 export default function Link({page, children}) {
-    const [status, setStatus] = useState(STATUS.NORMAL);
+    const [status, setStatus] = useState(STATUS.NORMAL)
 
     const onMouseEnter = () => {
-        setStatus(STATUS.HOVERED);
-    };
+        setStatus(STATUS.HOVERED)
+    }
 
     const onMouseLeave = () => {
-        setStatus(STATUS.NORMAL);
-    };
+        setStatus(STATUS.NORMAL)
+    }
 
     return (
         <a
@@ -25,5 +25,5 @@ export default function Link({page, children}) {
         >
             {children}
         </a>
-    );
+    )
 }

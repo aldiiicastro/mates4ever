@@ -1,14 +1,13 @@
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import PropTypes from 'prop-types'
-import Icon from "react-native-vector-icons/MaterialIcons";
-
+import Icon from "react-native-vector-icons/MaterialIcons"
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    
+
   },
   column: {
     flexDirection: 'row',
@@ -16,11 +15,10 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   emailIcon: {
-    color: 'gray',
-    fontSize: 35,
+    fontSize: 25,
     color:"#ffb612"
   },
- 
+
   row: {
     flex: 8,
     flexDirection: 'column',
@@ -30,20 +28,20 @@ const styles = StyleSheet.create({
     fontSize: 19,
   },
   iconRow: {
-    marginVertical: 18,
+    marginVertical: 10,
+    marginRight: -15,
     flex: 2,
     alignItems: 'center',
   },
 })
 
-const ContactCard = ({ containerStyle, onPress, contact, index, icon }) => (
+const ContactCard = ({ containerStyle, onPress, contact, icon }) => (
   <TouchableOpacity onPress={() => onPress(contact)}>
     <View style={[styles.container, containerStyle]}>
       <View style={styles.iconRow}>
           <Icon
             name={icon}
             style={ styles.emailIcon }
-            onPress={ () => onPress() }
           />
       </View>
       <View style={styles.row}>

@@ -1,18 +1,18 @@
-import * as React from 'react';
-import HomeScreen from "./Components/screens/HomeScreen";
-import DetailsScreen from "./Components/screens/DetailsScreen.js";
-import CreatePetScreen from "./Components/screens/CreatePetScreen.js";
-import LoginScreen from "./Components/screens/LoginScreen.js";
-import UserProfile from "./Components/screens/UserProfile";
-import RegisterScreen from "./Components/screens/RegisterScreen";
-import SplashScreen from "./Components/common/login/SplashScreen";
-import {NavigationContainer} from "@react-navigation/native";
-import {StatusBar} from "react-native";
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import {colors} from "./styles/Colors.js";
+import * as React from 'react'
+import HomeScreen from "./Components/screens/HomeScreen"
+import DetailsScreen from "./Components/screens/DetailsScreen.js"
+import CreatePetScreen from "./Components/screens/CreatePetScreen.js"
+import LoginScreen from "./Components/screens/LoginScreen.js"
+import UserProfile from "./Components/screens/UserProfile"
+import RegisterScreen from "./Components/screens/RegisterScreen"
+import SplashScreen from "./Components/common/login/SplashScreen"
+import {NavigationContainer} from "@react-navigation/native"
+import {StatusBar} from "react-native"
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import {colors} from "./styles/Colors.js"
 
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator()
 const Auth = () => {
     return (
         <Stack.Navigator initialRouteName="LoginScreen">
@@ -30,23 +30,24 @@ const Auth = () => {
                 }}
             />
         </Stack.Navigator>
-    );
-};
+    )
+}
 
 function App() {
   return (
       <NavigationContainer>
         <StatusBar barStyle="dark-content" backgroundColor={colors.beige} />
-        <Stack.Navigator screenOptions={{header: () => null}} initialRouteName="Inicio">
+        <Stack.Navigator screenOptions={{header: () => null}} initialRouteName="SplashScreen">
             <Stack.Screen name={"SplashScreen"} component={SplashScreen} options={{headerShown: false}}/>
             <Stack.Screen name={"Auth"} component={Auth} options={{headerShown: false}}/>
+            <Stack.Screen name={"Login"} component={LoginScreen} options={{headerShown: false}}/>
             <Stack.Screen name={"Inicio"} component={HomeScreen} />
             <Stack.Screen name={"Detalles"} component={DetailsScreen} />
             <Stack.Screen name={"Perfil"} component={UserProfile}/>
             <Stack.Screen name={"Agregar"} component={CreatePetScreen}/>
         </Stack.Navigator>
       </NavigationContainer>
-  );
+  )
 }
 
-export default App;
+export default App

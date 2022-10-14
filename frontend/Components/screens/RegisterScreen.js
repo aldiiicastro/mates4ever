@@ -4,7 +4,7 @@ import { Picker } from 'react-native-form-component'
 import {ScrollView, Text, View} from "react-native"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import ImageView from "../common/login/ImageView"
-import FormItemGeneric from "../common/login/FormItemGeneric"
+import {FormItemGeneric} from "../common/login/FormItemGeneric"
 import Loader from "../Loader"
 import {registerScreenStyle} from "../../styles/RegisterScreenStyle"
 import {colors} from "../../styles/Colors"
@@ -39,7 +39,7 @@ const RegisterScreen = forwardRef(({ navigation }, ref) => {
             name: userName,
             lastname: lastName,
             email: userEmail,
-            phoneNumber: phoneNumber,
+            phone: phoneNumber,
             municipality: municipality,
             province: province,
             password: userPassword,
@@ -177,8 +177,8 @@ const RegisterScreen = forwardRef(({ navigation }, ref) => {
                                 items={[]}
                                 label="Elegir la ciudad"
                                 placeholder="Sin selección"
-                                selectedValue="Sin selección"
-                                onSelection={province}
+                                selectedValue={municipality}
+                                onSelection={() => {}}
                                 asterik
                             />
                             : < Picker

@@ -1,13 +1,11 @@
-import * as React from 'react';
-import { Text, View } from 'react-native';
-import { petDetails } from '../../styles/PetStyle.js';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import * as React from 'react'
+import { Text, View } from 'react-native'
+import Icon from 'react-native-vector-icons/MaterialIcons'
 import { style } from '../../styles/Commons.js';
-import { petScreenStyle } from '../../styles/PetScreenStyle.js';
 
-export default function Back({onPress, text}) {
+export default function Back({onPress, text, headerStyle}) {
     return (
-      <View style={petScreenStyle.header}>
+      <View style={headerStyle}>
         <View style={style.alignItems}>
             <Icon name="arrow-back" style={{marginStart: 10}} size={25} onPress={onPress}/>
             <Text style={[style.titleText]}>
@@ -15,6 +13,6 @@ export default function Back({onPress, text}) {
             </Text>
         </View>
       </View>
-    );
+    )
 }
 

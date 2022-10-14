@@ -1,13 +1,13 @@
-import {FormItem, Picker} from "react-native-form-component";
-import React, {forwardRef} from "react";
-import {Text, TouchableHighlight, View, Image} from 'react-native';
-import Icon from "react-native-vector-icons/MaterialIcons";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
+import {FormItem, Picker} from "react-native-form-component"
+import React, {forwardRef} from "react"
+import {Text, TouchableHighlight, View, Image} from 'react-native'
+import Icon from "react-native-vector-icons/MaterialIcons"
+import DateTimePickerModal from "react-native-modal-datetime-picker"
+import {Checkbox} from "react-native-paper"
+import { form } from "../../../styles/Form"
+import { style } from "../../../styles/Commons"
+import { colors } from "../../../styles/Colors"
 
-import {Checkbox} from "react-native-paper";
-import { form } from "../../../styles/Form";import { style } from "../../../styles/Commons";
-import { colors } from "../../../styles/Colors";
-3
 
 export const FormItemGeneric = forwardRef(({ ...props }, ref) => {
     return(
@@ -128,8 +128,8 @@ export const CalendarForm = (props) => {
                 onCancel={props.onCancel}
             />
             <View style={ form.inputLineBox }>
-                <Text 
-                    style={props.dateText? form.ps5 : form.textBold } 
+                <Text
+                    style={props.dateText? form.ps5 : form.textBold }
                     onPress={props.onPress}
                 >
                         {props.dateText ? props.dateText : props.defaultText}

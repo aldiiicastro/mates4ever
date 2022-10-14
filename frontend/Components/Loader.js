@@ -1,8 +1,8 @@
-import React from 'react';
-import {StyleSheet, View, Modal, ActivityIndicator} from 'react-native';
+import React from 'react'
+import {StyleSheet, View, Modal, ActivityIndicator} from 'react-native'
 
 const Loader = (props) => {
-    const {loading, ...attributes} = props;
+    const {loading, ...attributes} = props
 
     return (
         <Modal
@@ -10,7 +10,6 @@ const Loader = (props) => {
             animationType={'none'}
             visible={loading}
             onRequestClose={() => {
-                console.log('close modal');
             }}>
             <View style={styles.modalBackground}>
                 <View style={styles.activityIndicatorWrapper}>
@@ -23,10 +22,10 @@ const Loader = (props) => {
                 </View>
             </View>
         </Modal>
-    );
-};
+    )
+}
 
-export default Loader;
+export default Loader
 
 const styles = StyleSheet.create({
     modalBackground: {
@@ -49,4 +48,4 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         height: 80,
     },
-});
+})

@@ -1,7 +1,7 @@
-import {TouchableOpacity} from "react-native";
-import {Image, Text, View} from "react-native";
-import React from "react";
-import {petCardStyleExample} from "../../../styles/PetStyle.js";
+import {TouchableOpacity} from "react-native"
+import {Image, Text, View} from "react-native"
+import React from "react"
+import {petCardStyleExample} from "../../../styles/PetStyle.js"
 
 export default function PetCardEjemplo(props) {
     const pet = props.pet
@@ -15,9 +15,9 @@ export default function PetCardEjemplo(props) {
                             {pet.state}
                         </Text>
                     </View>
-                    
+
                 </View>
             </View>
         </TouchableOpacity>
-    );
+    )
 }

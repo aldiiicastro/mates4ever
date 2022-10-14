@@ -1,39 +1,40 @@
-import React, {useState, createRef} from "react";
+import React, {useState, createRef} from "react"
 import { Form, FormItem } from 'react-native-form-component'
-import { ScrollView } from "react-native-gesture-handler";
+import { ScrollView } from "react-native-gesture-handler"
 
-import {style} from "../../../styles/Commons";
-import {form} from "../../../styles/Form";
-import { colors } from "../../../styles/Colors";
+import {style} from "../../../styles/Commons"
+import {form} from "../../../styles/Form"
+import { colors } from "../../../styles/Colors"
 
-import {createPet} from "../../../server/Api.js";
-import { handleImagePicked, pickImage } from "../../../server/FirebaseServer";
-import Loader from "../../Loader";
-import Back from "../../common/Back";
-import { CalendarForm, ImageForm, MultiLineLabel, SimpleCheckBox, SimpleLineLabel, SimpleLinePicker } from "../../common/login/FormItemGeneric";
+import {createPet} from "../../../server/Api.js"
+import { handleImagePicked, pickImage } from "../../../server/FirebaseServer"
+import Loader from "../../Loader"
+import Back from "../../common/Back"
+import { CalendarForm, ImageForm, MultiLineLabel, SimpleCheckBox, SimpleLineLabel, SimpleLinePicker } from "../../common/login/FormItemGeneric"
+import {petScreenStyle} from "../../../styles/PetScreenStyle"
 
 export default function PetCreation({navigation}) {
-    const [image, setImage] = useState(null);
-    const [imageUri, setImageUri] = useState(null);
-    const [name, setName] = useState('');
-    const [age, setAge] = useState(null);
-    const [ageDate, setAgeDate] = useState(new Date());
-    const [state, setState] = useState('Adopción');
-    const [type, setType] = useState('Perro');
-    const [breed, setBreed] = useState('');
-    const [vaccine, setVaccine] = useState(false);
-    const [castrated, setCastrated] = useState(false);
-    const [medicalHistory, setMedicalHistory] = useState('');
-    const [description, setDescription] = useState('');
-    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-    const [loading, setLoading] = useState(false);
-
+    const [image, setImage] = useState(null)
+    const [imageUri, setImageUri] = useState(null)
+    const [name, setName] = useState('')
+    const [age, setAge] = useState(null)
+    const [ageDate, setAgeDate] = useState(new Date())
+    const [state, setState] = useState('Adopción')
+    const [type, setType] = useState('Perro')
+    const [breed, setBreed] = useState('')
+    const [vaccine, setVaccine] = useState(false)
+    const [castrated, setCastrated] = useState(false)
+    const [medicalHistory, setMedicalHistory] = useState('')
+    const [description, setDescription] = useState('')
+    const [isDatePickerVisible, setDatePickerVisibility] = useState(false)
+    const [loading, setLoading] = useState(false)
+const [error, setErrors] = useState('')
     const nameInputRef = createRef()
 
     const pickAnImage = async () => {
         const pickerResult = await pickImage()
-        setImage(pickerResult);
-        setImageUri(pickerResult.uri);
+        setImage(pickerResult)
+        setImageUri(pickerResult.uri)
     }
 
     const uploadedImage = async () => {
@@ -43,7 +44,7 @@ export default function PetCreation({navigation}) {
         const uuid = await handleImagePicked(image)
         return uuid
     }
-    
+
     const publish = async () => {
         setLoading(true)
         const pet = {
@@ -59,34 +60,29 @@ export default function PetCreation({navigation}) {
             'description': description,
             "tutor": "yo",
         }
-        console.log(pet)
-
         createPet(pet).then((response) => {
-            console.log("hola")
-
             setLoading(false)
             navigation.navigate('Inicio')
 
         }).catch((response) => {
-            console.log("hola")
             setLoading(false)
             setErrors(response.errors)
         } )
 
     }
     const showDatePicker = () => {
-        setDatePickerVisibility(true);
-    };
+        setDatePickerVisibility(true)
+    }
 
     const hideDatePicker = () => {
-        setDatePickerVisibility(false);
-    };
+        setDatePickerVisibility(false)
+    }
 
     const handleConfirm = (date) => {
         setAge(getAge(date))
         setAgeDate(date)
-        hideDatePicker();
-    };
+        hideDatePicker()
+    }
 
     const getAge = (dateInput) => {
         const dateArray = dateInput.toLocaleDateString().split("/")
@@ -95,19 +91,19 @@ export default function PetCreation({navigation}) {
     return (
         <ScrollView style={style.fullContainer}>
             <Loader loading={loading}/>
-            <Back onPress={() => navigation.goBack()} text="Cargar una mascota" />
+            <Back onPress={() => navigation.goBack()} text="Cargar una mascota" headerStyle={petScreenStyle.header}/>
 
             <ImageForm
                 imageUri={imageUri}
                 onPress={pickAnImage}
             />
 
-            <Form 
-                GenericInput={'Cargar una mascota'} onButtonPress={() => publish()} 
-                buttonStyle={{backgroundColor:colors.violet}} 
+            <Form
+                GenericInput={'Cargar una mascota'} onButtonPress={() => publish()}
+                buttonStyle={{backgroundColor:colors.violet}}
                 buttonText="Publicar"
                 style={[style.marginX, style.bgWhite]}>
-                
+
                 <FormItem
                     value={name}
                     label={"Nombre"}
@@ -124,12 +120,12 @@ export default function PetCreation({navigation}) {
                 {/* <RequiredLineLabel
                     value = {name}
                     label = "Nombre"
-                    onChangeText = {setName}   
+                    onChangeText = {setName}
                     ref = {nameInputRef}
                     inputRef={nameInputRef.current && nameInputRef.current.focus()}
                 /> */}
 
-                <CalendarForm 
+                <CalendarForm
                     isVisible={isDatePickerVisible}
                     date={ageDate}
                     onConfirm={handleConfirm}
@@ -139,8 +135,8 @@ export default function PetCreation({navigation}) {
                     onPress={showDatePicker}
 
                 />
-                
-                <SimpleLinePicker 
+
+                <SimpleLinePicker
                     items={[
                         { label: 'Adopción', value: 'Adopción' },
                         { label: 'Transito', value: 'Transito' },
@@ -150,7 +146,7 @@ export default function PetCreation({navigation}) {
                     selectedValue={state}
                     onSelection={(item) => setState(item.value)}
                 />
-                <SimpleLinePicker 
+                <SimpleLinePicker
                     items={[
                         { label: 'Perro', value: 'Perro' },
                         { label: 'Gato', value: 'Gato' },
@@ -161,25 +157,25 @@ export default function PetCreation({navigation}) {
                     onSelection={(item) => setType(item.value)}
                 />
 
-                <SimpleLineLabel 
+                <SimpleLineLabel
                     value={breed}
                     label={"Tiene raza? Cual?"}
                     onChangeText={setBreed}
                 />
-               
-                <MultiLineLabel 
+
+                <MultiLineLabel
                     value={description}
                     label={"Cuentanos un poco sobre " + (name ? name : "el/ella") }
                     onChangeText={setDescription}
                 />
-                
+
                 <MultiLineLabel
                     value={medicalHistory}
                     label={"Tiene algun problema medico? Algo que quieras destacar?"}
                     onChangeText={setMedicalHistory}
                 />
-                
-                <SimpleCheckBox 
+
+                <SimpleCheckBox
                     status={vaccine ? 'checked' : 'unchecked'}
                     onPress={() => { setVaccine(!vaccine) }}
                 />
@@ -190,8 +186,8 @@ export default function PetCreation({navigation}) {
                 />
             </Form>
         </ScrollView>
-    );
-};
+    )
+}
 
 
 

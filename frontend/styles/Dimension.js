@@ -1,4 +1,4 @@
-import {Dimensions} from "react-native";
+import {Dimensions} from "react-native"
 
-const width = Dimensions.get('window').width / 2 - 30;
+const width = Dimensions.get('window').width
 export {width}

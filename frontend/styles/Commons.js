@@ -33,7 +33,7 @@ const style = StyleSheet.create({
         width: 65,
         height: 65,
         bottom: 5,
-        borderRadius: 100,  
+        borderRadius: 100,
     },
     alignItems: {
         flexDirection: 'row',

@@ -19,7 +19,7 @@ const petScreenStyle = StyleSheet.create({
         color: colors.yellow,
         fontWeight: 'bold',
         width: Dimensions.get('window').width-40
-        
+
     },
     categoryContainer: {
         flexDirection: 'row',

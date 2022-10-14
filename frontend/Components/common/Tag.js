@@ -1,7 +1,7 @@
-import * as React from 'react';
-import { View, Text } from 'react-native';
-import { petDetails } from '../../styles/PetStyle.js';
-import {colors} from "../../styles/Colors.js";
+import * as React from 'react'
+import { View, Text } from 'react-native'
+import { petDetails } from '../../styles/PetStyle.js'
+import {colors} from "../../styles/Colors.js"
 
 export default function Tag(props) {
 
@@ -17,6 +17,6 @@ export default function Tag(props) {
               {props.value}
             </Text>
         </View>
-    );
+    )
 }
 

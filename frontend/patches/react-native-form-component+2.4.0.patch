@@ -1,26 +1,34 @@
 diff --git a/node_modules/react-native-form-component/src/components/FormItem/index.tsx b/node_modules/react-native-form-component/src/components/FormItem/index.tsx
-index 459cd85..9722e02 100644
+index 459cd85..916bbbb 100644
 --- a/node_modules/react-native-form-component/src/components/FormItem/index.tsx
 +++ b/node_modules/react-native-form-component/src/components/FormItem/index.tsx
-@@ -58,7 +58,7 @@ const FormItem = forwardRef(({ children, ...props }: Props, ref: any) => {
+@@ -43,6 +43,7 @@ interface Props extends ComponentProps<typeof TextInput> {
+   errorBorderColor?: string;
+   showIcon?: JSX.Element;
+   hideIcon?: JSX.Element;
++  initialPassword?: boolean;
+ }
+ 
+ const FormItem = forwardRef(({ children, ...props }: Props, ref: any) => {
+@@ -58,7 +59,7 @@ const FormItem = forwardRef(({ children, ...props }: Props, ref: any) => {
      setState: () => {
        let validation;
        if (props.customValidation) validation = props.customValidation();
 -      setHasError(containsError(keyboardType, isRequired!, value, validation));
-+      setHasError(containsError(keyboardType, isRequired!, value, validation, hideText));
++      setHasError(containsError(keyboardType, isRequired!, value, validation, hideText, props.initialPassword));
      },
      focus: () => inputRef.current.focus(),
      blur: () => inputRef.current.blur(),
-@@ -70,7 +70,7 @@ const FormItem = forwardRef(({ children, ...props }: Props, ref: any) => {
+@@ -70,7 +71,7 @@ const FormItem = forwardRef(({ children, ...props }: Props, ref: any) => {
    const handleBlur = (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
      let validation;
      if (props.customValidation) validation = props.customValidation();
 -    setHasError(containsError(keyboardType, isRequired!, value, validation));
-+    setHasError(containsError(keyboardType, isRequired!, value, validation, hideText));
++    setHasError(containsError(keyboardType, isRequired!, value, validation, hideText, props.initialPassword));
      if (props.onBlur) props.onBlur(e);
    };
  
-@@ -272,6 +272,15 @@ const validateNumber = (number: string) => {
+@@ -272,6 +273,15 @@ const validateNumber = (number: string) => {
  const validateDecimalNumber = (number: string) => {
    return /^\d+.*\d*/.test(number) && !number.endsWith('.');
  };
@@ -36,19 +44,20 @@ index 459cd85..9722e02 100644
  
  const validatePhoneNumber = (number: string) =>
    /^\+{0,1}\d+$/.test(number.replace(/ /g, ''));
-@@ -280,8 +289,10 @@ export const containsError = (
+@@ -280,8 +290,11 @@ export const containsError = (
    keyboardType: KeyboardTypeOptions = 'default',
    isRequired: boolean,
    value: string,
 -  extraValidation?: Validation
 +  extraValidation?: Validation,
-+  password: boolean
++  password: boolean,
++  initialPassword: boolean,
  ) => {
 +
    if (extraValidation && !extraValidation.status) {
      return {
        status: true,
-@@ -292,18 +303,22 @@ export const containsError = (
+@@ -292,18 +305,23 @@ export const containsError = (
    }
  
    if (keyboardType == 'email-address' && !validateEmail(value))
@@ -66,14 +75,15 @@ index 459cd85..9722e02 100644
 -  if (keyboardType == 'decimal-pad' && !validateDecimalNumber(value))
 -    return { status: true, message: 'Invalid number' };
 +    return { status: true, message: 'Ingresar un número válido' };
-+  if (keyboardType == 'phone-pad' && (value.length <= 10 ))
++  if (keyboardType == 'phone-pad' && (value.length < 8 ))
 +    return { status: true, message: 'El número de teléfono debe contener al menos 8 números' };
 +  if (isRequired && keyboardType == 'phone-pad' && !validatePhoneNumber(value))
 +    return { status: true, message: 'Ingresar un número de teléfono válido' };
  
 +  if (keyboardType == 'decimal-pad' && !validateDecimalNumber(value))
 +    return { status: true, message: 'Ingresar un número válido' };
-+  if (password && !validatePassword(value))
++  console.log(initialPassword)
++  if (!initialPassword && password && !validatePassword(value))
 +    return {status: true, message: 'La contraseña debe contener 8 caracteres incluyendo: al menos 1 mayúscula, una miniscula, un numero'}
    return { status: false, message: '' };
  };

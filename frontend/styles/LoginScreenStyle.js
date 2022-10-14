@@ -1,4 +1,4 @@
-import {StyleSheet} from "react-native";
+import {Dimensions, StyleSheet} from "react-native";
 import {colors} from "./Colors";
 
 const loginScreenStyle = StyleSheet.create({
@@ -7,6 +7,7 @@ const loginScreenStyle = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: colors.yellow,
         alignContent: 'center',
+        width: Dimensions.get('window').width
     },
     SectionStyle: {
         flexDirection: 'row',
