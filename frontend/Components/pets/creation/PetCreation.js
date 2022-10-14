@@ -31,7 +31,6 @@ export default function PetCreation({navigation}) {
 
     const pickAnImage = async () => {
         const pickerResult = await pickImage()
-        console.log(pickAnImage)
         setImage(pickerResult);
         setImageUri(pickerResult.uri);
     }

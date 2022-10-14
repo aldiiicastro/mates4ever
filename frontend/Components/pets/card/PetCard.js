@@ -9,7 +9,11 @@ export default function PetCard(props) {
         <TouchableOpacity testID={`pet-details-${pet.id}` } activeOpacity={0.8} onPress={() => props.navigation.navigate('Detalles', pet.id)}>
             <View style={petCardStyle.container}>
                 <View style={petCardStyle.imageView}>
-                    <Image source={{uri: pet.image}} style={petCardStyle.image}/>
+                    {pet.image ?
+                        <Image source={{uri: pet.image}} style={petCardStyle.image}/>
+                        :
+                        <Image source={require('../../../assets/DefaultPet.png')} style={petCardStyle.image} />
+                    }
                     <View style={pet.isLost() ? petCardStyle.viewStateLost : petCardStyle.viewState}>
                         <Text testID={`pet-state-${pet.id}`} style={pet.isLost() ? petCardStyle.textStateLost : petCardStyle.textState}>
                             {pet.state}

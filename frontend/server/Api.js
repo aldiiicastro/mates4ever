@@ -1,8 +1,8 @@
 import axios from 'axios'
 import bcrypt from "react-native-bcrypt";
 import isaac from "isaac"
-//const baseUrl = 'http://192.168.0.3:8080'
-const baseUrl = 'http://192.168.122.6:8070'
+// const baseUrl = 'http://192.168.0.8:8080'
+const baseUrl = 'http://192.168.0.8:8070'
 
 export const fetchSearch = async (query) => {
     const url = `${baseUrl}/api/pet/search?query=${query}`
@@ -15,7 +15,7 @@ export const loginUser = async (userData) => {
 }
 
 export const getUserByEmail = async (email) => {
-    const url = `${baseUrl}/api/user/email/${email}`;
+    const url = `${baseUrl}/api/user/${email}`;
   return await axios.get(url)
 }
 

@@ -38,17 +38,17 @@ export const pickImage = async () => {
         return pickerResult;
     };
 
-    export const handleImagePicked = async (pickerResult) => {
-        try {
-        if (!pickerResult.cancelled) {
-            const uploadUrl = await uploadImageAsync(pickerResult.uri);
-            return uploadUrl
-        }
-        } catch (e) {
-        console.log(e);
-        alert("Upload failed, sorry :(");
-        }
-    };
+export const handleImagePicked = async (pickerResult) => {
+    try {
+    if (!pickerResult.cancelled) {
+        const uploadUrl = await uploadImageAsync(pickerResult.uri);
+        return uploadUrl
+    }
+    } catch (e) {
+    console.log(e);
+    alert("Upload failed, sorry :(");
+    }
+};
 
     async function uploadImageAsync(uri) {
         const blob = await new Promise((resolve, reject) => {
@@ -71,11 +71,7 @@ export const pickImage = async () => {
         const result = await uploadBytes(fileRef, blob);
         blob.close();
     
-        return uid;
+        return getDownloadURL(fileRef);
     }
 
-export async function getImage(uuid){
-        const fileRef = ref(getStorage(), uuid);
-        return await getDownloadURL(fileRef);
-    } 
 
