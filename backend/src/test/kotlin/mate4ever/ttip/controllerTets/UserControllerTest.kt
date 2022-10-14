@@ -6,11 +6,9 @@ import mate4ever.ttip.dataHelpers.PetFactory
 import mate4ever.ttip.dataHelpers.UserFactory
 import mate4ever.ttip.model.Pet
 import mate4ever.ttip.model.User
-import mate4ever.ttip.model.UserDTO
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.HttpStatus
@@ -56,21 +54,21 @@ class UserControllerTest {
     fun getUserLogin() {
         var user = userFactory.anyUser(pets =listOf(pet))
         user = userController.createUser(user).body as User
-        val findUser = userController.getUser(UserDTO("aldana@gmail.com", "contrasena...")).body as User
+        val findUser = userController.getUser("aldana@gmail.com").body as User
         assert(findUser.name == user.name)
     }
     @Test
     fun getUserLoginWrongPassword() {
         var user = userFactory.anyUser(pets =listOf(pet))
         userController.createUser(user)
-        var status = userController.getUser(UserDTO("aldana@gmail.com", "contrasena45...")).statusCode
+        var status = userController.getUser("aldana@gmail.com").statusCode
         assert(status == HttpStatus.NOT_FOUND)
     }
     @Test
     fun getUserLoginWrongEmail() {
         var user = userFactory.anyUser(pets =listOf(pet))
         userController.createUser(user)
-        var status = userController.getUser(UserDTO("aldanadd@gmail.com", "contrasena...")).statusCode
+        var status = userController.getUser("aldanadd@gmail.com").statusCode
         assert(status == HttpStatus.NOT_FOUND)
     }
     @Test

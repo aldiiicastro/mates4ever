@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import javax.validation.Validation
 
 @Service
 @Transactional
@@ -34,7 +35,8 @@ class PetService {
     }
 
     fun createPet(petDTO: PetRequestDto): Pet {
-        val pet: Pet = Pet(
+//        val validator = Validation.buildDefaultValidatorFactory().validator;
+        val pet = Pet(
             petDTO.name,
             petDTO.image,
             parseLocalDate(petDTO.birth),
@@ -47,6 +49,10 @@ class PetService {
             petDTO.medicalHistory,
             petDTO.description
         )
+//        val errors = validator.validate(pet)
+//        if(errors.size == 0){
+//            return petRepository.insert(pet)
+//        }
         return petRepository.insert(pet)
     }
 

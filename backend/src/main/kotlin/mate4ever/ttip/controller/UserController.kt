@@ -32,12 +32,12 @@ class UserController {
         return ResponseEntity<UserDTO>(UserDTO(user!!.email, user.password),null, HttpStatus.OK)
     }
 
-    @GetMapping("/api/user/email/{email}")
-    fun getPet(@PathVariable(required = true) email: String): ResponseEntity<*> {
-        val user = userService.findUserbyEmail(email)
-        return ResponseEntity<User>(user,null, HttpStatus.OK)
-//        return ResponseEntity<UserDTO>(UserDTO(user!!.email, "1234"),null, HttpStatus.OK)
-    }
+//    @GetMapping("/api/user/{email}")
+//    fun getCompleteUser(@PathVariable(required = true) email: String): ResponseEntity<*> {
+//        val user = userService.findUserbyEmail(email)
+//        return ResponseEntity<User>(user,null, HttpStatus.OK)
+////        return ResponseEntity<UserDTO>(UserDTO(user!!.email, "1234"),null, HttpStatus.OK)
+//    }
 
     @GetMapping("/api/user/all")
     fun getAllUsers(): MutableIterable<User?> {
