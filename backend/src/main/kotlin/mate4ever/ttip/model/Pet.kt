@@ -2,6 +2,9 @@ package mate4ever.ttip.model
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDate
+import javax.persistence.FetchType
+import javax.persistence.JoinColumn
+import javax.persistence.ManyToOne
 import javax.validation.constraints.NotEmpty
 
 
@@ -18,7 +21,9 @@ class Pet(
     @NotEmpty(message="Debes elegir en que estado se encuentra el animal")
     var state: String,
     @NotEmpty(message="El tutor es obligatorio")
-    var tutor: String,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="tutor_id", nullable=false)
+    var tutor: User,
     var vaccine: Boolean,
     var castrated: Boolean,
     var medicalHistory: String?,
