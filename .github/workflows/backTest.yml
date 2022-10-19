@@ -5,9 +5,9 @@ name: Backend Test
 
 on:
   push:
-    branches: [ "git-actions" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "git-actions" ]
+    branches: [ "main" ]
 
 jobs:
   build:
