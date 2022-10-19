@@ -17,16 +17,19 @@ import org.springframework.transaction.annotation.Transactional
 class UserService {
     @Autowired
     private lateinit var userRepository: UserRepository
+
     @Autowired
-    private lateinit var mongoTemplate : MongoTemplate
+    private lateinit var mongoTemplate: MongoTemplate
+
     @Transactional(readOnly = true)
     fun findUserBy(id: String): User {
-        return userRepository.findUserBy(id)
+        return userRepository.findItemById(id)
             ?: throw UserNotFoundException("No existe ningun usuario con ese id en la base de datos")
     }
+
     @Transactional(readOnly = true)
     fun findUser(user: UserDTO): User? {
-        val stateCriteria = criteriaForm("email",user.email)
+        val stateCriteria = criteriaForm("email", user.email)
         val typeCriteria = criteriaForm("password", user.password)
         val criteria = Criteria().andOperator(stateCriteria, typeCriteria)
         val query = Query(criteria)
@@ -37,6 +40,7 @@ class UserService {
     @Transactional(readOnly = true)
     fun findUserbyEmail(email: String): User? {
         return userRepository.findByEmail(email)
+            ?: throw UserNotFoundException("No existe ningun usuario con ese email en la base de datos")
     }
 
     @Transactional(readOnly = true)
@@ -47,9 +51,11 @@ class UserService {
     fun createUser(user: User): User {
         return userRepository.insert(user)
     }
-    private fun criteriaForm(fieldName: String, value: String) : Criteria{
+
+    private fun criteriaForm(fieldName: String, value: String): Criteria {
         return Criteria.where(fieldName).`is`(value)
     }
+
     fun deleteAll() {
         return userRepository.deleteAll()
     }

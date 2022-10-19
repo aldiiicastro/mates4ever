@@ -7,8 +7,8 @@ import org.springframework.stereotype.Repository
 
 @Configuration
 @Repository
-interface UserRepository: MongoRepository<User?, String?> {
-    fun findUserBy(id: String): User?
+interface UserRepository : MongoRepository<User?, String?> {
+    fun findItemById(id: String): User?
     fun insert(user: User): User
-    fun findByEmail(email: String) : User?
+    fun findByEmail(email: String): User?
 }

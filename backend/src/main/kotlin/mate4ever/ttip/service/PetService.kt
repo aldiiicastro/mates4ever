@@ -12,13 +12,13 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import javax.validation.Validation
 
 @Service
 @Transactional
 class PetService {
     @Autowired
     private lateinit var petRepository: PetRepository
+
     @Autowired
     private lateinit var userService: UserService
 
@@ -84,7 +84,7 @@ class PetService {
     private fun parseLocalDate(date: String?): LocalDate? {
         return if (date != null) {
             val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-                LocalDate.parse(date, formatter)
+            LocalDate.parse(date, formatter)
         } else {
             null
         }

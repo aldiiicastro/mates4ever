@@ -2,6 +2,7 @@ package mate4ever.ttip.dataHelpers
 
 import mate4ever.ttip.dto.PetRequestDto
 import mate4ever.ttip.model.Pet
+import mate4ever.ttip.model.User
 import java.time.LocalDate
 
 class PetFactory() {
@@ -12,13 +13,26 @@ class PetFactory() {
         type: String = "Gato",
         breed: String? = "Siames",
         state: String = "Perdido",
-        tutor:String = "Aldi",
-        vaccine:Boolean = true,
-        castrated:Boolean = true,
-        medicalHistory:String? = null,
-        description: String? = "Se perdio en Bernal"): PetRequestDto {
+        tutor: String = "aldana@gmail.com",
+        vaccine: Boolean = true,
+        castrated: Boolean = true,
+        medicalHistory: String? = null,
+        description: String? = "Se perdio en Bernal"
+    ): PetRequestDto {
 
-        return PetRequestDto(name, image, birth, type, breed, state, tutor,  vaccine, castrated, medicalHistory, description)
+        return PetRequestDto(
+            name,
+            image,
+            birth,
+            type,
+            breed,
+            state,
+            tutor,
+            vaccine,
+            castrated,
+            medicalHistory,
+            description
+        )
     }
 
     fun anyPet(
@@ -28,13 +42,14 @@ class PetFactory() {
         type: String = "Gato",
         breed: String? = "Siames",
         state: String = "Perdido",
-        tutor:String = "Aldi",
-        vaccine:Boolean = true,
-        castrated:Boolean = true,
-        medicalHistory:String? = null,
-        description: String? = "Se perdio en Bernal"): Pet {
+        tutor: User = UserFactory().anyUser(pets = listOf()),
+        vaccine: Boolean = true,
+        castrated: Boolean = true,
+        medicalHistory: String? = null,
+        description: String? = "Se perdio en Bernal"
+    ): Pet {
 
-        return Pet(name, image, birth, type, breed, state, tutor,  vaccine, castrated, medicalHistory, description)
+        return Pet(name, image, birth, type, breed, state, tutor, vaccine, castrated, medicalHistory, description)
     }
 
 }

@@ -1,6 +1,7 @@
 package mate4ever.ttip.repositoryTests
 
 import mate4ever.ttip.dataHelpers.PetFactory
+import mate4ever.ttip.dataHelpers.UserFactory
 import mate4ever.ttip.repository.PetRepository
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
@@ -11,11 +12,11 @@ import org.springframework.boot.test.context.SpringBootTest
 class PetRepositoryTest {
     @Autowired
     private lateinit var petRepository: PetRepository
-    private var petFactory : PetFactory = PetFactory()
+    private var petFactory: PetFactory = PetFactory()
 
     @Test
     fun createAndFindPet() {
-        var pet =petFactory.anyPet()
+        var pet = petFactory.anyPet()
         pet = petRepository.insert(pet)
         val findPet = petRepository.findItemById(pet.id!!)
         assert(findPet!!.name == pet.name)
@@ -23,7 +24,16 @@ class PetRepositoryTest {
 
     @Test
     fun createAndFindPetWithNullParameters() {
-        var pet = petFactory.anyPet("Firu", "image", null,"Dog", null, "Lost", "Anto", description = null)
+        var pet = petFactory.anyPet(
+            "Firu",
+            "image",
+            null,
+            "Dog",
+            null,
+            "Lost",
+            UserFactory().anyUser(pets = listOf()),
+            description = null
+        )
         pet = petRepository.insert(pet)
         val findPet = petRepository.findItemById(pet.id!!)
         assert(findPet!!.name == pet.name)
