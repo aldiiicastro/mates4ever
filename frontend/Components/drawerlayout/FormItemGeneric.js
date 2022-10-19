@@ -4,30 +4,29 @@ import {Text, TouchableHighlight, View, Image} from 'react-native'
 import Icon from "react-native-vector-icons/MaterialIcons"
 import DateTimePickerModal from "react-native-modal-datetime-picker"
 import {Checkbox} from "react-native-paper"
-import { form } from "../../../styles/Form"
-import { style } from "../../../styles/Commons"
-import { colors } from "../../../styles/Colors"
+import {form} from "../../styles/Form"
+import {style} from "../../styles/Commons"
+import {colors} from "../../styles/Colors"
 
-
-export const FormItemGeneric = forwardRef(({ ...props }, ref) => {
-    return(
-            <FormItem
-                value={props.value}
-                label={props.label}
-                onChangeText={props.onChange}
-                onSubmitEditing={props.inputRef}
-                ref={ref}
-                keyboardType={props.keyboardType}
-                showErrorIcon={false}
-                asterik
-                floatingLabel
-                isRequired
-            />
+export const FormItemGeneric = forwardRef(({...props}, ref) => {
+    return (
+        <FormItem
+            value={props.value}
+            label={props.label}
+            onChangeText={props.onChange}
+            onSubmitEditing={props.inputRef}
+            ref={ref}
+            keyboardType={props.keyboardType}
+            showErrorIcon={false}
+            asterik
+            floatingLabel
+            isRequired
+        />
     )
 })
 
-export const SimpleLineLabel = forwardRef(({ ...props }, ref) => {
-    return(
+export const SimpleLineLabel = forwardRef(({...props}, ref) => {
+    return (
         <FormItem
             value={props.value}
             label={props.label}
@@ -39,8 +38,8 @@ export const SimpleLineLabel = forwardRef(({ ...props }, ref) => {
     )
 })
 
-export const MultiLineLabel = forwardRef(({ ...props }, ref) => {
-    return(
+export const MultiLineLabel = forwardRef(({...props}, ref) => {
+    return (
         <FormItem
             value={props.value}
             label={props.label}
@@ -56,7 +55,7 @@ export const MultiLineLabel = forwardRef(({ ...props }, ref) => {
 
 
 export const RequiredLineLabel = forwardRef((props, ref) => {
-    return(
+    return (
         <FormItem
             value={props.value}
             label={props.label}
@@ -75,7 +74,7 @@ export const RequiredLineLabel = forwardRef((props, ref) => {
 })
 
 export const SimpleLinePicker = (props) => {
-    return(
+    return (
         <Picker
             items={props.items}
             label={props.label}
@@ -83,13 +82,13 @@ export const SimpleLinePicker = (props) => {
             onSelection={props.onSelection}
             asterik
             selectedValueStyle={form.pickerLineBox}
-            labelStyle={{marginStart: 5 }}
+            labelStyle={{marginStart: 5}}
         />
     )
 }
 
 export const SimpleCheckBox = (props) => {
-    return(
+    return (
         <View style={style.alignItems}>
             <Checkbox
                 color={colors.yellow}
@@ -102,24 +101,24 @@ export const SimpleCheckBox = (props) => {
 }
 
 export const ImageForm = (props) => {
-    return(
+    return (
         <View style={form.image} on>
             <TouchableHighlight onPress={props.onPress}>
                 {props.imageUri ?
-                <Image source={{ uri: props.imageUri }} style={ form.imageSize }/>
-                :
-                <Image source={require('../../../assets/DefaultPet.png')} style={ form.imageSize } />}
+                    <Image source={{uri: props.imageUri}} style={form.imageSize}/>
+                    :
+                    <Image source={require('../../assets/DefaultPet.png')} style={form.imageSize}/>}
             </TouchableHighlight>
-            <View style={form.imageIcon} >
-                <Icon name="create" size={28} onPress={props.onPress}  />
+            <View style={form.imageIcon}>
+                <Icon name="create" size={28} onPress={props.onPress}/>
             </View>
         </View>
     )
 }
 
 export const CalendarForm = (props) => {
-    return(
-        <View style={{ marginHorizontal: 10, marginBottom: 25  }}>
+    return (
+        <View style={{marginHorizontal: 10, marginBottom: 25}}>
             <DateTimePickerModal
                 isVisible={props.isVisible}
                 mode="date"
@@ -127,12 +126,12 @@ export const CalendarForm = (props) => {
                 onConfirm={props.onConfirm}
                 onCancel={props.onCancel}
             />
-            <View style={ form.inputLineBox }>
+            <View style={form.inputLineBox}>
                 <Text
-                    style={props.dateText? form.ps5 : form.textBold }
+                    style={props.dateText ? form.ps5 : form.textBold}
                     onPress={props.onPress}
                 >
-                        {props.dateText ? props.dateText : props.defaultText}
+                    {props.dateText ? props.dateText : props.defaultText}
                 </Text>
             </View>
         </View>

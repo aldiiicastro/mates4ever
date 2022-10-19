@@ -7,7 +7,7 @@ import {
 } from 'react-native'
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import {colors} from "../../../styles/Colors"
+import {colors} from "../../styles/Colors"
 
 const SplashScreen = ({navigation}) => {
     //State for ActivityIndicator animation
@@ -30,7 +30,7 @@ const SplashScreen = ({navigation}) => {
     return (
         <View style={styles.container}>
             <Image
-                source={require('../../../assets/icono.png')}
+                source={require('../../assets/icono.png')}
                 style={{width: '80%', resizeMode: 'contain', margin: 30, borderRadius: 10}}
             />
             <ActivityIndicator

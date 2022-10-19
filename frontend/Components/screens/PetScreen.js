@@ -19,13 +19,13 @@ export default function PetScreen({navigation}) {
     const search = async query => {
         try {
             fetchSearch(query).then(response => {
-                const pets = response.data.map((pet) =>(new Pet(pet)))
+                const pets = response.data.map((pet) => (new Pet(pet)))
                 setPetsSearching(pets)
             })
         } catch (error) {
             setPetsSearching([])
             isAlreadyShownAlert ?
-                (            Alert.alert(
+                (Alert.alert(
                     "Error",
                     "Hubo un error al conectarse con la base. Por favor comuniquese con el administrador.",
                     [{text: "OK", onPress: () => console.log("OK Pressed")}])) : ''
@@ -34,34 +34,40 @@ export default function PetScreen({navigation}) {
     }
 
     //[] means that useEffect runs in the first render.
-    useEffect(() => {search('')}, [])
+    useEffect(() => {
+        search('')
+    }, [])
     return (
-            <SafeAreaView style={[petScreenStyle.safeAreaView, style.fullContainer ]}>
-                <View style={petScreenStyle.header}>
-                    <View>
-                        <Text style={petScreenStyle.titleText}>
-                            Mates4Ever
-                        </Text>
-                        <PerfilButton navigation={navigation}></PerfilButton>
-                    </View>
+        <SafeAreaView style={[petScreenStyle.safeAreaView, style.fullContainer]}>
+            <View style={petScreenStyle.header}>
+                <View>
+                    <Text style={petScreenStyle.titleText}>
+                        Mates4Ever
+                    </Text>
+                    <PerfilButton navigation={navigation}></PerfilButton>
                 </View>
-                <View style={petScreenStyle.searchView}>
-                    <View style={petScreenStyle.searchContainer}>
-                        <Icon name="search" size={25} style={petScreenStyle.iconSearch}/>
-                        <TextInput testID={'search'} placeholder="Search" style={petScreenStyle.input} ref={input => { textInput = input}} onChangeText={search} clearButtonMode={"always"}/>
-                        <Icon name="close" size={20} style={petScreenStyle.iconClose} onPress={( ) => {
-                            textInput.clear()
-                            search('')
+            </View>
+            <View style={petScreenStyle.searchView}>
+                <View style={petScreenStyle.searchContainer}>
+                    <Icon name="search" size={25} style={petScreenStyle.iconSearch}/>
+                    <TextInput testID={'search'} placeholder="Search" style={petScreenStyle.input} ref={input => {
+                        textInput = input
+                    }} onChangeText={search} clearButtonMode={"always"}/>
+                    <Icon name="close" size={20} style={petScreenStyle.iconClose} onPress={() => {
+                        textInput.clear()
+                        search('')
 
-                        }}/>
-                    </View>
-                    <View style={petScreenStyle.sortBtn}>
-                        <Icon name="sort" size={30} style={petScreenStyle.iconSrt} />
-                    </View>
+                    }}/>
                 </View>
-            <ScrollView horizontal={true} >
-                {((petsSearching && petsSearching.length) ? <PetsStatesView navigation={navigation} pets={petsSearching}/> :
-                    <View><View style={petScreenStyle.categoryContainer} testID={'view-container-general'}><Title testID={'no-pets'}>No hay mascotas</Title></View></View>)}
+                <View style={petScreenStyle.sortBtn}>
+                    <Icon name="sort" size={30} style={petScreenStyle.iconSrt}/>
+                </View>
+            </View>
+            <ScrollView horizontal={true}>
+                {((petsSearching && petsSearching.length) ?
+                    <PetsStatesView navigation={navigation} pets={petsSearching}/> :
+                    <View><View style={petScreenStyle.categoryContainer} testID={'view-container-general'}><Title
+                        testID={'no-pets'}>No hay mascotas</Title></View></View>)}
             </ScrollView>
         </SafeAreaView>
     )

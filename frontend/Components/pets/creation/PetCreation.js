@@ -1,16 +1,23 @@
 import React, {useState, createRef} from "react"
-import { Form, FormItem } from 'react-native-form-component'
-import { ScrollView } from "react-native-gesture-handler"
+import {Form, FormItem} from 'react-native-form-component'
+import {ScrollView} from "react-native-gesture-handler"
 
 import {style} from "../../../styles/Commons"
 import {form} from "../../../styles/Form"
-import { colors } from "../../../styles/Colors"
+import {colors} from "../../../styles/Colors"
 
 import {createPet} from "../../../server/Api.js"
-import { handleImagePicked, pickImage } from "../../../server/FirebaseServer"
+import {handleImagePicked, pickImage} from "../../../server/FirebaseServer"
 import Loader from "../../Loader"
-import Back from "../../common/Back"
-import { CalendarForm, ImageForm, MultiLineLabel, SimpleCheckBox, SimpleLineLabel, SimpleLinePicker } from "../../common/login/FormItemGeneric"
+import Back from "../../drawerlayout/Back"
+import {
+    CalendarForm,
+    ImageForm,
+    MultiLineLabel,
+    SimpleCheckBox,
+    SimpleLineLabel,
+    SimpleLinePicker
+} from "../../drawerlayout/FormItemGeneric"
 import {petScreenStyle} from "../../../styles/PetScreenStyle"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 
@@ -29,7 +36,7 @@ export default function PetCreation({navigation}) {
     const [description, setDescription] = useState('')
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false)
     const [loading, setLoading] = useState(false)
-const [error, setErrors] = useState('')
+    const [error, setErrors] = useState('')
     const nameInputRef = createRef()
 
     const pickAnImage = async () => {
@@ -39,7 +46,7 @@ const [error, setErrors] = useState('')
     }
 
     const uploadedImage = async () => {
-        if (!image){
+        if (!image) {
             return ""
         }
         const uuid = await handleImagePicked(image)
@@ -50,7 +57,7 @@ const [error, setErrors] = useState('')
         setLoading(true)
 
         const userEmail = await AsyncStorage.getItem('user_id')
-        const image =  await uploadedImage()
+        const image = await uploadedImage()
 
         const pet = {
             'name': name,
@@ -72,8 +79,8 @@ const [error, setErrors] = useState('')
             navigation.navigate('Inicio')
         }).catch((response) => {
             setErrors(response.errors)
-        } )
-        
+        })
+
         setLoading(false)
     }
     const showDatePicker = () => {
@@ -106,7 +113,7 @@ const [error, setErrors] = useState('')
 
             <Form
                 GenericInput={'Cargar una mascota'} onButtonPress={() => publish()}
-                buttonStyle={{backgroundColor:colors.violet}}
+                buttonStyle={{backgroundColor: colors.violet}}
                 buttonText="Publicar"
                 style={[style.marginX, style.bgWhite]}>
 
@@ -144,9 +151,9 @@ const [error, setErrors] = useState('')
 
                 <SimpleLinePicker
                     items={[
-                        { label: 'Adopción', value: 'Adopción' },
-                        { label: 'Transito', value: 'Transito' },
-                        { label: 'Perdido', value: 'Perdido' },
+                        {label: 'Adopción', value: 'Adopción'},
+                        {label: 'Transito', value: 'Transito'},
+                        {label: 'Perdido', value: 'Perdido'},
                     ]}
                     label="Tipo de publicacion"
                     selectedValue={state}
@@ -154,9 +161,9 @@ const [error, setErrors] = useState('')
                 />
                 <SimpleLinePicker
                     items={[
-                        { label: 'Perro', value: 'Perro' },
-                        { label: 'Gato', value: 'Gato' },
-                        { label: 'Otro', value: 'Otro' },
+                        {label: 'Perro', value: 'Perro'},
+                        {label: 'Gato', value: 'Gato'},
+                        {label: 'Otro', value: 'Otro'},
                     ]}
                     label="Tipo de animal"
                     selectedValue={type}
@@ -171,7 +178,7 @@ const [error, setErrors] = useState('')
 
                 <MultiLineLabel
                     value={description}
-                    label={"Cuentanos un poco sobre " + (name ? name : "el/ella") }
+                    label={"Cuentanos un poco sobre " + (name ? name : "el/ella")}
                     onChangeText={setDescription}
                 />
 
@@ -183,12 +190,16 @@ const [error, setErrors] = useState('')
 
                 <SimpleCheckBox
                     status={vaccine ? 'checked' : 'unchecked'}
-                    onPress={() => { setVaccine(!vaccine) }}
+                    onPress={() => {
+                        setVaccine(!vaccine)
+                    }}
                 />
 
                 <SimpleCheckBox
                     status={castrated ? 'checked' : 'unchecked'}
-                    onPress={() => { setCastrated(!castrated) }}
+                    onPress={() => {
+                        setCastrated(!castrated)
+                    }}
                 />
             </Form>
         </ScrollView>

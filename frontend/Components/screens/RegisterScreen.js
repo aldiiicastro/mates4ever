@@ -1,16 +1,16 @@
 import React, {createRef, forwardRef, useEffect, useState} from 'react'
-import { Form, FormItem } from 'react-native-form-component'
-import { Picker } from 'react-native-form-component'
+import {Form, FormItem} from 'react-native-form-component'
+import {Picker} from 'react-native-form-component'
 import {ScrollView, Text, View} from "react-native"
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import ImageView from "../common/login/ImageView"
-import {FormItemGeneric} from "../common/login/FormItemGeneric"
+import ImageView from "../drawerlayout/ImageView"
+import {FormItemGeneric} from "../drawerlayout/FormItemGeneric"
 import Loader from "../Loader"
 import {registerScreenStyle} from "../../styles/RegisterScreenStyle"
 import {colors} from "../../styles/Colors"
 import {createUser, getMunicipalities, getProvince} from "../../server/Api"
 
-const RegisterScreen = forwardRef(({ navigation }, ref) => {
+const RegisterScreen = forwardRef(({navigation}, ref) => {
     const [userName, setUserName] = useState('')
     const [lastName, setLastName] = useState('')
     const [userEmail, setUserEmail] = useState('')
@@ -78,16 +78,19 @@ const RegisterScreen = forwardRef(({ navigation }, ref) => {
     }
 
     //[] means that useEffect runs in the first render.
-    useEffect(()=> {getProvinces()}, [])
+    useEffect(() => {
+        getProvinces()
+    }, [])
 
     return (
-        <View style={{ flex: 1, backgroundColor: colors.yellow, padding: 24 }}>
-            <Loader loading={loading} />
+        <View style={{flex: 1, backgroundColor: colors.yellow, padding: 24}}>
+            <Loader loading={loading}/>
             {loading ?
-                <Loader loading={loading} /> :
+                <Loader loading={loading}/> :
                 <ScrollView>
                     <ImageView/>
-                    <Form GenericInput={'Registrarse'} onButtonPress={() => handleSubmitButton()} buttonStyle={{backgroundColor:colors.violet}}>
+                    <Form GenericInput={'Registrarse'} onButtonPress={() => handleSubmitButton()}
+                          buttonStyle={{backgroundColor: colors.violet}}>
                         <FormItemGeneric
                             value={userName}
                             label={"Nombre"}
@@ -120,7 +123,7 @@ const RegisterScreen = forwardRef(({ navigation }, ref) => {
                             ref={reEmailInputRef}
                             keyboardType={'email-address'}
                             customValidation={() => {
-                               return {status: (userConfirmEmail === userEmail), message:'No coinciden los emails'}
+                                return {status: (userConfirmEmail === userEmail), message: 'No coinciden los emails'}
                             }}
                             showErrorIcon={false}
                             asterik
@@ -155,7 +158,10 @@ const RegisterScreen = forwardRef(({ navigation }, ref) => {
                             ref={rePasswordInputRef}
                             showErrorIcon={false}
                             customValidation={() => {
-                                return {status: (userConfirmPassword === userPassword), message:'No coinciden las contraseñas'}
+                                return {
+                                    status: (userConfirmPassword === userPassword),
+                                    message: 'No coinciden las contraseñas'
+                                }
                             }}
                             asterik
                             floatingLabel
@@ -170,22 +176,26 @@ const RegisterScreen = forwardRef(({ navigation }, ref) => {
                             onSelection={(item) => setProvinceAndMunicipality(item.value)}
                             asterik
                         />
-                        { !province ?
+                        {!province ?
                             < Picker
                                 items={[]}
                                 label="Elegir la ciudad"
                                 placeholder="Sin selección"
                                 selectedValue={municipality}
-                                onSelection={() => {}}
+                                onSelection={() => {
+                                }}
                                 asterik
                             />
                             : < Picker
-                            items={municipalities.map((municipality) => ({label: municipality.nombre, value: municipality.nombre}))}
-                            label="Elegir la ciudad"
-                            placeholder="Sin selección"
-                            selectedValue={municipality}
-                            onSelection={(item) => setMunicipality(item.value)}
-                            asterik
+                                items={municipalities.map((municipality) => ({
+                                    label: municipality.nombre,
+                                    value: municipality.nombre
+                                }))}
+                                label="Elegir la ciudad"
+                                placeholder="Sin selección"
+                                selectedValue={municipality}
+                                onSelection={(item) => setMunicipality(item.value)}
+                                asterik
                             />}
                         {errorText !== '' ? (
                             <Text style={registerScreenStyle.errorTextStyle}>

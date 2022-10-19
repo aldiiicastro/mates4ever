@@ -11,22 +11,28 @@ export default function PetsStatesView(props) {
 
     const filterState = buttonState => {
         setState(buttonState)
-        return (buttonState !== 'Todos') ? props.pets.filter(function (pet){return pet.isThisState(buttonState)}) : props.pets
+        return (buttonState !== 'Todos') ? props.pets.filter(function (pet) {
+            return pet.isThisState(buttonState)
+        }) : props.pets
     }
 
     const statesButtons = (buttonState, index) => {
         return (
-            <TouchableOpacity  testID={`button-${buttonState}`} key={index} activeOpacity={0.8} onPress={() =>  setPets(filterState(buttonState))}>
-                <Text style={[petsStatesStyle.categoryText, state === buttonState && petsStatesStyle.categoryTextSelected]}>{buttonState}</Text>
+            <TouchableOpacity testID={`button-${buttonState}`} key={index} activeOpacity={0.8}
+                              onPress={() => setPets(filterState(buttonState))}>
+                <Text
+                    style={[petsStatesStyle.categoryText, state === buttonState && petsStatesStyle.categoryTextSelected]}>{buttonState}</Text>
             </TouchableOpacity>)
     }
 
-    useEffect(() => {setPets(filterState(state))}, [props.pets])
+    useEffect(() => {
+        setPets(filterState(state))
+    }, [props.pets])
 
     return (
         <View>
             <View style={petsStatesStyle.categoryContainer}>
-                {states.map((propState, index) => statesButtons(propState, index))  }
+                {states.map((propState, index) => statesButtons(propState, index))}
             </View>
             <FlatList
                 columnWrapperStyle={{justifyContent: 'space-between'}}
@@ -34,7 +40,9 @@ export default function PetsStatesView(props) {
                 contentContainerStyle={petsStatesStyle.contentContainerStyle}
                 numColumns={2}
                 data={pets}
-                renderItem={({item}) => {return <PetCard navigation={props.navigation} pet={item} />}}
+                renderItem={({item}) => {
+                    return <PetCard navigation={props.navigation} pet={item}/>
+                }}
             />
         </View>)
 }
