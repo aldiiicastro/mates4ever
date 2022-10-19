@@ -56,8 +56,6 @@ const ContactCard = ({containerStyle, onPress, contact, icon}) => (
 ContactCard.propTypes = {
     containerStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number]),
     contact: PropTypes.string.isRequired,
-    index: PropTypes.number.isRequired,
-    onPress: PropTypes.func.isRequired,
     icon: PropTypes.string.isRequired
 }
 
