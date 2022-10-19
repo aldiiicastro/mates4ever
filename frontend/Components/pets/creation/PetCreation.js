@@ -12,6 +12,7 @@ import Loader from "../../Loader"
 import Back from "../../common/Back"
 import { CalendarForm, ImageForm, MultiLineLabel, SimpleCheckBox, SimpleLineLabel, SimpleLinePicker } from "../../common/login/FormItemGeneric"
 import {petScreenStyle} from "../../../styles/PetScreenStyle"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 
 export default function PetCreation({navigation}) {
     const [image, setImage] = useState(null)
@@ -47,9 +48,13 @@ const [error, setErrors] = useState('')
 
     const publish = async () => {
         setLoading(true)
+
+        const userEmail = await AsyncStorage.getItem('user_id')
+        const image =  await uploadedImage()
+
         const pet = {
             'name': name,
-            "image": await uploadedImage(),
+            "image": image,
             'birth': age,
             'state': state,
             'type': type,
@@ -58,17 +63,18 @@ const [error, setErrors] = useState('')
             'castrated': castrated,
             'medicalHistory': medicalHistory,
             'description': description,
-            "tutor": "yo",
+            "tutor": userEmail,
         }
-        createPet(pet).then((response) => {
-            setLoading(false)
-            navigation.navigate('Inicio')
 
+        console.log(pet)
+
+        createPet(pet).then((response) => {
+            navigation.navigate('Inicio')
         }).catch((response) => {
-            setLoading(false)
             setErrors(response.errors)
         } )
-
+        
+        setLoading(false)
     }
     const showDatePicker = () => {
         setDatePickerVisibility(true)

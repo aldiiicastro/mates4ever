@@ -19,6 +19,8 @@ import javax.validation.Validation
 class PetService {
     @Autowired
     private lateinit var petRepository: PetRepository
+    @Autowired
+    private lateinit var userService: UserService
 
     @Autowired
     private lateinit var mongoTemplate: MongoTemplate
@@ -36,6 +38,7 @@ class PetService {
 
     fun createPet(petDTO: PetRequestDto): Pet {
 //        val validator = Validation.buildDefaultValidatorFactory().validator;
+        val user = userService.findUserbyEmail(petDTO.tutor)!!
         val pet = Pet(
             petDTO.name,
             petDTO.image,
@@ -43,7 +46,7 @@ class PetService {
             petDTO.type,
             petDTO.breed,
             petDTO.state,
-            petDTO.tutor,
+            user,
             petDTO.vaccine,
             petDTO.castrated,
             petDTO.medicalHistory,

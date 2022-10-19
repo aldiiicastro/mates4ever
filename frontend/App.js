@@ -13,10 +13,18 @@ import {colors} from "./styles/Colors.js"
 
 
 const Stack = createNativeStackNavigator()
-const Auth = () => {
-    return (
-        <Stack.Navigator initialRouteName="LoginScreen">
+
+function App() {
+  return (
+      <NavigationContainer>
+        <StatusBar barStyle="dark-content" backgroundColor={colors.beige} />
+        <Stack.Navigator screenOptions={{header: () => null}} initialRouteName="SplashScreen">
+            <Stack.Screen name={"SplashScreen"} component={SplashScreen} options={{headerShown: false}}/>
             <Stack.Screen name={"Login"} component={LoginScreen} options={{headerShown: false}}/>
+            <Stack.Screen name={"Inicio"} component={HomeScreen} />
+            <Stack.Screen name={"Detalles"} component={DetailsScreen} />
+            <Stack.Screen name={"Perfil"} component={UserProfile}/>
+            <Stack.Screen name={"Agregar"} component={CreatePetScreen}/>
             <Stack.Screen name={"Registro"} component={RegisterScreen}
                 options={{
                     title: 'Registro', //Set Header Title
@@ -29,22 +37,6 @@ const Auth = () => {
                     },
                 }}
             />
-        </Stack.Navigator>
-    )
-}
-
-function App() {
-  return (
-      <NavigationContainer>
-        <StatusBar barStyle="dark-content" backgroundColor={colors.beige} />
-        <Stack.Navigator screenOptions={{header: () => null}} initialRouteName="SplashScreen">
-            <Stack.Screen name={"SplashScreen"} component={SplashScreen} options={{headerShown: false}}/>
-            <Stack.Screen name={"Auth"} component={Auth} options={{headerShown: false}}/>
-            <Stack.Screen name={"Login"} component={LoginScreen} options={{headerShown: false}}/>
-            <Stack.Screen name={"Inicio"} component={HomeScreen} />
-            <Stack.Screen name={"Detalles"} component={DetailsScreen} />
-            <Stack.Screen name={"Perfil"} component={UserProfile}/>
-            <Stack.Screen name={"Agregar"} component={CreatePetScreen}/>
         </Stack.Navigator>
       </NavigationContainer>
   )

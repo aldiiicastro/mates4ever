@@ -23,7 +23,7 @@ class PetRepositoryTest {
 
     @Test
     fun createAndFindPetWithNullParameters() {
-        var pet = petFactory.anyPet("Firu", "image", null,"Dog", null, "Lost", "Anto", description = null)
+        var pet = petFactory.anyPet("Firu", "image", null,"Dog", null, "Lost", description = null)
         pet = petRepository.insert(pet)
         val findPet = petRepository.findItemById(pet.id!!)
         assert(findPet!!.name == pet.name)

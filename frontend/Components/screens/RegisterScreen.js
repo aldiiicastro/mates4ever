@@ -131,9 +131,7 @@ const RegisterScreen = forwardRef(({ navigation }, ref) => {
                             value={phoneNumber}
                             label="Número de teléfono"
                             onChangeText={(phoneNumber) => setPhoneNumber(phoneNumber)}
-                            onSubmitEditing={() => passwordInputRef.current && passwordInputRef.current.focus()}
                             showErrorIcon={false}
-                            ref={phoneNumberInputRef}
                             keyboardType={'phone-pad'}
                             floatingLabel
                         />
