@@ -1,6 +1,6 @@
 package mate4ever.ttip.dataHelpers
 
-import mate4ever.ttip.dto.PetRequestDto
+import mate4ever.ttip.dto.PetRequestDTO
 import mate4ever.ttip.model.Pet
 import mate4ever.ttip.model.User
 import java.time.LocalDate
@@ -18,9 +18,9 @@ class PetFactory() {
         castrated: Boolean = true,
         medicalHistory: String? = null,
         description: String? = "Se perdio en Bernal"
-    ): PetRequestDto {
+    ): PetRequestDTO {
 
-        return PetRequestDto(
+        return PetRequestDTO(
             name,
             image,
             birth,

@@ -5,7 +5,7 @@ import mate4ever.ttip.controller.UserController
 import mate4ever.ttip.dataHelpers.UserFactory
 import mate4ever.ttip.exceptions.UserNotFoundException
 import mate4ever.ttip.model.User
-import mate4ever.ttip.model.UserDTO
+import mate4ever.ttip.dto.UserDTO
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows

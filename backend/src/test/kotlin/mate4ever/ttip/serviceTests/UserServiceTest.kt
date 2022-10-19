@@ -3,7 +3,7 @@ package mate4ever.ttip.serviceTests
 import mate4ever.ttip.dataHelpers.UserFactory
 import mate4ever.ttip.exceptions.UserIncorrectArgumentsException
 import mate4ever.ttip.exceptions.UserNotFoundException
-import mate4ever.ttip.model.UserDTO
+import mate4ever.ttip.dto.UserDTO
 import mate4ever.ttip.service.PetService
 import mate4ever.ttip.service.UserService
 import org.junit.jupiter.api.AfterEach

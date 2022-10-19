@@ -3,7 +3,7 @@ package mate4ever.ttip.service
 import mate4ever.ttip.exceptions.UserIncorrectArgumentsException
 import mate4ever.ttip.exceptions.UserNotFoundException
 import mate4ever.ttip.model.User
-import mate4ever.ttip.model.UserDTO
+import mate4ever.ttip.dto.UserDTO
 import mate4ever.ttip.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.mongodb.core.MongoTemplate

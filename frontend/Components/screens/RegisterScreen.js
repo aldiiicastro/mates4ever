@@ -43,6 +43,7 @@ const RegisterScreen = forwardRef(({navigation}, ref) => {
             municipality: municipality,
             province: province,
             password: userPassword,
+            pets: [],
         }
         createUser(dataToSend).then(response => {
             setLoading(false)

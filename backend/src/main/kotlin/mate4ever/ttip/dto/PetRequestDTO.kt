@@ -1,6 +1,6 @@
 package mate4ever.ttip.dto
 
-class PetRequestDto(
+class PetRequestDTO(
     val name: String,
     val image: String,
     val birth: String?,

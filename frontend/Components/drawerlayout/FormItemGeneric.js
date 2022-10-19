@@ -95,7 +95,7 @@ export const SimpleCheckBox = (props) => {
                 status={props.status}
                 onPress={props.onPress}
             />
-            <Text style={style.label}>¿Tiene las vacunas al día?</Text>
+            <Text style={style.label}>{props.text}</Text>
         </View>
     )
 }

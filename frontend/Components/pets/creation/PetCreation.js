@@ -1,4 +1,4 @@
-import React, {useState, createRef} from "react"
+import React, {createRef, useState} from "react"
 import {Form, FormItem} from 'react-native-form-component'
 import {ScrollView} from "react-native-gesture-handler"
 
@@ -49,8 +49,7 @@ export default function PetCreation({navigation}) {
         if (!image) {
             return ""
         }
-        const uuid = await handleImagePicked(image)
-        return uuid
+        return await handleImagePicked(image)
     }
 
     const publish = async () => {
@@ -72,9 +71,6 @@ export default function PetCreation({navigation}) {
             'description': description,
             "tutor": userEmail,
         }
-
-        console.log(pet)
-
         createPet(pet).then((response) => {
             navigation.navigate('Inicio')
         }).catch((response) => {
@@ -193,6 +189,7 @@ export default function PetCreation({navigation}) {
                     onPress={() => {
                         setVaccine(!vaccine)
                     }}
+                    text={'¿Tiene las vacunas al día?'}
                 />
 
                 <SimpleCheckBox
@@ -200,6 +197,7 @@ export default function PetCreation({navigation}) {
                     onPress={() => {
                         setCastrated(!castrated)
                     }}
+                    text={'¿Esta castrado?'}
                 />
             </Form>
         </ScrollView>

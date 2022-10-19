@@ -1,8 +1,7 @@
 import axios from 'axios'
 import bcrypt from "react-native-bcrypt";
 import isaac from "isaac"
-// const baseUrl = 'http://192.168.0.66:8070'
-const baseUrl = 'http://192.168.0.10:8070'
+const baseUrl = 'http://192.168.0.66:8090'
 
 const axinst = axios.create({
     baseURL: baseUrl,
@@ -22,6 +21,11 @@ export const loginUser = async (userData) => {
 export const getUserByEmail = async (email) => {
     const url = `${baseUrl}/api/user/email/${email}`;
   return await axios.get(url)
+}
+
+export const getUserDataByEmail = async (email) => {
+    const url = `${baseUrl}/api/user/allData/${email}`;
+    return await axios.get(url)
 }
 
 export const getPetById  = async (id) => {

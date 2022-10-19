@@ -1,6 +1,6 @@
 package mate4ever.ttip.controller
 
-import mate4ever.ttip.dto.PetRequestDto
+import mate4ever.ttip.dto.PetRequestDTO
 import mate4ever.ttip.model.Pet
 import mate4ever.ttip.service.PetService
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,7 +17,7 @@ class PetController {
 
     //    @LogExecutionTime
     @PostMapping("/api/pet/create")
-    fun createPet(@RequestBody petDTO: PetRequestDto): ResponseEntity<*> {
+    fun createPet(@RequestBody petDTO: PetRequestDTO): ResponseEntity<*> {
         val pet = petService.createPet(petDTO)
         return ResponseEntity<Pet>(pet, null, HttpStatus.OK)
     }
@@ -37,7 +37,7 @@ class PetController {
     @GetMapping("/api/pet/search")
     fun searchBy(@RequestParam(required = true) query: String): ResponseEntity<*> {
         val petsResponse = petService.search(query)
-        return ResponseEntity<List<*>>(petsResponse, null, HttpStatus.OK)
+        return ResponseEntity<List<*>>(petsResponse.map {PetRequestDTO(it!!.name, it.image, it.birth.toString(), it.type, it.breed, it.state, it.tutor.email, it.vaccine, it.castrated, it.medicalHistory, it.description) }, null, HttpStatus.OK)
     }
 
     fun deleteAll() {

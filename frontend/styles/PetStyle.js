@@ -136,6 +136,7 @@ const petDetails = StyleSheet.create({
 const petsStatesStyle = StyleSheet.create({
     categoryContainer: {
         flexDirection: 'row',
+        width: width - 100,
         marginTop: 30,
         marginBottom: 20,
         justifyContent: 'space-between',
