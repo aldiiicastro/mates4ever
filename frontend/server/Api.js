@@ -20,7 +20,7 @@ export const loginUser = async (userData) => {
 }
 
 export const getUserByEmail = async (email) => {
-    const url = `${baseUrl}/api/user/${email}`;
+    const url = `${baseUrl}/api/user/email/${email}`;
   return await axios.get(url)
 }
 
