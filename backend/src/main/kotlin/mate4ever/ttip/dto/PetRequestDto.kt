@@ -12,4 +12,4 @@ class PetRequestDto(
     val castrated: Boolean,
     val medicalHistory: String?,
     val description: String?
-){ }
+) {}

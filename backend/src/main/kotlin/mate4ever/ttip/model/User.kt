@@ -23,6 +23,6 @@ class User(
     var municipality: String,
     var province: String,
     var image: String?,
-    @OneToMany(mappedBy="tutor")
+    @OneToMany(mappedBy = "tutor")
     var pets: List<Pet>
 )
