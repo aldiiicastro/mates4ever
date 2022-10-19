@@ -2,7 +2,6 @@ package mate4ever.ttip.dataHelpers
 
 import mate4ever.ttip.dto.PetRequestDto
 import mate4ever.ttip.model.Pet
-import mate4ever.ttip.model.User
 import java.time.LocalDate
 
 class PetFactory() {
@@ -29,7 +28,7 @@ class PetFactory() {
         type: String = "Gato",
         breed: String? = "Siames",
         state: String = "Perdido",
-        tutor:User = UserFactory().anyUser(),
+        tutor:String = "Aldi",
         vaccine:Boolean = true,
         castrated:Boolean = true,
         medicalHistory:String? = null,

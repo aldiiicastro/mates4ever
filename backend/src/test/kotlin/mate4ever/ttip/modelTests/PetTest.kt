@@ -19,7 +19,7 @@ class PetTest {
         assert(pet.type == "Gato")
         assert(pet.breed == "Siames")
         assert(pet.state == "Perdido")
-//        assert(pet.tutor == "Aldi")
+        assert(pet.tutor == "Aldi")
         assert(pet.description == "Se perdio en Bernal")
     }
 }

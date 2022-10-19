@@ -2,6 +2,8 @@ package mate4ever.ttip.serviceTests
 
 import mate4ever.ttip.dataHelpers.PetFactory
 import mate4ever.ttip.dataHelpers.UserFactory
+import mate4ever.ttip.exceptions.UserIncorrectArgumentsException
+import mate4ever.ttip.exceptions.UserNotFoundException
 import mate4ever.ttip.model.Pet
 import mate4ever.ttip.model.UserDTO
 import mate4ever.ttip.service.PetService
@@ -46,7 +48,7 @@ class UserServiceTest {
     }
     @Test
     fun getByWrongID() {
-        assertThrows<IllegalArgumentException>("No existe ningun usuario con ese id en la base de datos"){userService.findUserBy("29")}
+        assertThrows<UserNotFoundException>("No existe ningun usuario con ese id en la base de datos"){userService.findUserBy("29")}
     }
     @Test
     fun findUserLogin() {
@@ -59,13 +61,13 @@ class UserServiceTest {
     fun findUserLoginWrongPassword() {
         var user = userFactory.anyUser(pets =listOf(pet))
         userService.createUser(user)
-        assertThrows<IllegalArgumentException>("No existe ningun usuario con ese id en la base de datos"){userService.findUser(UserDTO("aldana@gmail.com", "contrasena45..."))}
+        assertThrows<UserIncorrectArgumentsException>("No existe ningun usuario con ese id en la base de datos"){userService.findUser(UserDTO("aldana@gmail.com", "contrasena45..."))}
     }
     @Test
     fun findUserLoginWrongEmail() {
         var user = userFactory.anyUser(pets =listOf(pet))
         userService.createUser(user)
-        assertThrows<IllegalArgumentException>("No existe ningun usuario con ese id en la base de datos"){userService.findUser(UserDTO("aldanadd@gmail.com", "contrasena..."))}
+        assertThrows<UserIncorrectArgumentsException>("No existe ningun usuario con ese id en la base de datos"){userService.findUser(UserDTO("aldanadd@gmail.com", "contrasena..."))}
     }
     @Test
     fun getAllPetsIsEmpty() {

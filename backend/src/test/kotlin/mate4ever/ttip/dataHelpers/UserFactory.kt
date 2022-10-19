@@ -14,9 +14,8 @@ class UserFactory {
         province: String="Buenos Aires",
         municipality: String = "Quilmes",
         image: String? =  "Example",
-        pets:List<Pet> = listOf()
+        pets:List<Pet>
     ): User {
         return User(id, name, lastname, email, password, phone, municipality, province,image, pets)
     }
-
 }
