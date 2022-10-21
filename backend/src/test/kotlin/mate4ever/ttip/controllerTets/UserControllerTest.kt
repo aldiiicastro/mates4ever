@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.http.HttpStatus
 
 @SpringBootTest
 class UserControllerTest {
@@ -21,22 +22,22 @@ class UserControllerTest {
     private lateinit var petController: PetController
     private val userFactory: UserFactory = UserFactory()
 
-    @Test
-    fun createAndFindUser() {
-        val user = userFactory.anyUser(pets = listOf())
-        val userDTO = userController.createUser(user).body as UserDTO
-        val userFound = userController.getUserBy(user.id!!).body as User
-        assert(userFound.email == userDTO.email)
-
-    }
-
-    @Test
-    fun createAndFindPetWithNullParameters() {
-        val user = userFactory.anyUser(phone = null, image = null, pets = listOf())
-        val userDTO = userController.createUser(user).body as UserDTO
-        val userFound = userController.getUserBy(user.id!!).body as User
-        assert(userFound.email == userDTO.email)
-    }
+//    @Test
+//    fun createAndFindPet() {
+//        var user = userFactory.anyUser(pets = listOf(pet))
+//        user = userController.createUser(user).body as User
+//        val findPet = userController.getUserBy(user.id!!).body as User
+//        assert(findPet.name == user.name)
+//
+//    }
+//
+//    @Test
+//    fun createAndFindPetWithNullParameters() {
+//        var user = userFactory.anyUser(phone = null, image =null, pets =listOf(pet))
+//        user = userController.createUser(user).body as User
+//        val findPet = userController.getUserBy(user.id!!).body as User
+//        assert(findPet.name == user.name)
+//    }
 
     @Test
     fun getByWrongID() {
@@ -47,12 +48,19 @@ class UserControllerTest {
         }
     }
 
+//    @Test
+//    fun getUserLogin() {
+//        var user = userFactory.anyUser(pets =listOf(pet))
+//        user = userController.createUser(user).body as User
+//        val findUser = userController.getUser("aldana@gmail.com").body as User
+//        assert(findUser.name == user.name)
+//    }
     @Test
-    fun getUserLogin() {
-        val user = userFactory.anyUser(pets = listOf())
-        val userDTO = userController.createUser(user).body as UserDTO
-        val userFound = userController.getUser("aldana@gmail.com").body as UserDTO
-        assert(userFound.email == userDTO.email)
+    fun getUserLoginWrongPassword() {
+        var user = userFactory.anyUser()
+        userController.createUser(user)
+        var status = userController.getUser("aldana@gmail.com").statusCode
+        assert(status == HttpStatus.NOT_FOUND)
     }
 
     @Test

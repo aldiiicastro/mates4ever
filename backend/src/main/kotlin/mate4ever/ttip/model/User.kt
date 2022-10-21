@@ -2,7 +2,9 @@ package mate4ever.ttip.model
 
 import org.springframework.data.mongodb.core.mapping.Document
 import org.springframework.data.annotation.Id
+import javax.persistence.CascadeType
 import javax.persistence.Column
+import javax.persistence.FetchType
 import javax.persistence.OneToMany
 import javax.persistence.Table
 import javax.persistence.UniqueConstraint
@@ -23,6 +25,11 @@ class User(
     var municipality: String,
     var province: String,
     var image: String?,
-    @OneToMany(mappedBy = "tutor")
-    var pets: List<Pet>
-)
+//    @OneToMany(mappedBy="user", cascade = [CascadeType.ALL], orphanRemoval = true, fetch = FetchType.LAZY)
+
+){
+    var pets: MutableList<String> = mutableListOf()
+    fun addPet(pet:String){
+        pets.add(pet)
+    }
+}

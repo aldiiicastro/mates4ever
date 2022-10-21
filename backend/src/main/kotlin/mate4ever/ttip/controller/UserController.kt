@@ -4,6 +4,8 @@ import mate4ever.ttip.dto.PetRequestDTO
 import mate4ever.ttip.model.User
 import mate4ever.ttip.dto.UserDTO
 import mate4ever.ttip.dto.UserResponseDTO
+import mate4ever.ttip.model.Pet
+import mate4ever.ttip.service.PetService
 import mate4ever.ttip.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
@@ -16,12 +18,15 @@ import org.springframework.web.bind.annotation.*
 class UserController {
     @Autowired
     private lateinit var userService: UserService
+    @Autowired
+    private lateinit var petService: PetService
 
     @PostMapping("/api/user/create")
     fun createUser(@RequestBody user: User): ResponseEntity<*> {
         userService.createUser(user)
         val userDTO = UserDTO(user.email, user.password)
         return ResponseEntity<UserDTO>(userDTO, null, HttpStatus.OK)
+
     }
 
     @GetMapping("/api/user/{id}")
@@ -38,13 +43,22 @@ class UserController {
     @GetMapping("/api/user/allData/{email}")
     fun getCompleteUser(@PathVariable(required = true) email: String): ResponseEntity<*> {
         val user = userService.findUserbyEmail(email)
-        val userDTO = UserResponseDTO(user!!.name, user.lastname, user.email, user.phone, user.municipality, user.province, user.image, user.pets.map { PetRequestDTO(it.name, it.image, it.birth.toString(), it.type, it.breed, it.state, user.name, it.vaccine, it.castrated, it.medicalHistory,  it.description) })
+        val pets = petService.getPets(user!!.pets)
+        val userDTO = UserResponseDTO(user!!.name, user.lastname, user.email, user.phone, user.municipality, user.province, user.image, pets)
         return ResponseEntity<UserResponseDTO>(userDTO, null, HttpStatus.OK)
     }
     @GetMapping("/api/user/all")
     fun getAllUsers(): MutableIterable<User?> {
         return userService.findAllUsers()
     }
+
+    @GetMapping("/api/user/{email}/pets")
+    fun searchBy(@PathVariable(required = true) email: String): Iterable<Pet?>? {
+        val user = userService.findUserbyEmail(email)
+        val pets = petService.getPets(user!!.pets)
+        return pets
+    }
+
 
     fun deleteAll() {
         return userService.deleteAll()

@@ -36,9 +36,11 @@ class PetService {
         return petRepository.findAll()
     }
 
+    fun getPets(pets: MutableList<String>): Iterable<Pet>? {
+        return petRepository.findAllThin(pets)
+    }
+
     fun createPet(petDTO: PetRequestDTO): Pet {
-//        val validator = Validation.buildDefaultValidatorFactory().validator;
-        val user = userService.findUserbyEmail(petDTO.tutor)!!
         val pet = Pet(
             petDTO.name,
             petDTO.image,
@@ -46,17 +48,16 @@ class PetService {
             petDTO.type,
             petDTO.breed,
             petDTO.state,
-            user,
+            petDTO.tutor,
             petDTO.vaccine,
             petDTO.castrated,
             petDTO.medicalHistory,
             petDTO.description
         )
-//        val errors = validator.validate(pet)
-//        if(errors.size == 0){
-//            return petRepository.insert(pet)
-//        }
-        return petRepository.insert(pet)
+
+        val petSaved = petRepository.insert(pet)
+        userService.addPet(petDTO.tutor,petSaved.id!!)
+        return petSaved
     }
 
     @Transactional(readOnly = true)

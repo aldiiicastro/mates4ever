@@ -1,7 +1,7 @@
 import axios from 'axios'
 import bcrypt from "react-native-bcrypt";
 import isaac from "isaac"
-const baseUrl = 'http://192.168.0.66:8090'
+const baseUrl = 'http://192.168.0.10:8090'
 
 const axinst = axios.create({
     baseURL: baseUrl,
@@ -45,6 +45,7 @@ export const createUser = async (user) => {
         return buf.map(() => Math.floor(isaac.random() * 256));
     })
     user.password= bcrypt.hashSync(user.password, 10)
+    console.log(user)
     const url = `${baseUrl}/api/user/create`
     return await axios.post(url, user)
 }

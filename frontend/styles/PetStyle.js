@@ -131,6 +131,15 @@ const petDetails = StyleSheet.create({
       borderTopLeftRadius: 25,
       borderBottomLeftRadius: 25,
     },
+
+    floatButton:{
+        backgroundColor: colors.yellow,
+        position:"absolute",
+        bottom: 5,        
+        right: 0,
+        padding: 10,
+        borderRadius: 50,
+    },
   })
 
 const petsStatesStyle = StyleSheet.create({

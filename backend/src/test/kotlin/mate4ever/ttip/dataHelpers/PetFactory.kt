@@ -49,7 +49,7 @@ class PetFactory() {
         description: String? = "Se perdio en Bernal"
     ): Pet {
 
-        return Pet(name, image, birth, type, breed, state, tutor, vaccine, castrated, medicalHistory, description)
+        return Pet(name, image, birth, type, breed, state, tutor.email,  vaccine, castrated, medicalHistory, description)
     }
 
 }

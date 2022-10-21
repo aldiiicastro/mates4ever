@@ -19,7 +19,7 @@ export default class Pet{
             this.type = pet.type,
             this.breed = pet.breed,
             this.state = pet.state,
-            this.tutor = pet.tutor,
+            this.tutor = pet.user,
             this.description = pet.description;
     }
 

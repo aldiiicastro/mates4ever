@@ -1,45 +1,23 @@
 import React, {useEffect, useState} from 'react'
-import {
-    Image,
-    ScrollView,
-    Text,
-    View,
-} from 'react-native'
+import { Image, ScrollView, Text, View } from 'react-native'
 import {Link} from '@react-navigation/native'
 import profileStyles from '../../styles/ProfileStyles'
 import ContactCard from '../users/ContactCard'
 import Icon from "react-native-vector-icons/MaterialIcons"
-import PetCardEjemplo from '../pets/card/PetCardEjemplo'
 import {petScreenStyle} from '../../styles/PetScreenStyle'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import {getUserDataByEmail} from '../../server/Api'
 import Back from "../drawerlayout/Back"
+import User from '../../model/User'
+import PetCard from '../pets/card/PetCard'
 
-function Profile({navigation}) {
+function Profile({navigation, route}) {
     const [user, setUser] = useState({})
-
     useEffect(() => {
-        AsyncStorage.getItem('user_id').then((value) => {
-            getUserDataByEmail(value).then((response) => {
-                setUser(response.data)
-            }).catch((error) => console.log(error))
-        })
+        getUserDataByEmail(route.params).then((response) => {
+            setUser( new User(response.data) )
+        }).catch((error) => console.log(error))
     }, [])
-
-
-    // const pet =
-    //     new Pet({
-    //         id: "1",
-    //         name: "emma",
-    //         image: "https://firebasestorage.googleapis.com/v0/b/mates4ever-d17cb.appspot.com/o/32c1b815-fce2-4c04-9ea9-ce5b58d65b54?alt=media&token=b68f7da9-decd-429c-a03f-22328ae65b4f",
-    //         age: "2",
-    //         date: "32",
-    //         type: "Perro",
-    //         breed: "",
-    //         state: "Transito",
-    //         tutor: "Mates4Ever",
-    //         description: "adad"
-    //     })
 
     const renderContactHeader = () => {
         return (
@@ -102,7 +80,7 @@ function Profile({navigation}) {
                 </View>
                 <View style={profileStyles.masonryContainer}>
                     <View>
-                        {user.pets.map(pet => <PetCardEjemplo pet={pet}/>)}
+                        {user.pets.map(pet => <PetCard navigation={navigation} pet={pet}/>)}
                     </View>
                 </View>
             </View>

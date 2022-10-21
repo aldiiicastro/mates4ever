@@ -6,14 +6,7 @@ import {petDetails} from "../../../styles/PetStyle.js"
 import Tag from '../../drawerlayout/Tag.js'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
-export default function PetDetails({navigation, id}) {
-    const [pet, setPet] = useState({})
-
-    useEffect(() => {
-        getPetById(id).then((response) => {
-            setPet(response.data)
-        }).catch((error) => console.log(error))
-    }, [id])
+export default function PetDetails({navigation, pet}) {
     return (
         <ScrollView vertical style={{backgroundColor: "#fff", width: "100%"}}>
             <Icon name="arrow-back" size={25} style={{marginLeft: 20, marginTop: 15}}

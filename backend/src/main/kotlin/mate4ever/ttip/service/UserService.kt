@@ -2,6 +2,7 @@ package mate4ever.ttip.service
 
 import mate4ever.ttip.exceptions.UserIncorrectArgumentsException
 import mate4ever.ttip.exceptions.UserNotFoundException
+import mate4ever.ttip.model.Pet
 import mate4ever.ttip.model.User
 import mate4ever.ttip.dto.UserDTO
 import mate4ever.ttip.repository.UserRepository
@@ -48,6 +49,10 @@ class UserService {
         return userRepository.findAll()
     }
 
+    fun getPets(email: String){
+        return
+    }
+
     fun createUser(user: User): User {
         return userRepository.insert(user)
     }
@@ -62,5 +67,10 @@ class UserService {
 
     fun deleteById(id: String) {
         return userRepository.deleteById(id)
+    }
+    fun addPet(email: String, petID: String){
+        val user = findUserbyEmail(email)!!
+        user.addPet(petID)
+        userRepository.save(user)
     }
 }
