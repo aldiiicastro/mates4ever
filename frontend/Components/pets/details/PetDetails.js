@@ -1,9 +1,8 @@
 import * as React from 'react'
 import {View, Image, Text, ScrollView} from 'react-native'
-import {useEffect, useState} from "react"
-import {getPetById} from "../../../server/Api.js"
 import {petDetails} from "../../../styles/PetStyle.js"
 import Tag from '../../drawerlayout/Tag.js'
+import {style} from "../../../styles/Commons.js"
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
 export default function PetDetails({navigation, pet}) {
@@ -13,8 +12,8 @@ export default function PetDetails({navigation, pet}) {
                   onPress={() => navigation.goBack()}/>
             <View style={petDetails.imageContainer}>
                 <Image
-                    source={{uri: pet.image}}
-                    style={{resizeMode: 'cover', flex: 1, width: "90%", height: 300}}/>
+                    source={pet.image ? {uri: pet.image } : require('../../../assets/DefaultPet.png')}
+                    style={petDetails.imageDetail}/>
             </View>
             <View style={petDetails.detailsContainer}>
                 <View
@@ -33,24 +32,51 @@ export default function PetDetails({navigation, pet}) {
                         justifyContent: 'space-between',
                         alignItems: 'center',
                     }}>
-                    <Text testID={"pet-details-age"} style={{fontSize: 18, fontWeight: 'bold'}}>Edad: {pet.age}</Text>
+                    <View
+                        style={style.alignItems}>
+                        <Text testID={"pet-details-age"} style={[style.bold, {fontSize: 18}]}>Edad: </Text>
+                        <Text testID={"pet-details-age"} style={{fontSize: 18}}> {pet.age ? pet.age : "No especifica" }</Text>
+                    </View>
                     <Tag value={pet.state}/>
                 </View>
-                <View style={{paddingHorizontal: 20, marginTop: 10}}>
+                {pet.type &&
+                    <View
+                        style={[style.alignItems, {marginLeft:15}]}>
+                        <Text testID={"pet-details-age"} style={[style.bold, {fontSize: 18}]}> Tipo: </Text>
+                        <Text testID={"pet-details-age"} style={{fontSize: 18}}> {pet.type}</Text>
+                    </View>
+                }
+
+                {pet.breed &&
+                    <View
+                        style={[style.alignItems, {marginLeft:15}]}>
+                        <Text testID={"pet-details-age"} style={[style.bold, {fontSize: 18}]}> Raza: </Text>
+                        <Text testID={"pet-details-age"} style={{fontSize: 18}}> {pet.breed}</Text>
+                    </View>
+                }
+
+                <View style={{paddingHorizontal: 20, marginVertical: 10}}>
                     <Text testID={"pet-details-description-field"}
                           style={{fontSize: 20, fontWeight: 'bold'}}>Descripción</Text>
                     <Text
                         testID={"pet-details-description"}
-                        style={{
-                            color: 'grey',
-                            fontSize: 16,
-                            lineHeight: 22,
-                            marginTop: 10,
-                            marginBottom: 20,
-
-                        }}>
-                        {pet.description}
+                        style={petDetails.descriptionDetail}>
+                        {pet.description ? pet.description : "-"}
                     </Text>
+                    
+                </View>
+
+                <View style={{paddingHorizontal: 20, marginTop: 10}}>
+                    <Text testID={"pet-details-description-field"}
+                          style={{fontSize: 20, fontWeight: 'bold'}}>Historial medico</Text>
+                    <Text
+                        testID={"pet-details-description"}
+                        style={petDetails.descriptionDetail}>
+                        {pet.medicalHistory ? pet.medicalHistory : "-"}
+                    </Text>
+                    <Text testID={"pet-details-age"} style={[petDetails.descriptionDetail, style.bold]}> • {pet.castrated ? "Esta castrado" : "No esta castrado" }</Text>
+                    <Text testID={"pet-details-age"} style={[petDetails.descriptionDetail, style.bold]}> • {pet.vaccine ? "Esta vacunado" : "No esta vacunado" }</Text>
+
                 </View>
             </View>
         </ScrollView>

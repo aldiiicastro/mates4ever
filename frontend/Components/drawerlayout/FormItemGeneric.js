@@ -104,10 +104,7 @@ export const ImageForm = (props) => {
     return (
         <View style={form.image} on>
             <TouchableHighlight onPress={props.onPress}>
-                {props.imageUri ?
-                    <Image source={{uri: props.imageUri}} style={form.imageSize}/>
-                    :
-                    <Image source={require('../../assets/DefaultPet.png')} style={form.imageSize}/>}
+                <Image source= {props.imageUri ? {uri: props.imageUri } : require('../../assets/DefaultPet.png')} style={form.imageSize}/>
             </TouchableHighlight>
             <View style={form.imageIcon}>
                 <Icon name="create" size={28} onPress={props.onPress}/>

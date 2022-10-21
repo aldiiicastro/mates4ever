@@ -39,6 +39,10 @@ const style = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
     },
+    
+    bold: {
+        fontWeight: 'bold'
+    },
 
 });
 

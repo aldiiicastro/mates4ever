@@ -1,4 +1,4 @@
-import {StyleSheet} from "react-native"
+import {Dimensions, StyleSheet} from "react-native"
 import {colors} from "./Colors.js"
 import {width} from "./Dimension.js"
 
@@ -121,6 +121,13 @@ const petDetails = StyleSheet.create({
       marginTop: 10,
       paddingBottom: 30,
       paddingTop: 30,
+      minHeight: Dimensions.get('window').height - (Dimensions.get('window').width + 30)
+    },
+    
+    descriptionDetail:{
+        color: 'grey',
+        fontSize: 16,
+        lineHeight: 22,
     },
 
     tag: {
@@ -133,13 +140,20 @@ const petDetails = StyleSheet.create({
     },
 
     floatButton:{
-        backgroundColor: colors.yellow,
+        backgroundColor: colors.violet,
         position:"absolute",
-        bottom: 5,        
-        right: 0,
+        bottom: 15,
+        right: 10,
         padding: 10,
         borderRadius: 50,
     },
+
+    imageDetail:{
+        resizeMode: 'cover',
+        flex: 1,
+        width: Dimensions.get('window').width - 30,
+        height: Dimensions.get('window').width - 30
+    }
   })
 
 const petsStatesStyle = StyleSheet.create({

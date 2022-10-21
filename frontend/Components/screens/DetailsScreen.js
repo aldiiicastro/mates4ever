@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react'
 import {TouchableOpacity, View, Text} from 'react-native'
 import PetDetails from '../pets/details/PetDetails.js'
 import {petDetails} from "../../styles/PetStyle.js"
+import {style} from "../../styles/Commons.js"
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import {getPetById} from "../../server/Api.js"
 import Pet from '../../model/Pet.js'
@@ -11,21 +12,19 @@ export default function DetailsScreen({navigation, route}) {
 
     useEffect(() => {
         getPetById(route.params).then((response) => {
-            console.log(response.data)
             setPet(new Pet(response.data))
         }).catch((error) => console.log(error))
-    }, [id])
+    }, [route.params])
 
-    console.log("holasas",pet.tutor)
     return (
         <View style={{flex: 1, alignItems: 'center', backgroundColor: '#fff'}}>
             <PetDetails navigation={navigation} pet={pet}></PetDetails>
             <TouchableOpacity
-                style={[petDetails.floatButton]}
+                style={[petDetails.floatButton, style.alignItems]}
                 onPress={() => navigation.navigate('Perfil', pet.tutor)}
             >
-                <Icon name='add' size={30} color='#fff'/> 
-                <Text> Contactar </Text>
+                <Icon name='face' size={30} color='#fff'/> 
+                <Text style={{color: '#fff'}}> Contactar </Text>
             </TouchableOpacity>
         </View>
     )

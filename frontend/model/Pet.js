@@ -9,6 +9,8 @@ export default class Pet{
     state;
     tutor;
     description;
+    castrated;
+    vaccine;
 
     constructor(pet) {
             this.id = pet.id,
@@ -20,7 +22,10 @@ export default class Pet{
             this.breed = pet.breed,
             this.state = pet.state,
             this.tutor = pet.user,
+            this.castrated = pet.castrated,
+            this.vaccine = pet.vaccine,
             this.description = pet.description;
+            
     }
 
     isThisState(stateToAsk) {return stateToAsk === this.state}

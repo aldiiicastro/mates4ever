@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import { Image, ScrollView, Text, View } from 'react-native'
+import { FlatList, Image, ScrollView, Text, View } from 'react-native'
 import {Link} from '@react-navigation/native'
 import profileStyles from '../../styles/ProfileStyles'
 import ContactCard from '../users/ContactCard'
@@ -10,12 +10,16 @@ import {getUserDataByEmail} from '../../server/Api'
 import Back from "../drawerlayout/Back"
 import User from '../../model/User'
 import PetCard from '../pets/card/PetCard'
+import {petsStatesStyle} from "../../styles/PetStyle.js"
+
 
 function Profile({navigation, route}) {
     const [user, setUser] = useState({})
+    const [pets, setPets] = useState({})
     useEffect(() => {
         getUserDataByEmail(route.params).then((response) => {
             setUser( new User(response.data) )
+            setPets(user.pets)
         }).catch((error) => console.log(error))
     }, [])
 
@@ -66,7 +70,7 @@ function Profile({navigation, route}) {
         return (
             <View>
                 <View style={profileStyles.linkContainer}>
-                    <View style={profileStyles.linkRow}>
+                    {/* <View style={profileStyles.linkRow}>
                         <Link to={{screen: 'Inicio'}}>
                             Ver todos
                         </Link>
@@ -76,13 +80,19 @@ function Profile({navigation, route}) {
                             name="arrow-right-alt"
                             size={25}
                         />
-                    </View>
+                    </View> */}
                 </View>
-                <View style={profileStyles.masonryContainer}>
-                    <View>
-                        {user.pets.map(pet => <PetCard navigation={navigation} pet={pet}/>)}
-                    </View>
-                </View>
+                <FlatList
+                    columnWrapperStyle={{justifyContent: 'space-evenly'}}
+                    showsVerticalScrollIndicator={false}
+                    contentContainerStyle={petsStatesStyle.contentContainerStyle}
+                    numColumns={2}
+                    data={pets}
+                    renderItem={({item}) => {
+                        // console.log("hola", item)
+                        return <PetCard navigation={navigation} pet={item}/>
+                    }}
+                />
             </View>
         )
     }
@@ -109,7 +119,9 @@ function Profile({navigation, route}) {
                     <Back onPress={() => navigation.goBack()} headerStyle={profileStyles.header}/>
                     {renderContactHeader()}
                     {renderContact()}
+                    <View style={{margin:15}}></View>
                     {renderLogOut()}
+                    <View style={{margin:20}}></View>
                     {user.pets ? renderPetsPosts() : null}
                 </View>
             </View>
