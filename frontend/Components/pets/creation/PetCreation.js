@@ -20,6 +20,8 @@ import {
 } from "../../drawerlayout/FormItemGeneric"
 import {petScreenStyle} from "../../../styles/PetScreenStyle"
 import AsyncStorage from "@react-native-async-storage/async-storage"
+import MapView, { Callout, Circle, Marker } from 'react-native-maps';
+import { Dimensions } from "react-native"
 
 export default function PetCreation({navigation}) {
     const [image, setImage] = useState(null)
@@ -34,6 +36,7 @@ export default function PetCreation({navigation}) {
     const [castrated, setCastrated] = useState(false)
     const [medicalHistory, setMedicalHistory] = useState('')
     const [description, setDescription] = useState('')
+    const [region, setRegion] = useState({latitude : -34.706526, longitude :  -58.277372})
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false)
     const [loading, setLoading] = useState(false)
     const [error, setErrors] = useState('')
@@ -155,6 +158,24 @@ export default function PetCreation({navigation}) {
                     selectedValue={state}
                     onSelection={(item) => setState(item.value)}
                 />
+                { state == "Adopción" &&
+                    <MapView 
+                        style={{ width: "100%", height: 200}}
+                        initialRegion={{
+                            latitude : -34.706526, 
+                            longitude :  -58.277372,
+                            latitudeDelta: 0.05,
+                            longitudeDelta: 0.05,
+                          }}
+                        onPress={(e) => setRegion(e.nativeEvent.coordinate)}
+                    >
+                        <Marker draggable
+                            coordinate={region}
+                            onDrag={(e) => setRegion(e.nativeEvent.coordinate)}
+                        />
+                        <Circle center={region} radius={1000}/>
+                    </MapView>
+                }
                 <SimpleLinePicker
                     items={[
                         {label: 'Perro', value: 'Perro'},

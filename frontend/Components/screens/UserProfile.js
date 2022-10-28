@@ -62,7 +62,6 @@ function Profile({navigation, route}) {
                         icon={"local-phone"}
                         onPress={() => Linking.openURL(`https://api.whatsapp.com/send?phone=${user.phone}`) }
                     />
-                }
             </View>
         )
     }

@@ -1,7 +1,7 @@
 import axios from 'axios'
 import bcrypt from "react-native-bcrypt";
 import isaac from "isaac"
-const baseUrl = 'http://192.168.0.66:8070'
+const baseUrl = 'http://192.168.0.17:8070'
 
 const axinst = axios.create({
     baseURL: baseUrl,
