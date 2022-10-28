@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import { FlatList, Image, ScrollView, Text, View } from 'react-native'
+import {FlatList, Image, Linking, ScrollView, Text, View} from 'react-native'
 import {Link} from '@react-navigation/native'
 import profileStyles from '../../styles/ProfileStyles'
 import ContactCard from '../users/ContactCard'
@@ -54,12 +54,13 @@ function Profile({navigation, route}) {
                 <ContactCard
                     contact={user.email}
                     icon={"email"}
+                    onPress={() => Linking.openURL('mailto:support@example.com') }
                 />
-                {
                     user.phone &&
                     <ContactCard
                         contact={user.phone}
                         icon={"local-phone"}
+                        onPress={() => Linking.openURL(`https://api.whatsapp.com/send?phone=${user.phone}`) }
                     />
                 }
             </View>

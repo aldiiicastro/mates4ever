@@ -16,6 +16,8 @@ const RegisterScreen = forwardRef(({navigation}, ref) => {
     const [userEmail, setUserEmail] = useState('')
     const [userConfirmEmail, setUserConfirmEmail] = useState('')
     const [phoneNumber, setPhoneNumber] = useState('')
+    const [userStreet, setUserStreet] = useState('')
+    const [userStreetNumber, setUserStreetNumber] = useState('')
     const [municipality, setMunicipality] = useState('')
     const [municipalities, setMunicipalities] = useState('')
     const [province, setProvince] = useState('')
@@ -31,6 +33,8 @@ const RegisterScreen = forwardRef(({navigation}, ref) => {
     const passwordInputRef = createRef()
     const rePasswordInputRef = createRef()
     const lastNameInputRef = createRef()
+    const userStreetInputRef = createRef()
+    const userStreetNumberInputRef = createRef()
 
 
     const handleSubmitButton = () => {
@@ -40,6 +44,8 @@ const RegisterScreen = forwardRef(({navigation}, ref) => {
             lastname: lastName,
             email: userEmail,
             phone: phoneNumber,
+            street: userStreet,
+            streetNumber: userStreetNumber,
             municipality: municipality,
             province: province,
             password: userPassword,
@@ -98,7 +104,7 @@ const RegisterScreen = forwardRef(({navigation}, ref) => {
                             onChange={(firstname) => setUserName(firstname)}
                             inputRef={() => lastNameInputRef.current && lastNameInputRef.current.focus()}
                             ref={ref}
-                            keyboardType={'default'}
+                            keyboardType={"default"}
                         />
                         <FormItemGeneric
                             value={lastName}
@@ -106,7 +112,7 @@ const RegisterScreen = forwardRef(({navigation}, ref) => {
                             onChange={(lastName) => setLastName(lastName)}
                             inputRef={() => emailInputRef.current && emailInputRef.current.focus()}
                             ref={lastNameInputRef}
-                            keyboardType={'default'}
+                            keyboardType={"default"}
                         />
                         <FormItemGeneric
                             value={userEmail}
@@ -114,7 +120,7 @@ const RegisterScreen = forwardRef(({navigation}, ref) => {
                             onChange={(userEmail) => setUserEmail(userEmail)}
                             inputRef={() => reEmailInputRef.current && reEmailInputRef.current.focus()}
                             ref={emailInputRef}
-                            keyboardType={'email-address'}
+                            keyboardType={"email-address"}
                         />
                         <FormItem
                             value={userConfirmEmail}
@@ -122,9 +128,9 @@ const RegisterScreen = forwardRef(({navigation}, ref) => {
                             onChangeText={(userConfirmEmail) => setUserConfirmEmail(userConfirmEmail)}
                             onSubmitEditing={() => phoneNumberInputRef.current && phoneNumberInputRef.current.focus()}
                             ref={reEmailInputRef}
-                            keyboardType={'email-address'}
+                            keyboardType={"email-address"}
                             customValidation={() => {
-                                return {status: (userConfirmEmail === userEmail), message: 'No coinciden los emails'}
+                                return {status: (userConfirmEmail === userEmail), message: "No coinciden los emails"}
                             }}
                             showErrorIcon={false}
                             asterik
@@ -136,8 +142,30 @@ const RegisterScreen = forwardRef(({navigation}, ref) => {
                             label="Número de teléfono"
                             onChangeText={(phoneNumber) => setPhoneNumber(phoneNumber)}
                             showErrorIcon={false}
-                            keyboardType={'phone-pad'}
+                            keyboardType={"phone-pad"}
+                            ref={phoneNumberInputRef}
+                            onSubmitEditing={() => userStreetInputRef.current && userStreetInputRef.current.focus()}
                             floatingLabel
+                        />
+                        <FormItemGeneric
+                            value={userStreet}
+                            label={"Calle"}
+                            onChange={(street) => setUserStreet(street)}
+                            inputRef={() => userStreetNumberInputRef.current && userStreetNumberInputRef.current.focus()}
+                            ref={userStreetInputRef}
+                            keyboardType={"default"}
+                        />
+                        <FormItem
+                            value={userStreetNumber}
+                            label="Altura"
+                            onChangeText={(streetNumber) => setUserStreetNumber(streetNumber)}
+                            showErrorIcon={false}
+                            keyboardType={"default"}
+                            ref={userStreetNumberInputRef}
+                            onSubmitEditing={() => passwordInputRef.current && passwordInputRef.current.focus()}
+                            floatingLabel
+                            isRequired
+                            asterik
                         />
                         <FormItem
                             value={userPassword}
@@ -161,7 +189,7 @@ const RegisterScreen = forwardRef(({navigation}, ref) => {
                             customValidation={() => {
                                 return {
                                     status: (userConfirmPassword === userPassword),
-                                    message: 'No coinciden las contraseñas'
+                                    message: "No coinciden las contraseñas"
                                 }
                             }}
                             asterik

@@ -22,6 +22,8 @@ class User(
     @Column(nullable = false, unique = true) var email: String,
     var password: String,
     var phone: Number?,
+    val street: String,
+    val streetNumber: Number,
     var municipality: String,
     var province: String,
     var image: String?,

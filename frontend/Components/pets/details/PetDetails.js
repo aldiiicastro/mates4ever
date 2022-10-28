@@ -1,11 +1,21 @@
 import * as React from 'react'
-import {View, Image, Text, ScrollView} from 'react-native'
+import {View, Image, Text, ScrollView, Button, Share} from 'react-native'
 import {petDetails} from "../../../styles/PetStyle.js"
 import Tag from '../../drawerlayout/Tag.js'
 import {style} from "../../../styles/Commons.js"
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import base64 from 'react-native-base64'
 
 export default function PetDetails({navigation, pet}) {
+
+    const share = async (customOptions) => {
+        try {
+            await Share.share(customOptions);
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
     return (
         <ScrollView vertical style={{backgroundColor: "#fff", width: "100%"}}>
             <Icon name="arrow-back" size={25} style={{marginLeft: 20, marginTop: 15}}
@@ -34,7 +44,7 @@ export default function PetDetails({navigation, pet}) {
                     }}>
                     <View
                         style={style.alignItems}>
-                        <Text testID={"pet-details-age"} style={[style.bold, {fontSize: 18}]}>Edad: </Text>
+                        <Text style={[style.bold, {fontSize: 18}]}>Edad: </Text>
                         <Text testID={"pet-details-age"} style={{fontSize: 18}}> {pet.age ? pet.age : "No especifica" }</Text>
                     </View>
                     <Tag value={pet.state}/>
@@ -63,7 +73,7 @@ export default function PetDetails({navigation, pet}) {
                         style={petDetails.descriptionDetail}>
                         {pet.description ? pet.description : "-"}
                     </Text>
-                    
+
                 </View>
 
                 <View style={{paddingHorizontal: 20, marginTop: 10}}>
@@ -74,9 +84,23 @@ export default function PetDetails({navigation, pet}) {
                         style={petDetails.descriptionDetail}>
                         {pet.medicalHistory ? pet.medicalHistory : "-"}
                     </Text>
-                    <Text testID={"pet-details-age"} style={[petDetails.descriptionDetail, style.bold]}> • {pet.castrated ? "Esta castrado" : "No esta castrado" }</Text>
-                    <Text testID={"pet-details-age"} style={[petDetails.descriptionDetail, style.bold]}> • {pet.vaccine ? "Esta vacunado" : "No esta vacunado" }</Text>
-
+                    <Text testID={"pet-details-castrado"} style={[petDetails.descriptionDetail, style.bold]}> • {pet.castrated ? "Esta castrado" : "No esta castrado" }</Text>
+                    <Text testID={"pet-details-vaccinate"} style={[petDetails.descriptionDetail, style.bold]}> • {pet.vaccine ? "Esta vacunado" : "No esta vacunado" }</Text>
+                </View>
+                <View >
+                    <Icon
+                        style={{marginLeft: 20, marginTop: 15}}
+                        name={"share"}
+                        size={25}
+                        onPress={async () => {
+                            await share({
+                                title: "Mascota " + pet.state,
+                                message: pet.description,
+                                url: 'data:' + pet.image,
+                            });
+                        }}
+                        title="Share Image"
+                    />
                 </View>
             </View>
         </ScrollView>
