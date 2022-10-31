@@ -1,15 +1,15 @@
 import * as React from 'react'
+import {StatusBar} from "react-native"
+import {createNativeStackNavigator} from '@react-navigation/native-stack'
+import {NavigationContainer} from "@react-navigation/native"
 import HomeScreen from "./Components/screens/HomeScreen"
 import DetailsScreen from "./Components/screens/DetailsScreen.js"
 import CreatePetScreen from "./Components/screens/CreatePetScreen.js"
-import LoginScreen from "./Components/screens/LoginScreen.js"
-import UserProfile from "./Components/screens/UserProfile"
-import RegisterScreen from "./Components/screens/RegisterScreen"
+import UserProfileScreen from "./Components/screens/UserProfileScreen"
 import SplashScreen from "./Components/screens/SplashScreen"
-import {NavigationContainer} from "@react-navigation/native"
-import {StatusBar} from "react-native"
-import {createNativeStackNavigator} from '@react-navigation/native-stack'
 import {colors} from "./styles/Colors.js"
+import LoginScreen from "./Components/screens/LoginScreen.js"
+import RegisterScreen from "./Components/screens/RegisterScreen"
 
 
 const Stack = createNativeStackNavigator()
@@ -23,7 +23,7 @@ function App() {
                 <Stack.Screen name={"Login"} component={LoginScreen} options={{headerShown: false}}/>
                 <Stack.Screen name={"Inicio"} component={HomeScreen}/>
                 <Stack.Screen name={"Detalles"} component={DetailsScreen}/>
-                <Stack.Screen name={"Perfil"} component={UserProfile}/>
+                <Stack.Screen name={"Perfil"} component={UserProfileScreen}/>
                 <Stack.Screen name={"Agregar"} component={CreatePetScreen}/>
                 <Stack.Screen name={"Registro"} component={RegisterScreen}
                               options={{

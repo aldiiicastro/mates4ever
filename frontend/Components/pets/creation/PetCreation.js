@@ -8,7 +8,7 @@ import {colors} from "../../../styles/Colors"
 
 import {createPet} from "../../../server/Api.js"
 import {handleImagePicked, pickImage} from "../../../server/FirebaseServer"
-import Loader from "../../Loader"
+import Loader from "../../drawerlayout/Loader"
 import Back from "../../drawerlayout/Back"
 import {
     CalendarForm,
@@ -18,10 +18,10 @@ import {
     SimpleLineLabel,
     SimpleLinePicker
 } from "../../drawerlayout/FormItemGeneric"
-import {petScreenStyle} from "../../../styles/PetScreenStyle"
+import {petCreationScreenStyle} from "../../../styles/pet/PetCreationScreenStyle"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import MapView, { Callout, Circle, Marker } from 'react-native-maps';
-import { Dimensions } from "react-native"
+
 
 export default function PetCreation({navigation}) {
     const [image, setImage] = useState(null)
@@ -103,7 +103,7 @@ export default function PetCreation({navigation}) {
     return (
         <ScrollView style={style.fullContainer}>
             <Loader loading={loading}/>
-            <Back onPress={() => navigation.goBack()} text="Cargar una mascota" headerStyle={petScreenStyle.header}/>
+            <Back onPress={() => navigation.goBack()} text="Cargar una mascota" headerStyle={petCreationScreenStyle.header}/>
 
             <ImageForm
                 imageUri={imageUri}
@@ -158,11 +158,11 @@ export default function PetCreation({navigation}) {
                     selectedValue={state}
                     onSelection={(item) => setState(item.value)}
                 />
-                { state == "Adopción" &&
-                    <MapView 
+                { state === "Adopción" &&
+                    <MapView
                         style={{ width: "100%", height: 200}}
                         initialRegion={{
-                            latitude : -34.706526, 
+                            latitude : -34.706526,
                             longitude :  -58.277372,
                             latitudeDelta: 0.05,
                             longitudeDelta: 0.05,

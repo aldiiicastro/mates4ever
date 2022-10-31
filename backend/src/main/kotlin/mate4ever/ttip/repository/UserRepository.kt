@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository
 interface UserRepository : MongoRepository<User?, String?> {
     fun findItemById(id: String): User?
     fun insert(user: User): User
-    fun findByEmail(email: String) : User?
+    fun findUserBy(email: String) : User?
     fun save(user: User) : User
+    fun findByEmail(email: String) :User?
 }

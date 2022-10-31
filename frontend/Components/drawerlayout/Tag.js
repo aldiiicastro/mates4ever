@@ -1,12 +1,12 @@
 import * as React from 'react'
 import {View, Text} from 'react-native'
-import {petDetails} from '../../styles/PetStyle.js'
 import {colors} from "../../styles/Colors.js"
+import {petDetailsStyle} from "../../styles/pet/PetDetailsStyle";
 
 export default function Tag(props) {
 
     return (
-        <View style={petDetails.tag}>
+        <View style={petDetailsStyle.tag}>
             <Text testID={"pet-details-state"}
                   style={{
                       marginLeft: 15,

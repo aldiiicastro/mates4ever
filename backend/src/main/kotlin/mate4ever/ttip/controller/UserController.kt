@@ -1,6 +1,5 @@
 package mate4ever.ttip.controller
 
-import mate4ever.ttip.dto.PetRequestDTO
 import mate4ever.ttip.model.User
 import mate4ever.ttip.dto.UserDTO
 import mate4ever.ttip.dto.UserResponseDTO
@@ -28,7 +27,11 @@ class UserController {
         return ResponseEntity<UserDTO>(userDTO, null, HttpStatus.OK)
 
     }
-
+    @PostMapping("/api/user/userData")
+    fun getUser(@RequestBody userData : UserDTO): ResponseEntity<*> {
+        val user = userService.findUser(userData)
+        return ResponseEntity<UserDTO>(UserDTO(user!!.email, user.password),null, HttpStatus.OK)
+    }
     @GetMapping("/api/user/{id}")
     fun getUserBy(@PathVariable(required = true) id: String): ResponseEntity<*> {
         val user = userService.findUserBy(id)
@@ -37,12 +40,12 @@ class UserController {
 
     @GetMapping("/api/user/email/{email}")
     fun getUser(@PathVariable(required = true) email: String): ResponseEntity<*> {
-        val user = userService.findUserbyEmail(email)
+        val user = userService.findUserByEmail(email)
         return ResponseEntity<UserDTO>(UserDTO(user!!.email, user.password), null, HttpStatus.OK)
     }
     @GetMapping("/api/user/allData/{email}")
     fun getCompleteUser(@PathVariable(required = true) email: String): ResponseEntity<*> {
-        val user = userService.findUserbyEmail(email)
+        val user = userService.findUserByEmail(email)
         val pets = petService.getPets(user!!.pets)
         val userDTO = UserResponseDTO(user.name, user.lastname, user.email, user.phone,user.street, user.streetNumber, user.municipality, user.province, user.image, pets)
         return ResponseEntity<UserResponseDTO>(userDTO, null, HttpStatus.OK)
@@ -54,7 +57,7 @@ class UserController {
 
     @GetMapping("/api/user/{email}/pets")
     fun searchBy(@PathVariable(required = true) email: String): Iterable<Pet?>? {
-        val user = userService.findUserbyEmail(email)
+        val user = userService.findUserByEmail(email)
         val pets = petService.getPets(user!!.pets)
         return pets
     }

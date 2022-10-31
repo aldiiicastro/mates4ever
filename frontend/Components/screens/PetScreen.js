@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 import Pet from "../../model/Pet.js"
 import PetsStatesView from "../pets/PetsStatesView.js"
 import {Title} from "react-native-paper"
-import {petScreenStyle} from "../../styles/PetScreenStyle.js"
+import {petCreationScreenStyle} from "../../styles/pet/PetCreationScreenStyle.js"
 import {fetchSearch} from "../../server/Api"
 import {style} from "../../styles/Commons"
 import PerfilButton from '../drawerlayout/PerfilButton.js'
@@ -38,35 +38,35 @@ export default function PetScreen({navigation}) {
         search('')
     }, [])
     return (
-        <SafeAreaView style={[petScreenStyle.safeAreaView, style.fullContainer]}>
-            <View style={petScreenStyle.header}>
+        <SafeAreaView style={[petCreationScreenStyle.safeAreaView, style.fullContainer]}>
+            <View style={petCreationScreenStyle.header}>
                 <View>
-                    <Text style={petScreenStyle.titleText}>
+                    <Text style={petCreationScreenStyle.titleText}>
                         Mates4Ever
                     </Text>
                     <PerfilButton navigation={navigation}></PerfilButton>
                 </View>
             </View>
-            <View style={petScreenStyle.searchView}>
-                <View style={petScreenStyle.searchContainer}>
-                    <Icon name="search" size={25} style={petScreenStyle.iconSearch}/>
-                    <TextInput testID={'search'} placeholder="Search" style={petScreenStyle.input} ref={input => {
+            <View style={petCreationScreenStyle.searchView}>
+                <View style={petCreationScreenStyle.searchContainer}>
+                    <Icon name="search" size={25} style={petCreationScreenStyle.iconSearch}/>
+                    <TextInput testID={'search'} placeholder="Search" style={petCreationScreenStyle.input} ref={input => {
                         textInput = input
                     }} onChangeText={search} clearButtonMode={"always"}/>
-                    <Icon name="close" size={20} style={petScreenStyle.iconClose} onPress={() => {
+                    <Icon name="close" size={20} style={petCreationScreenStyle.iconClose} onPress={() => {
                         textInput.clear()
                         search('')
 
                     }}/>
                 </View>
-                <View style={petScreenStyle.sortBtn}>
-                    <Icon name="sort" size={30} style={petScreenStyle.iconSrt}/>
+                <View style={petCreationScreenStyle.sortBtn}>
+                    <Icon name="sort" size={30} style={petCreationScreenStyle.iconSrt}/>
                 </View>
             </View>
             <ScrollView horizontal={true}>
                 {((petsSearching && petsSearching.length) ?
                     <PetsStatesView navigation={navigation} pets={petsSearching}/> :
-                    <View><View style={petScreenStyle.categoryContainer} testID={'view-container-general'}><Title
+                    <View><View style={petCreationScreenStyle.categoryContainer} testID={'view-container-general'}><Title
                         testID={'no-pets'}>No hay mascotas</Title></View></View>)}
             </ScrollView>
         </SafeAreaView>

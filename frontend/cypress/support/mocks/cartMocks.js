@@ -8,3 +8,12 @@ export const getPets = (response, userInfo, type) => {
         response,
     })
 }
+
+export const getUserLogin = (response, userInfo, type) => {
+    let endpoint = '/api/user/email'
+    cy.route({
+        method:'GET',
+        url: `${endpoint}/aldana@gmail.com`,
+        response,
+    })
+}

@@ -2,7 +2,7 @@ import * as React from "react"
 import {FlatList, Text, TouchableOpacity, View} from "react-native"
 import {useEffect, useState} from "react"
 import PetCard from "./card/PetCard.js"
-import {petsStatesStyle} from "../../styles/PetStyle.js"
+import {petsStatesStyle} from "../../styles/pet/PetStatesStyle";
 
 export default function PetsStatesView(props) {
     const [pets, setPets] = useState(props.pets)

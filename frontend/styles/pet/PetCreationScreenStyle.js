@@ -1,8 +1,8 @@
 import {Dimensions, StyleSheet} from "react-native";
-import {colors} from "./Colors.js";
-import {width} from "./Dimension.js";
+import {colors} from "../Colors.js";
+import {width} from "../Dimension.js";
 
-const petScreenStyle = StyleSheet.create({
+const petCreationScreenStyle = StyleSheet.create({
     header: {
         marginTop: 30,
         flexDirection: 'row',
@@ -74,6 +74,6 @@ const petScreenStyle = StyleSheet.create({
 });
 
 export {
-    petScreenStyle
+    petCreationScreenStyle
 }
 

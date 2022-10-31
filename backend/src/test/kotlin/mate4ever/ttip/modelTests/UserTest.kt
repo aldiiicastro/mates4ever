@@ -20,7 +20,7 @@ class UserTest {
         assert(user.phone == 1139538873)
         assert(user.municipality == "Quilmes")
         assert(user.province == "Buenos Aires")
-        assert(user.pets!!.size == 1)
+        assert(user.pets.size == 0)
 //        assert(user.pets!![0].name == "Gatito")
     }
 }

@@ -1,13 +1,12 @@
 import React, {useState, createRef, forwardRef} from 'react'
 import {View, Text, ScrollView, KeyboardAvoidingView, SafeAreaView} from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import Loader from "../Loader.js"
+import Loader from "../drawerlayout/Loader.js"
 import {loginScreenStyle} from "../../styles/LoginScreenStyle"
 import ImageView from "../drawerlayout/ImageView"
 import {Form, FormItem} from 'react-native-form-component'
-import {getUserByEmail} from "../../server/Api"
+import {loginUser} from "../../server/Api"
 import {colors} from "../../styles/Colors"
-import bcrypt from "react-native-bcrypt"
 import {FormItemGeneric} from "../drawerlayout/FormItemGeneric"
 
 const LoginScreen = forwardRef(({navigation}, ref) => {
@@ -20,15 +19,10 @@ const LoginScreen = forwardRef(({navigation}, ref) => {
     const handleSubmitPress = () => {
         setLoading(true)
         let dataToSend = {email: userEmail, password: userPassword}
-        getUserByEmail(userEmail).then(response => {
-            if (bcrypt.compareSync(dataToSend.password, response.data.password)) {
+        loginUser(dataToSend).then(response => {
                 setLoading(false)
                 AsyncStorage.setItem('user_id', response.data.email)
                 navigation.navigate('Inicio')
-            } else {
-                setLoading(false)
-                setErrorText("Contraseña incorrecta")
-            }
         }).catch((error) => {
             setLoading(false)
             setErrorText(error.response.data.message)

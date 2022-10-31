@@ -1,10 +1,10 @@
 import * as React from 'react'
-import {View, Image, Text, ScrollView, Button, Share} from 'react-native'
-import {petDetails} from "../../../styles/PetStyle.js"
+import {View, Image, Text, ScrollView, Share} from 'react-native'
+import Icon from 'react-native-vector-icons/MaterialIcons'
 import Tag from '../../drawerlayout/Tag.js'
 import {style} from "../../../styles/Commons.js"
-import Icon from 'react-native-vector-icons/MaterialIcons'
-import base64 from 'react-native-base64'
+import {petDetailsStyle} from "../../../styles/pet/PetDetailsStyle";
+import * as Sharing from 'expo-sharing';
 
 export default function PetDetails({navigation, pet}) {
 
@@ -20,12 +20,12 @@ export default function PetDetails({navigation, pet}) {
         <ScrollView vertical style={{backgroundColor: "#fff", width: "100%"}}>
             <Icon name="arrow-back" size={25} style={{marginLeft: 20, marginTop: 15}}
                   onPress={() => navigation.goBack()}/>
-            <View style={petDetails.imageContainer}>
+            <View style={petDetailsStyle.imageContainer}>
                 <Image
                     source={pet.image ? {uri: pet.image } : require('../../../assets/DefaultPet.png')}
-                    style={petDetails.imageDetail}/>
+                    style={petDetailsStyle.imageDetail}/>
             </View>
-            <View style={petDetails.detailsContainer}>
+            <View style={petDetailsStyle.detailsContainer}>
                 <View
                     style={{
                         marginLeft: 20,
@@ -70,7 +70,7 @@ export default function PetDetails({navigation, pet}) {
                           style={{fontSize: 20, fontWeight: 'bold'}}>Descripción</Text>
                     <Text
                         testID={"pet-details-description"}
-                        style={petDetails.descriptionDetail}>
+                        style={petDetailsStyle.descriptionDetail}>
                         {pet.description ? pet.description : "-"}
                     </Text>
 
@@ -81,11 +81,11 @@ export default function PetDetails({navigation, pet}) {
                           style={{fontSize: 20, fontWeight: 'bold'}}>Historial medico</Text>
                     <Text
                         testID={"pet-details-description"}
-                        style={petDetails.descriptionDetail}>
+                        style={petDetailsStyle.descriptionDetail}>
                         {pet.medicalHistory ? pet.medicalHistory : "-"}
                     </Text>
-                    <Text testID={"pet-details-castrado"} style={[petDetails.descriptionDetail, style.bold]}> • {pet.castrated ? "Esta castrado" : "No esta castrado" }</Text>
-                    <Text testID={"pet-details-vaccinate"} style={[petDetails.descriptionDetail, style.bold]}> • {pet.vaccine ? "Esta vacunado" : "No esta vacunado" }</Text>
+                    <Text testID={"pet-details-castrado"} style={[petDetailsStyle.descriptionDetail, style.bold]}> • {pet.castrated ? "Esta castrado" : "No esta castrado" }</Text>
+                    <Text testID={"pet-details-vaccinate"} style={[petDetailsStyle.descriptionDetail, style.bold]}> • {pet.vaccine ? "Esta vacunado" : "No esta vacunado" }</Text>
                 </View>
                 <View >
                     <Icon

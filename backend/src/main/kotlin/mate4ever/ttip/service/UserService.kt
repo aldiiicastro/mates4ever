@@ -1,11 +1,12 @@
 package mate4ever.ttip.service
 
+import AESEncryptorGCM
 import mate4ever.ttip.exceptions.UserIncorrectArgumentsException
 import mate4ever.ttip.exceptions.UserNotFoundException
-import mate4ever.ttip.model.Pet
 import mate4ever.ttip.model.User
 import mate4ever.ttip.dto.UserDTO
 import mate4ever.ttip.repository.UserRepository
+import mate4ever.ttip.security.secretKey
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.mongodb.core.MongoTemplate
 import org.springframework.data.mongodb.core.query.Criteria
@@ -21,7 +22,7 @@ class UserService {
 
     @Autowired
     private lateinit var mongoTemplate: MongoTemplate
-
+    var encryptor = AESEncryptorGCM()
     @Transactional(readOnly = true)
     fun findUserBy(id: String): User {
         return userRepository.findItemById(id)
@@ -30,16 +31,22 @@ class UserService {
 
     @Transactional(readOnly = true)
     fun findUser(user: UserDTO): User? {
-        val stateCriteria = criteriaForm("email", user.email)
-        val typeCriteria = criteriaForm("password", user.password)
-        val criteria = Criteria().andOperator(stateCriteria, typeCriteria)
-        val query = Query(criteria)
+        lateinit var query : Query
+        try {
+            val password = encryptor.encrypt(user.password, secretKey)
+            val stateCriteria = criteriaForm("email", user.email)
+            val typeCriteria = criteriaForm("password", password!!)
+            val criteria = Criteria().andOperator(stateCriteria, typeCriteria)
+            query = Query(criteria)
+        } catch (error : NegativeArraySizeException) {
+            throw UserIncorrectArgumentsException("El mail o la contraseña son incorrectos")
+        }
         return mongoTemplate.findOne(query, User::class.java)
             ?: throw UserIncorrectArgumentsException("El mail o la contraseña son incorrectos")
     }
 
     @Transactional(readOnly = true)
-    fun findUserbyEmail(email: String): User? {
+    fun findUserByEmail(email: String): User? {
         return userRepository.findByEmail(email)
             ?: throw UserNotFoundException("No existe ningun usuario con ese email en la base de datos")
     }
@@ -54,6 +61,7 @@ class UserService {
     }
 
     fun createUser(user: User): User {
+        user.password = encryptor.encrypt(user.password, secretKey).toString()
         return userRepository.insert(user)
     }
 
@@ -69,7 +77,7 @@ class UserService {
         return userRepository.deleteById(id)
     }
     fun addPet(email: String, petID: String){
-        val user = findUserbyEmail(email)!!
+        val user = findUserByEmail(email)!!
         user.addPet(petID)
         userRepository.save(user)
     }

@@ -6,11 +6,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default function PerfilButton({navigation}) {
     const [email, setEmail] = useState({})
-
-    useEffect(async () => {
+    const getUserEmail = async () => {
         setEmail(await AsyncStorage.getItem('user_id'))
-
-    }, [])
+    }
+    useEffect( () => { getUserEmail() }, [])
 
     return (
         <View style={{marginTop: -32, flexDirection: 'row', justifyContent: 'flex-end'}}>

@@ -1,12 +1,13 @@
 import {TouchableOpacity} from "react-native"
 import {Image, Text, View} from "react-native"
 import React from "react"
-import {petCardStyle} from "../../../styles/PetStyle.js"
+import {petCardStyle} from "../../../styles/pet/PetCardStyle";
 
 export default function PetCard(props) {
     const pet = props.pet
-    return (<TouchableOpacity testID={`pet-details-${pet.id}`} activeOpacity={0.8}
-                              onPress={() => props.navigation.navigate('Detalles', pet.id)}>
+    return (
+        <TouchableOpacity testID={`pet-details-${pet.id}`} activeOpacity={0.8}
+                          onPress={() => props.navigation.navigate('Detalles', pet.id)}>
             <View style={petCardStyle.container}>
                 <View style={petCardStyle.imageView}>
                     {pet.image ? <Image source={{uri: pet.image}} style={petCardStyle.image}/> :
@@ -27,5 +28,6 @@ export default function PetCard(props) {
                     </Text>
                 </View> : <View/>}
             </View>
-        </TouchableOpacity>)
+        </TouchableOpacity>
+    )
 }

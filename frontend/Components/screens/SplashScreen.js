@@ -1,34 +1,36 @@
-import React, {useState, useEffect} from 'react'
-import {
-    ActivityIndicator,
-    View,
-    StyleSheet,
-    Image
-} from 'react-native'
+import React, {useEffect, useState} from 'react'
+import {ActivityIndicator, Image, View} from 'react-native'
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import {colors} from "../../styles/Colors"
+import {getUserByEmail} from "../../server/Api";
+import {splashScreenStyle} from "./SplashScreenStyle";
 
-const SplashScreen = ({navigation}) => {
+export default function SplashScreen({navigation}) {
     //State for ActivityIndicator animation
     const [animating, setAnimating] = useState(true)
-
-    useEffect(() => {
-        setTimeout(() => {
+    const checkIfAlreadyLogin = async () => {
+        setTimeout(async () => {
             setAnimating(false)
             //Check if user_id is set or not
             //If not then send for Authentication
             //else send to Home Screen
-            AsyncStorage.getItem('user_id').then((value) =>
-                navigation.replace(
-                    value === null ? 'Login' : 'Inicio'
-                ),
-            )
+            const userEmail = await AsyncStorage.getItem('user_id')
+            if (userEmail === null) {
+                navigation.replace('Login')
+            } else {
+                getUserByEmail(userEmail).then(response => {
+                    navigation.replace('Inicio')
+                }).catch((error) => {
+                    navigation.replace('Login')
+                })
+            }
         }, 5000)
+    }
+    useEffect(() => {
+        checkIfAlreadyLogin()
     }, [])
 
-    return (
-        <View style={styles.container}>
+    return (<View style={splashScreenStyle.container}>
             <Image
                 source={require('../../assets/icono.png')}
                 style={{width: '80%', resizeMode: 'contain', margin: 30, borderRadius: 10}}
@@ -37,23 +39,8 @@ const SplashScreen = ({navigation}) => {
                 animating={animating}
                 color="rgba(160,122,190,0.76)"
                 size="large"
-                style={styles.activityIndicator}
+                style={splashScreenStyle.activityIndicator}
             />
-        </View>
-    )
+        </View>)
 }
 
-export default SplashScreen
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: colors.yellow,
-    },
-    activityIndicator: {
-        alignItems: 'center',
-        height: 80,
-    },
-})

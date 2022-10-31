@@ -6,6 +6,8 @@ import mate4ever.ttip.dataHelpers.UserFactory
 import mate4ever.ttip.exceptions.UserNotFoundException
 import mate4ever.ttip.model.User
 import mate4ever.ttip.dto.UserDTO
+import mate4ever.ttip.exceptions.UserIncorrectArgumentsException
+import org.apache.catalina.realm.UserDatabaseRealm
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -22,22 +24,22 @@ class UserControllerTest {
     private lateinit var petController: PetController
     private val userFactory: UserFactory = UserFactory()
 
-//    @Test
-//    fun createAndFindPet() {
-//        var user = userFactory.anyUser(pets = listOf(pet))
-//        user = userController.createUser(user).body as User
-//        val findPet = userController.getUserBy(user.id!!).body as User
-//        assert(findPet.name == user.name)
-//
-//    }
-//
-//    @Test
-//    fun createAndFindPetWithNullParameters() {
-//        var user = userFactory.anyUser(phone = null, image =null, pets =listOf(pet))
-//        user = userController.createUser(user).body as User
-//        val findPet = userController.getUserBy(user.id!!).body as User
-//        assert(findPet.name == user.name)
-//    }
+    @Test
+    fun createAndFindUser() {
+        var user = userFactory.anyUser(pets = listOf())
+        userController.createUser(user)
+        val findPet = userController.getUserBy(user.id!!).body as User
+        assert(findPet.name == user.name)
+
+    }
+
+    @Test
+    fun createAndFindUserWithNullParameters() {
+        var user = userFactory.anyUser(phone = null, image =null, pets =listOf())
+        userController.createUser(user).body
+        val findPet = userController.getUserBy(user.id!!).body as User
+        assert(findPet.name == user.name)
+    }
 
     @Test
     fun getByWrongID() {
@@ -48,19 +50,18 @@ class UserControllerTest {
         }
     }
 
-//    @Test
-//    fun getUserLogin() {
-//        var user = userFactory.anyUser(pets =listOf(pet))
-//        user = userController.createUser(user).body as User
-//        val findUser = userController.getUser("aldana@gmail.com").body as User
-//        assert(findUser.name == user.name)
-//    }
+    @Test
+    fun getUserLogin() {
+        var user = userFactory.anyUser(pets =listOf())
+        userController.createUser(user).body
+        val findUser = userController.getUser("aldana@gmail.com").body as UserDTO
+        assert(findUser.email == user.email)
+    }
     @Test
     fun getUserLoginWrongPassword() {
-        var user = userFactory.anyUser()
+        val user = userFactory.anyUser()
         userController.createUser(user)
-        var status = userController.getUser("aldana@gmail.com").statusCode
-        assert(status == HttpStatus.NOT_FOUND)
+        assertThrows<UserIncorrectArgumentsException>("El mail o la contraseña son incorrectos") {userController.getUser(UserDTO("aldana@gmail.com", "contrasena."))}
     }
 
     @Test

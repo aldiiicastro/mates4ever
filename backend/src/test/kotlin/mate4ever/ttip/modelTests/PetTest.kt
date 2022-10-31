@@ -20,7 +20,7 @@ class PetTest {
         assert(pet.type == "Gato")
         assert(pet.breed == "Siames")
         assert(pet.state == "Perdido")
-        assert(pet.user == "Aldana@gmail.com")
+        assert(pet.user == "aldana@gmail.com")
         assert(pet.description == "Se perdio en Bernal")
     }
 }
