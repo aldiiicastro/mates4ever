@@ -2,7 +2,9 @@ package mate4ever.ttip.service
 
 import mate4ever.ttip.dto.PetRequestDTO
 import mate4ever.ttip.exceptions.PetNotFoundException
+import mate4ever.ttip.exceptions.UserNotFoundException
 import mate4ever.ttip.model.Pet
+import mate4ever.ttip.model.User
 import mate4ever.ttip.repository.PetRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.mongodb.core.MongoTemplate
@@ -34,6 +36,10 @@ class PetService {
     @Transactional(readOnly = true)
     fun findAll(): MutableIterable<Pet?> {
         return petRepository.findAll()
+    }
+    @Transactional(readOnly = true)
+    fun findPetByUser(user: String): MutableIterable<Pet> {
+        return petRepository.findByUser(user)
     }
 
     fun getPets(pets: MutableList<String>): Iterable<Pet>? {

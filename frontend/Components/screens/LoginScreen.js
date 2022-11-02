@@ -16,18 +16,21 @@ const LoginScreen = forwardRef(({navigation}, ref) => {
     const [errorText, setErrorText] = useState('')
     const passwordInputRef = createRef()
 
-    const handleSubmitPress = () => {
+    const handleSubmitPress = async () => {
         setLoading(true)
+        let response
         let dataToSend = {email: userEmail, password: userPassword}
-        loginUser(dataToSend).then(response => {
-                setLoading(false)
-                AsyncStorage.setItem('user_id', response.data.email)
-                navigation.navigate('Inicio')
-        }).catch((error) => {
+        try {
+            response = await loginUser(dataToSend)
+            setLoading(false)
+            await AsyncStorage.setItem('user_id', response.data.email)
+            navigation.navigate('Inicio')
+        } catch (error) {
             setLoading(false)
             setErrorText(error.response.data.message)
-        })
+        }
     }
+
     return (
         <SafeAreaView style={{flex: 1}}>
 

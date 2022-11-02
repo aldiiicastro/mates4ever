@@ -8,12 +8,18 @@ import Pet from '../../model/Pet.js'
 import {petDetailsStyle} from "../../styles/pet/PetDetailsStyle";
 
 export default function DetailsScreen({navigation, route}) {
-   const [pet, setPet] = useState({})
+    const [pet, setPet] = useState({})
+    const getPet = async () => {
+        try {
+            const response = await getPetById(route.params)
+            setPet(new Pet(response.data))
+        } catch (error) {
+            alert('Ha habido un error. Contactese con el administrador')
+        }
+    }
 
     useEffect(() => {
-        getPetById(route.params).then((response) => {
-            setPet(new Pet(response.data))
-        }).catch((error) => alert('Ha habido un error. Contactese con el administrador'))
+        getPet()
     }, [route.params])
 
     return (

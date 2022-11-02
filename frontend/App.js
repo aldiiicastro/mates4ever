@@ -11,7 +11,6 @@ import {colors} from "./styles/Colors.js"
 import LoginScreen from "./Components/screens/LoginScreen.js"
 import RegisterScreen from "./Components/screens/RegisterScreen"
 
-
 const Stack = createNativeStackNavigator()
 
 function App() {

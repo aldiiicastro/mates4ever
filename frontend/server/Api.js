@@ -6,9 +6,10 @@ const axinst = axios.create({
     timeout: 15000
 })
 
-export const fetchSearch = async (query) => {
-    const url = `${baseUrl}/api/pet/search?query=${query}`
-    return await axios.get(url)
+//******************** User ********************
+export const createUser = async (user) => {
+    const url = `${baseUrl}/api/user/create`
+    return await axios.post(url, user)
 }
 
 export const loginUser = async (userData) => {
@@ -26,22 +27,29 @@ export const getUserDataByEmail = async (email) => {
     return await axios.get(url)
 }
 
-export const getPetById  = async (id) => {
-    const url = `${baseUrl}/api/pet/${id}`
-    return await axios.get(url)
-}
-
+//******************** Pet ********************
 export const createPet = async (pet) => {
     return await axinst.post(
         '/api/pet/create',
         pet)
 }
 
-export const createUser = async (user) => {
-    const url = `${baseUrl}/api/user/create`
-    return await axios.post(url, user)
+export const getSearchedPets = async (query) => {
+    const url = `${baseUrl}/api/pet/search?query=${query}`
+    return await axios.get(url)
 }
 
+export const getPetById  = async (id) => {
+    const url = `${baseUrl}/api/pet/${id}`
+    return await axios.get(url)
+}
+
+export const getPetByUser  = async (user) => {
+    const url = `${baseUrl}/api/pets/${user}`
+    return await axios.get(url)
+}
+
+//******************** Location ********************
 export const getProvince = async() => {
     return await axios.get("https://apis.datos.gob.ar/georef/api/provincias")
 }

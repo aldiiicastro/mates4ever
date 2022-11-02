@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {FlatList, Image, Linking, ScrollView, Text, View} from 'react-native'
+import {FlatList, Image, Linking, Text, View} from 'react-native'
 import profileStyles from '../../styles/ProfileStyles'
 import ContactCard from '../users/ContactCard'
 import Icon from "react-native-vector-icons/MaterialIcons"
@@ -10,16 +10,23 @@ import Back from "../drawerlayout/Back"
 import User from '../../model/User'
 import PetCard from '../pets/card/PetCard'
 import {petsStatesStyle} from "../../styles/pet/PetStatesStyle";
+import Pet from "../../model/Pet";
 
 export default function UserProfileScreen({navigation}) {
     const [user, setUser] = useState({})
-    const [pets, setPets] = useState({})
+    const [pets, setPets] = useState(null)
     const getUserProfile = async () => {
         const userEmail = await AsyncStorage.getItem('user_id')
-        getUserDataByEmail(userEmail).then((response) => {
+        const response = await getUserDataByEmail(userEmail)
+        try {
             setUser(new User(response.data))
-            setPets(user.pets)
-        }).catch((error) => alert('Ha habido un error. Contactese con el administrador'))
+            //Si buscasemos los pets según el email
+            // const petResponse = await getPetByUser(response.data.email)
+            // setPets(petResponse.data.pets.map((pet)=> new Pet(pet)))
+            setPets(response.data.pets.map((pet) => new Pet(pet)))
+        } catch (error) {
+            alert('Ha habido un error. Contactese con el administrador')
+        }
     }
     useEffect(() => {
         getUserProfile()
@@ -61,22 +68,6 @@ export default function UserProfileScreen({navigation}) {
         </View>)
     }
 
-    const renderPetsPosts = () => {
-        return (
-            <View>
-                <FlatList
-                    columnWrapperStyle={{justifyContent: 'space-evenly'}}
-                    scrollEnabled={false}
-                    contentContainerStyle={petsStatesStyle.contentContainerStyle}
-                    numColumns={2}
-                    data={pets}
-                    renderItem={({item}) => {
-                        return <PetCard navigation={navigation} pet={item}/>
-                    }}
-                />
-            </View>)
-    }
-
     const renderLogOut = () => {
         return (
             <View style={{flexDirection: 'row', justifyContent: 'flex-start'}}>
@@ -91,20 +82,42 @@ export default function UserProfileScreen({navigation}) {
             </View>
         )
     }
+    const renderComponent = () => {
+        return (
+            <View>
+                <Back onPress={() => navigation.goBack()} headerStyle={profileStyles.header}/>
+                {renderContactHeader()}
+                {renderContact()}
+                <View style={{margin: 15}}></View>
+                {renderLogOut()}
+                <View style={{margin: 20}}></View>
+            </View>
+        )
+    }
 
-    return (<ScrollView style={profileStyles.scroll}>
+    const renderPetsPosts = () => {
+        return (
+            <View>
+                <FlatList
+                    columnWrapperStyle={{justifyContent: 'space-evenly'}}
+                    contentContainerStyle={petsStatesStyle.contentContainerStyle}
+                    numColumns={2}
+                    data={pets}
+                    renderItem={({item}) => {
+                        return <PetCard navigation={navigation} pet={item}/>
+                    }}
+                    ListHeaderComponent={renderComponent()}
+                />
+            </View>)
+    }
+
+    return (
             <View style={[profileStyles.container]}>
                 <View style={profileStyles.cardContainer}>
-                    <Back onPress={() => navigation.goBack()} headerStyle={profileStyles.header}/>
-                    {renderContactHeader()}
-                    {renderContact()}
-                    <View style={{margin: 15}}></View>
-                    {renderLogOut()}
-                    <View style={{margin: 20}}></View>
-                    {user.pets ? renderPetsPosts() : null}
+                    {pets ? renderPetsPosts() : renderComponent()}
                 </View>
             </View>
-        </ScrollView>
+
     )
 }
 

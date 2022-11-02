@@ -6,7 +6,7 @@ import Pet from "../../model/Pet.js"
 import PetsStatesView from "../pets/PetsStatesView.js"
 import {Title} from "react-native-paper"
 import {petCreationScreenStyle} from "../../styles/pet/PetCreationScreenStyle.js"
-import {fetchSearch} from "../../server/Api"
+import {getSearchedPets} from "../../server/Api"
 import {style} from "../../styles/Commons"
 import PerfilButton from '../drawerlayout/PerfilButton.js'
 
@@ -18,10 +18,9 @@ export default function PetScreen({navigation}) {
     //searching pets in de database. Catching the error if fetch has a problem, showing an alert.
     const search = async query => {
         try {
-            fetchSearch(query).then(response => {
-                const pets = response.data.map((pet) => (new Pet(pet)))
-                setPetsSearching(pets)
-            })
+            const response = await getSearchedPets(query)
+            const pets = response.data.map((pet) => (new Pet(pet)))
+            setPetsSearching(pets)
         } catch (error) {
             setPetsSearching([])
             isAlreadyShownAlert ?
@@ -50,9 +49,10 @@ export default function PetScreen({navigation}) {
             <View style={petCreationScreenStyle.searchView}>
                 <View style={petCreationScreenStyle.searchContainer}>
                     <Icon name="search" size={25} style={petCreationScreenStyle.iconSearch}/>
-                    <TextInput testID={'search'} placeholder="Search" style={petCreationScreenStyle.input} ref={input => {
-                        textInput = input
-                    }} onChangeText={search} clearButtonMode={"always"}/>
+                    <TextInput testID={'search'} placeholder="Search" style={petCreationScreenStyle.input}
+                               ref={input => {
+                                   textInput = input
+                               }} onChangeText={search} clearButtonMode={"always"}/>
                     <Icon name="close" size={20} style={petCreationScreenStyle.iconClose} onPress={() => {
                         textInput.clear()
                         search('')
@@ -66,7 +66,8 @@ export default function PetScreen({navigation}) {
             <ScrollView horizontal={true}>
                 {((petsSearching && petsSearching.length) ?
                     <PetsStatesView navigation={navigation} pets={petsSearching}/> :
-                    <View><View style={petCreationScreenStyle.categoryContainer} testID={'view-container-general'}><Title
+                    <View><View style={petCreationScreenStyle.categoryContainer}
+                                testID={'view-container-general'}><Title
                         testID={'no-pets'}>No hay mascotas</Title></View></View>)}
             </ScrollView>
         </SafeAreaView>

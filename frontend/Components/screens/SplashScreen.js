@@ -3,7 +3,7 @@ import {ActivityIndicator, Image, View} from 'react-native'
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import {getUserByEmail} from "../../server/Api";
-import {splashScreenStyle} from "./SplashScreenStyle";
+import {splashScreenStyle} from "../../styles/SplashScreenStyle";
 
 export default function SplashScreen({navigation}) {
     //State for ActivityIndicator animation
@@ -18,11 +18,12 @@ export default function SplashScreen({navigation}) {
             if (userEmail === null) {
                 navigation.replace('Login')
             } else {
-                getUserByEmail(userEmail).then(response => {
+                try {
+                    await getUserByEmail(userEmail)
                     navigation.replace('Inicio')
-                }).catch((error) => {
+                } catch (error) {
                     navigation.replace('Login')
-                })
+                }
             }
         }, 5000)
     }
@@ -31,16 +32,16 @@ export default function SplashScreen({navigation}) {
     }, [])
 
     return (<View style={splashScreenStyle.container}>
-            <Image
-                source={require('../../assets/icono.png')}
-                style={{width: '80%', resizeMode: 'contain', margin: 30, borderRadius: 10}}
-            />
-            <ActivityIndicator
-                animating={animating}
-                color="rgba(160,122,190,0.76)"
-                size="large"
-                style={splashScreenStyle.activityIndicator}
-            />
-        </View>)
+        <Image
+            source={require('../../assets/icono.png')}
+            style={{width: '80%', resizeMode: 'contain', margin: 30, borderRadius: 10}}
+        />
+        <ActivityIndicator
+            animating={animating}
+            color="rgba(160,122,190,0.76)"
+            size="large"
+            style={splashScreenStyle.activityIndicator}
+        />
+    </View>)
 }
 

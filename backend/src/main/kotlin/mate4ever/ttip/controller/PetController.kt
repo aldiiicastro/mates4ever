@@ -29,7 +29,11 @@ class PetController {
         val pet = petService.findById(id)
         return ResponseEntity<Pet>(pet, null, HttpStatus.OK)
     }
-
+    @GetMapping("/api/pets/{user}")
+    fun getPetByUser(@PathVariable(required = true) user: String): ResponseEntity<*> {
+        val pets = petService.findPetByUser(user)
+        return ResponseEntity(pets, null, HttpStatus.OK)
+    }
     @GetMapping("/api/pet/all")
     fun getAllPets(): MutableIterable<Pet?> {
         return petService.findAll()

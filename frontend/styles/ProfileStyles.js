@@ -20,6 +20,7 @@ const profileStyles = StyleSheet.create({
     fontWeight: '600',
   },
   coverContainer: {
+
     position: 'relative',
   },
 
@@ -54,7 +55,6 @@ const profileStyles = StyleSheet.create({
   },
   headerContainer: {
     alignItems: 'center',
-    backgroundColor: '#FFF',
   },
   indicatorTab: {
     backgroundColor: 'transparent',

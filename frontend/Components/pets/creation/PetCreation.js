@@ -1,5 +1,5 @@
 import React, {createRef, useState} from "react"
-import {Form, FormItem} from 'react-native-form-component'
+import {Form, FormItem} from "react-native-form-component"
 import {ScrollView} from "react-native-gesture-handler"
 
 import {style} from "../../../styles/Commons"
@@ -20,8 +20,7 @@ import {
 } from "../../drawerlayout/FormItemGeneric"
 import {petCreationScreenStyle} from "../../../styles/pet/PetCreationScreenStyle"
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import MapView, { Callout, Circle, Marker } from 'react-native-maps';
-
+import MapView, {Callout, Circle, Marker} from "react-native-maps";
 
 export default function PetCreation({navigation}) {
     const [image, setImage] = useState(null)
@@ -29,14 +28,14 @@ export default function PetCreation({navigation}) {
     const [name, setName] = useState('')
     const [age, setAge] = useState(null)
     const [ageDate, setAgeDate] = useState(new Date())
-    const [state, setState] = useState('Adopción')
-    const [type, setType] = useState('Perro')
+    const [state, setState] = useState("Adopción")
+    const [type, setType] = useState("Perro")
     const [breed, setBreed] = useState('')
     const [vaccine, setVaccine] = useState(false)
     const [castrated, setCastrated] = useState(false)
     const [medicalHistory, setMedicalHistory] = useState('')
     const [description, setDescription] = useState('')
-    const [region, setRegion] = useState({latitude : -34.706526, longitude :  -58.277372})
+    const [region, setRegion] = useState({latitude: -34.706526, longitude: -58.277372})
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false)
     const [loading, setLoading] = useState(false)
     const [error, setErrors] = useState('')
@@ -52,34 +51,36 @@ export default function PetCreation({navigation}) {
         if (!image) {
             return ""
         }
-        return await handleImagePicked(image)
+        const uuid = await handleImagePicked(image)
+        return uuid
     }
 
     const publish = async () => {
         setLoading(true)
 
-        const userEmail = await AsyncStorage.getItem('user_id')
+        const userEmail = await AsyncStorage.getItem("user_id")
         const image = await uploadedImage()
 
         const pet = {
-            'name': name,
+            "name": name,
             "image": image,
-            'birth': age,
-            'state': state,
-            'type': type,
-            'breed': breed,
-            'vaccine': vaccine,
-            'castrated': castrated,
-            'medicalHistory': medicalHistory,
-            'description': description,
+            "birth": age,
+            "state": state,
+            "type": type,
+            "breed": breed,
+            "vaccine": vaccine,
+            "castrated": castrated,
+            "medicalHistory": medicalHistory,
+            "description": description,
             "tutor": userEmail,
         }
-        createPet(pet).then((response) => {
-            navigation.navigate('Inicio')
-        }).catch((response) => {
-            setErrors(response.errors)
-        })
+        try {
+            await createPet(pet)
+            navigation.navigate("Inicio")
 
+        } catch (error) {
+            setErrors(error.errors)
+        }
         setLoading(false)
     }
     const showDatePicker = () => {
@@ -98,12 +99,13 @@ export default function PetCreation({navigation}) {
 
     const getAge = (dateInput) => {
         const dateArray = dateInput.toLocaleDateString().split("/")
-        return ([dateArray[1], dateArray[0], dateInput.getFullYear()].join('/'))
+        return ([dateArray[1], dateArray[0], dateInput.getFullYear()].join("/"))
     }
     return (
         <ScrollView style={style.fullContainer}>
             <Loader loading={loading}/>
-            <Back onPress={() => navigation.goBack()} text="Cargar una mascota" headerStyle={petCreationScreenStyle.header}/>
+            <Back onPress={() => navigation.goBack()} text="Cargar una mascota"
+                  headerStyle={petCreationScreenStyle.header}/>
 
             <ImageForm
                 imageUri={imageUri}
@@ -111,7 +113,7 @@ export default function PetCreation({navigation}) {
             />
 
             <Form
-                GenericInput={'Cargar una mascota'} onButtonPress={() => publish()}
+                GenericInput={"Cargar una mascota"} onButtonPress={() => publish()}
                 buttonStyle={{backgroundColor: colors.violet}}
                 buttonText="Publicar"
                 style={[style.marginX, style.bgWhite]}>
@@ -150,37 +152,37 @@ export default function PetCreation({navigation}) {
 
                 <SimpleLinePicker
                     items={[
-                        {label: 'Adopción', value: 'Adopción'},
-                        {label: 'Transito', value: 'Transito'},
-                        {label: 'Perdido', value: 'Perdido'},
+                        {label: "Adopción", value: "Adopción"},
+                        {label: "Transito", value: "Transito"},
+                        {label: "Perdido", value: "Perdido"},
                     ]}
                     label="Tipo de publicacion"
                     selectedValue={state}
                     onSelection={(item) => setState(item.value)}
                 />
-                { state === "Adopción" &&
+                {state === "Perdido" &&
                     <MapView
-                        style={{ width: "100%", height: 200}}
+                        style={{width: "100%", height: 200}}
                         initialRegion={{
-                            latitude : -34.706526,
-                            longitude :  -58.277372,
+                            latitude: -34.706526,
+                            longitude: -58.277372,
                             latitudeDelta: 0.05,
                             longitudeDelta: 0.05,
-                          }}
+                        }}
                         onPress={(e) => setRegion(e.nativeEvent.coordinate)}
                     >
                         <Marker draggable
-                            coordinate={region}
-                            onDrag={(e) => setRegion(e.nativeEvent.coordinate)}
+                                coordinate={region}
+                                onDrag={(e) => setRegion(e.nativeEvent.coordinate)}
                         />
                         <Circle center={region} radius={1000}/>
                     </MapView>
                 }
                 <SimpleLinePicker
                     items={[
-                        {label: 'Perro', value: 'Perro'},
-                        {label: 'Gato', value: 'Gato'},
-                        {label: 'Otro', value: 'Otro'},
+                        {label: "Perro", value: "Perro"},
+                        {label: "Gato", value: "Gato"},
+                        {label: "Otro", value: "Otro"},
                     ]}
                     label="Tipo de animal"
                     selectedValue={type}
@@ -206,19 +208,19 @@ export default function PetCreation({navigation}) {
                 />
 
                 <SimpleCheckBox
-                    status={vaccine ? 'checked' : 'unchecked'}
+                    status={vaccine ? "checked" : "unchecked"}
                     onPress={() => {
                         setVaccine(!vaccine)
                     }}
-                    text={'¿Tiene las vacunas al día?'}
+                    text={"¿Tiene las vacunas al día?"}
                 />
 
                 <SimpleCheckBox
-                    status={castrated ? 'checked' : 'unchecked'}
+                    status={castrated ? "checked" : "unchecked"}
                     onPress={() => {
                         setCastrated(!castrated)
                     }}
-                    text={'¿Esta castrado?'}
+                    text={"¿Esta castrado?"}
                 />
             </Form>
         </ScrollView>
