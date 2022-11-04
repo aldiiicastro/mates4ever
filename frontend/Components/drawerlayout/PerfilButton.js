@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 import {colors} from '../../styles/Colors.js'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-export default function PerfilButton({navigation}) {
+export default function PerfilButton({ navigation}) {
     const [email, setEmail] = useState({})
     const getUserEmail = async () => {
         setEmail(await AsyncStorage.getItem('user_id'))

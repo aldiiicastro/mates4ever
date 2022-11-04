@@ -1,7 +1,7 @@
 import React, {createRef, forwardRef, useEffect, useState} from 'react'
 import {Form, FormItem} from 'react-native-form-component'
 import {Picker} from 'react-native-form-component'
-import {ScrollView, Text, View} from "react-native"
+import {Platform, ScrollView, Text, View} from "react-native"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import ImageView from "../drawerlayout/ImageView"
 import {FormItemGeneric} from "../drawerlayout/FormItemGeneric"
@@ -9,8 +9,19 @@ import Loader from "../drawerlayout/Loader"
 import {registerScreenStyle} from "../../styles/RegisterScreenStyle"
 import {colors} from "../../styles/Colors"
 import {createUser, getMunicipalities, getProvince} from "../../server/Api"
+import * as Notifications from "expo-notifications";
+import * as Device from "expo-device";
+
+Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: false,
+        shouldSetBadge: false,
+    }),
+});
 
 const RegisterScreen = forwardRef(({navigation}, ref) => {
+        const [expoPushToken, setExpoPushToken] = useState('');
         const [userName, setUserName] = useState('')
         const [lastName, setLastName] = useState('')
         const [userEmail, setUserEmail] = useState('')
@@ -36,6 +47,8 @@ const RegisterScreen = forwardRef(({navigation}, ref) => {
         const userStreetInputRef = createRef()
         const userStreetNumberInputRef = createRef()
 
+    useEffect(() => {
+        registerForPushNotificationsAsync().then(token => setExpoPushToken(token))}, []);
         const dataToSend = {
             name: userName,
             lastname: lastName,
@@ -46,6 +59,7 @@ const RegisterScreen = forwardRef(({navigation}, ref) => {
             municipality: municipality,
             province: province,
             password: userPassword,
+            expoPushToken: expoPushToken,
             pets: [],
         }
 
@@ -246,5 +260,37 @@ const RegisterScreen = forwardRef(({navigation}, ref) => {
         )
     }
 )
+
+
+async function registerForPushNotificationsAsync() {
+    let token;
+    if (Device.isDevice) {
+        const { status: existingStatus } = await Notifications.getPermissionsAsync();
+        let finalStatus = existingStatus;
+        if (existingStatus !== 'granted') {
+            const { status } = await Notifications.requestPermissionsAsync();
+            finalStatus = status;
+        }
+        if (finalStatus !== 'granted') {
+            alert('Failed to get push token for push notification!');
+            return;
+        }
+        token = (await Notifications.getExpoPushTokenAsync()).data;
+        console.log(token);
+    } else {
+        alert('Must use physical device for Push Notifications');
+    }
+
+    if (Platform.OS === 'android') {
+        await Notifications.setNotificationChannelAsync('default', {
+            name: 'default',
+            importance: Notifications.AndroidImportance.MAX,
+            vibrationPattern: [0, 250, 250, 250],
+            lightColor: '#FF231F7C',
+        });
+    }
+
+    return token;
+}
 
 export default RegisterScreen

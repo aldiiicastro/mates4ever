@@ -6,7 +6,7 @@ import {style} from "../../../styles/Commons"
 import {form} from "../../../styles/Form"
 import {colors} from "../../../styles/Colors"
 
-import {createPet} from "../../../server/Api.js"
+import {createPet, getAllUser} from "../../../server/Api.js"
 import {handleImagePicked, pickImage} from "../../../server/FirebaseServer"
 import Loader from "../../drawerlayout/Loader"
 import Back from "../../drawerlayout/Back"
@@ -76,6 +76,9 @@ export default function PetCreation({navigation}) {
         }
         try {
             await createPet(pet)
+            if (pet.state === 'Perdido') {
+                sendPushNotification()
+            }
             navigation.navigate("Inicio")
 
         } catch (error) {
@@ -227,6 +230,27 @@ export default function PetCreation({navigation}) {
     )
 }
 
+async function sendPushNotification() {
+    const allUsers = await getAllUser()
+    const tokens = allUsers.data.map((user) => user.expoPushToken)
+    const message = {
+        to: tokens,
+        sound: 'default',
+        title: 'Original Title',
+        body: 'And here is the body!',
+        data: { someData: 'goes here' },
+    };
+
+    await fetch('https://exp.host/--/api/v2/push/send', {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Accept-encoding': 'gzip, deflate',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(message),
+    });
+}
 
 
 
