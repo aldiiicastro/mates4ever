@@ -8,7 +8,7 @@ import org.springframework.boot.runApplication
 class TtipApplication
 
 fun main(args: Array<String>) {
-	val secretKey: String =
+	/*val secretKey: String =
 		"662ede816988e58fb6d057d9d85605e0"
 
 	var encryptor = AESEncryptorGCM()
@@ -17,6 +17,6 @@ fun main(args: Array<String>) {
 	println(encryptedValue)
 
 	val decryptedValue: String? =encryptor.decryptWithAES(secretKey, "qriRBfSToWq0GnZQC16PPTmYFZdpp0Uh")
-	println(decryptedValue)
+	println(decryptedValue)*/
 	runApplication<TtipApplication>(*args)
 }
