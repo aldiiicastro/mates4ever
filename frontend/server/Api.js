@@ -16,6 +16,11 @@ export const loginUser = async (userData) => {
     const url = `${baseUrl}/api/user/userData`;
   return await axinst.post(url, {email: userData.email, password: userData.password})
 }
+export const getAllUser = async () => {
+    const url = `${baseUrl}/api/user/all`;
+    return await axios.get(url)
+}
+
 
 export const getUserByEmail = async (email) => {
     const url = `${baseUrl}/api/user/email/${email}`;

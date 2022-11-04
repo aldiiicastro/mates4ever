@@ -12,11 +12,11 @@ import PetCard from '../pets/card/PetCard'
 import {petsStatesStyle} from "../../styles/pet/PetStatesStyle";
 import Pet from "../../model/Pet";
 
-export default function UserProfileScreen({navigation}) {
+export default function UserProfileScreen({navigation, route}) {
     const [user, setUser] = useState({})
     const [pets, setPets] = useState(null)
     const getUserProfile = async () => {
-        const userEmail = await AsyncStorage.getItem('user_id')
+        const userEmail = route.params
         const response = await getUserDataByEmail(userEmail)
         try {
             setUser(new User(response.data))
@@ -117,7 +117,6 @@ export default function UserProfileScreen({navigation}) {
                     {pets ? renderPetsPosts() : renderComponent()}
                 </View>
             </View>
-
     )
 }
 

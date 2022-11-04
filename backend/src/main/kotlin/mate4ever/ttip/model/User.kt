@@ -27,6 +27,7 @@ class User(
     var municipality: String,
     var province: String,
     var image: String?,
+    var expoPushToken: String?,
 //    @OneToMany(mappedBy="user", cascade = [CascadeType.ALL], orphanRemoval = true, fetch = FetchType.LAZY)
 
 ){
