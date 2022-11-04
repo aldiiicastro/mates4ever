@@ -1,4 +1,4 @@
-import React, {createRef, useState} from "react"
+import React, {createRef, useState, useEffect} from "react"
 import {Form, FormItem} from "react-native-form-component"
 import {ScrollView} from "react-native-gesture-handler"
 
@@ -22,6 +22,9 @@ import {petCreationScreenStyle} from "../../../styles/pet/PetCreationScreenStyle
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import MapView, {Callout, Circle, Marker} from "react-native-maps";
 
+import * as Location from 'expo-location';
+
+
 export default function PetCreation({navigation}) {
     const [image, setImage] = useState(null)
     const [imageUri, setImageUri] = useState(null)
@@ -35,11 +38,16 @@ export default function PetCreation({navigation}) {
     const [castrated, setCastrated] = useState(false)
     const [medicalHistory, setMedicalHistory] = useState('')
     const [description, setDescription] = useState('')
-    const [region, setRegion] = useState({latitude: -34.706526, longitude: -58.277372})
+    const [region, setRegion] = useState({})
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false)
     const [loading, setLoading] = useState(false)
     const [error, setErrors] = useState('')
     const nameInputRef = createRef()
+
+    useEffect(() => {
+          getCurrentPosition()
+      }, []);
+
 
     const pickAnImage = async () => {
         const pickerResult = await pickImage()
@@ -100,6 +108,16 @@ export default function PetCreation({navigation}) {
     const getAge = (dateInput) => {
         const dateArray = dateInput.toLocaleDateString().split("/")
         return ([dateArray[1], dateArray[0], dateInput.getFullYear()].join("/"))
+    }
+
+    const getCurrentPosition = async () => {
+        let { status } = await Location.requestForegroundPermissionsAsync();
+          if (status !== 'granted') {
+            return;
+          }
+
+          let location = await Location.getCurrentPositionAsync({});
+          setRegion({latitude: location["coords"].latitude, longitude: location["coords"].longitude })
     }
     return (
         <ScrollView style={style.fullContainer}>
@@ -171,7 +189,7 @@ export default function PetCreation({navigation}) {
                         }}
                         onPress={(e) => setRegion(e.nativeEvent.coordinate)}
                     >
-                        <Marker draggable
+                        <Marker 
                                 coordinate={region}
                                 onDrag={(e) => setRegion(e.nativeEvent.coordinate)}
                         />
