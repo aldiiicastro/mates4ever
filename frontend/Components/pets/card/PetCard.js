@@ -10,8 +10,11 @@ export default function PetCard(props) {
                           onPress={() => props.navigation.navigate('Detalles', pet.id)}>
             <View style={petCardStyle.container}>
                 <View style={petCardStyle.imageView}>
-                    {pet.image ? <Image source={{uri: pet.image}} style={petCardStyle.image}/> :
-                        <Image source={require('../../../assets/DefaultPet.png')} style={petCardStyle.image}/>}
+                    {pet.image ? 
+                        <Image source={{uri: pet.image}} style={petCardStyle.image}/> 
+                        :
+                        <Image source={require('../../../assets/DefaultPet.png')} style={petCardStyle.image}/>
+                    }
                     <View style={pet.isLost() ? petCardStyle.viewStateLost : petCardStyle.viewState}>
                         <Text testID={`pet-state-${pet.id}`}
                               style={pet.isLost() ? petCardStyle.textStateLost : petCardStyle.textState}>
@@ -26,7 +29,7 @@ export default function PetCard(props) {
                     <Text testID={`pet-age-${pet.id}`} style={petCardStyle.textAge}>
                         Edad: {pet.age}
                     </Text>
-                </View> : <View/>}
+                </View> : null }
             </View>
         </TouchableOpacity>
     )

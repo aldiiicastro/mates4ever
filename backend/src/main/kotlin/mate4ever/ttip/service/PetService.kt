@@ -2,9 +2,7 @@ package mate4ever.ttip.service
 
 import mate4ever.ttip.dto.PetRequestDTO
 import mate4ever.ttip.exceptions.PetNotFoundException
-import mate4ever.ttip.exceptions.UserNotFoundException
 import mate4ever.ttip.model.Pet
-import mate4ever.ttip.model.User
 import mate4ever.ttip.repository.PetRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.mongodb.core.MongoTemplate
@@ -58,7 +56,8 @@ class PetService {
             petDTO.vaccine,
             petDTO.castrated,
             petDTO.medicalHistory,
-            petDTO.description
+            petDTO.description,
+            petDTO.coordinates
         )
 
         val petSaved = petRepository.insert(pet)
