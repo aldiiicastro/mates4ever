@@ -11,6 +11,7 @@ export default class Pet{
     description;
     castrated;
     vaccine;
+    coordinates;
 
     constructor(pet) {
             this.id = pet.id,
@@ -24,8 +25,8 @@ export default class Pet{
             this.tutor = pet.user,
             this.castrated = pet.castrated,
             this.vaccine = pet.vaccine,
-            this.description = pet.description;
-            
+            this.description = pet.description,
+            this.coordinates = pet.coordinates
     }
 
     isThisState(stateToAsk) {return stateToAsk === this.state}

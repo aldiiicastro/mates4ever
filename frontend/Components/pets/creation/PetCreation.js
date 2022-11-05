@@ -81,6 +81,7 @@ export default function PetCreation({navigation}) {
             "medicalHistory": medicalHistory,
             "description": description,
             "tutor": userEmail,
+            "coordinates": region
         }
         try {
             await createPet(pet)
@@ -120,7 +121,7 @@ export default function PetCreation({navigation}) {
           }
 
           let location = await Location.getCurrentPositionAsync({});
-          setRegion({latitude: location["coords"].latitude, longitude: location["coords"].longitude })
+          setRegion({ latitude: location["coords"].latitude, longitude: location["coords"].longitude })
     }
     return (
         <ScrollView style={style.fullContainer}>
@@ -185,12 +186,14 @@ export default function PetCreation({navigation}) {
                     <MapView
                         style={{width: "100%", height: 200}}
                         initialRegion={{
-                            latitude: -34.706526,
-                            longitude: -58.277372,
+                            latitude: region.latitude,
+                            longitude: region.longitude,
                             latitudeDelta: 0.05,
                             longitudeDelta: 0.05,
                         }}
                         onPress={(e) => setRegion(e.nativeEvent.coordinate)}
+                        showsUserLocation={true}
+                        
                     >
                         <Marker 
                                 coordinate={region}

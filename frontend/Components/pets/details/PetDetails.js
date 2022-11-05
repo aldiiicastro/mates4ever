@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 import Tag from '../../drawerlayout/Tag.js'
 import {style} from "../../../styles/Commons.js"
 import {petDetailsStyle} from "../../../styles/pet/PetDetailsStyle"
+import MapView, { Circle, Marker } from 'react-native-maps'
 
 export default function PetDetails({navigation, pet}) {
     const viewShot = useRef()
@@ -100,6 +101,19 @@ export default function PetDetails({navigation, pet}) {
                         <Text testID={"pet-details-vaccinate"}
                               style={[petDetailsStyle.descriptionDetail, style.bold]}> • {pet.vaccine ? "Esta vacunado" : "No esta vacunado"}</Text>
                     </View>
+                  { pet.coordinates &&  
+                    <MapView
+                        style={{ marginHorizontal: 10, marginTop: 30, height: 200}}
+                        initialRegion={{
+                            latitude: pet.coordinates.latitude,
+                            longitude: pet.coordinates.longitude,
+                            latitudeDelta: 0.05,
+                            longitudeDelta: 0.05,
+                        }}
+                        showsUserLocation={true} >
+                        <Marker coordinate={pet.coordinates} />
+                        <Circle center={pet.coordinates} radius={1000}/>
+                    </MapView>}
                 </View>
             </ViewShot>
             <View>
