@@ -18,6 +18,6 @@ class UserFactory {
         image: String? = "Example",
         pets: List<Pet> = listOf()
     ): User {
-        return User(id, name, lastname, email, password, phone,street, numberStreet, municipality, province,image)
+        return User(id, name, lastname, email, password, phone,street, numberStreet, municipality, province,image, "")
     }
 }

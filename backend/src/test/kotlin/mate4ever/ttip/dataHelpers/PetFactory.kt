@@ -17,7 +17,8 @@ class PetFactory() {
         vaccine: Boolean = true,
         castrated: Boolean = true,
         medicalHistory: String? = null,
-        description: String? = "Se perdio en Bernal"
+        description: String? = "Se perdio en Bernal",
+        coordinates: Map<String, Double>? = null
     ): PetRequestDTO {
 
         return PetRequestDTO(
@@ -31,7 +32,8 @@ class PetFactory() {
             vaccine,
             castrated,
             medicalHistory,
-            description
+            description,
+            coordinates
         )
     }
 
@@ -46,10 +48,12 @@ class PetFactory() {
         vaccine: Boolean = true,
         castrated: Boolean = true,
         medicalHistory: String? = null,
-        description: String? = "Se perdio en Bernal"
+        description: String? = "Se perdio en Bernal",
+        coordinates: Map<String, Double>? = null
+
     ): Pet {
 
-        return Pet(name, image, birth, type, breed, state, tutor.email,  vaccine, castrated, medicalHistory, description)
+        return Pet(name, image, birth, type, breed, state, tutor.email, vaccine, castrated, medicalHistory, description, coordinates)
     }
 
 }
