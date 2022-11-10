@@ -28,7 +28,7 @@ class PetDataLoader : CommandLineRunner {
         userRepository.deleteAll()
         petService.deleteAll()
 
-        val user = User(null, "Mates4Ever", "Org", "mates4ever@gmail.com", "qriRBfSToWq0GnZQC16PPTmYFZdpp0Uh", 1112345678,"Saenz Peña", 69, "Bernal", "Buenos Aires", "", "ExponentPushToken[0XZ0dzHNirdz-ogo3o64e1]")
+        val user = User(null, "Mates4Ever", "Org", "mates4ever@gmail.com", "qriRBfSToWq0GnZQC16PPTmYFZdpp0Uh", 1112345678,mapOf("latitude" to -36.6769415180527, "longitude" to 	-60.5588319815719), "undefine","ExponentPushToken[0XZ0dzHNirdz-ogo3o64e1]")
 
         val pets = listOf(
             PetRequestDTO("Mía", "https://github.com/aldiiicastro/mates4ever/blob/main/frontend/assets/gatitos/Mia.jpg?raw=true",

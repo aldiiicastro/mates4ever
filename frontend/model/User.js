@@ -10,15 +10,15 @@ export default class User{
     phone
     province
 
-    constructor(user) {
+    constructor(user, municipality, province) {
         this.email = user.email
         this.image = user.image
         this.lastname = user.lastname
-        this.municipality = user.municipality
+        this.municipality = municipality
         this.name = user.name
         this.pets = this.createPets(user.pets)
         this.phone = user.phone
-        this.province = user.province
+        this.province = province
     }
 
     createPets(pets){

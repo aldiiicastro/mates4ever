@@ -1,16 +1,19 @@
 import React, {createRef, forwardRef, useEffect, useState} from 'react'
 import {Form, FormItem} from 'react-native-form-component'
-import {Picker} from 'react-native-form-component'
-import {Platform, ScrollView, Text, View} from "react-native"
+import {Platform, ScrollView, View} from "react-native"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import ImageView from "../drawerlayout/ImageView"
 import {FormItemGeneric} from "../drawerlayout/FormItemGeneric"
 import Loader from "../drawerlayout/Loader"
-import {registerScreenStyle} from "../../styles/RegisterScreenStyle"
 import {colors} from "../../styles/Colors"
-import {createUser, getMunicipalities, getProvince} from "../../server/Api"
+import {createUser, getDir} from "../../server/Api"
 import * as Notifications from "expo-notifications";
 import * as Device from "expo-device";
+import SearchableDropdown from "react-native-searchable-dropdown";
+import MapView, {Circle, Marker} from "react-native-maps";
+import * as Location from "expo-location";
+import Back from "../drawerlayout/Back";
+import {registerScreenStyle} from "../../styles/RegisterScreenStyle";
 
 Notifications.setNotificationHandler({
     handleNotification: async () => ({
@@ -21,18 +24,16 @@ Notifications.setNotificationHandler({
 });
 
 const RegisterScreen = forwardRef(({navigation}, ref) => {
+        const [region, setRegion] = useState({latitude: -36.6769415180527, longitude: 	-60.5588319815719})
+        const [locations, setLocations] = useState([])
+
+        const [location, setLocation] = useState([])
         const [expoPushToken, setExpoPushToken] = useState('');
         const [userName, setUserName] = useState('')
         const [lastName, setLastName] = useState('')
         const [userEmail, setUserEmail] = useState('')
         const [userConfirmEmail, setUserConfirmEmail] = useState('')
         const [phoneNumber, setPhoneNumber] = useState('')
-        const [userStreet, setUserStreet] = useState('')
-        const [userStreetNumber, setUserStreetNumber] = useState('')
-        const [municipality, setMunicipality] = useState('')
-        const [municipalities, setMunicipalities] = useState('')
-        const [province, setProvince] = useState('')
-        const [provinces, setProvinces] = useState('')
         const [userPassword, setUserPassword] = useState('')
         const [userConfirmPassword, setUserConfirmPassword] = useState('')
         const [errorText, setErrorText] = useState('')
@@ -45,71 +46,76 @@ const RegisterScreen = forwardRef(({navigation}, ref) => {
         const rePasswordInputRef = createRef()
         const lastNameInputRef = createRef()
         const userStreetInputRef = createRef()
-        const userStreetNumberInputRef = createRef()
 
-    useEffect(() => {
-        registerForPushNotificationsAsync().then(token => setExpoPushToken(token))}, []);
-        const dataToSend = {
-            name: userName,
-            lastname: lastName,
-            email: userEmail,
-            phone: phoneNumber,
-            street: userStreet,
-            streetNumber: userStreetNumber,
-            municipality: municipality,
-            province: province,
-            password: userPassword,
-            expoPushToken: expoPushToken,
-            pets: [],
+
+    const getCurrentPosition = async () => {
+        setLoading(true)
+        let { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== 'granted') {
+            return;
         }
 
-        const handleSubmitButton = async () => {
-            setLoading(true)
-            try {
-                const response = await createUser(dataToSend)
-                setLoading(false)
-                await AsyncStorage.setItem('user_id', response.data.email)
-                navigation.navigate('Inicio')
-            } catch (error) {
-                setLoading(false)
-                setErrorText(error.response.data)
-            }
-        }
+        let reg = await Location.getCurrentPositionAsync({});
+        await onChangeRegion(reg["coords"])
+        setLoading(false)
+    }
+    const dataToSend = {
+        name: userName,
+        lastname: lastName,
+        email: userEmail,
+        phone: phoneNumber,
+        coordinates: region,
+        password: userPassword,
+        expoPushToken: expoPushToken,
+        pets: [],
+    }
 
-        //Getting provinces from the API. And order by name (ASC)
-        const getProvinces = async () => {
-            setLoading(true)
-            try {
-                const response = await getProvince()
-                setProvinces(response.data.provincias.sort((province1, province2) => (province1.nombre > province2.nombre)))
-                setLoading(false)
-            } catch (error) {
-                setLoading(false)
-                setErrorText(error.response.data)
-            }
+    const handleSubmitButton = async () => {
+        setLoading(true)
+        try {
+            const response = await createUser(dataToSend)
+            setLoading(false)
+            await AsyncStorage.setItem('user_id', response.data.email)
+            navigation.navigate('Inicio')
+        } catch (error) {
+            setLoading(false)
+            setErrorText(error.response.data)
         }
+    }
 
-        //Giving a province, searching all the municipalities of that province. And order by name (ASC)
-        const setProvinceAndMunicipality = async (provinceName) => {
-            setProvince(provinceName)
-            setLoading(true)
-            try {
-                const response = await getMunicipalities(provinceName)
-                setMunicipalities(response.data.municipios.sort((municipality1, municipality2) => (municipality1.nombre > municipality2.nombre)))
-                setLoading(false)
-            } catch (error) {
-                setLoading(false)
-                setErrorText(error.response.data)
-            }
+
+    const mapDir = (index, dire) => {
+        return { id: index, name: dire.nomenclatura}
+    }
+
+    const onChangeText = async(dir) => {
+        try {
+            let allDir = await getDir(dir)
+            setLocation([])
+            setLocations(allDir.data["direcciones"].map((dire, index) => mapDir(index, dire)))
+        } catch (e) {
+            console.log(e)
         }
-
+    }
+    const onChangeRegion = async (newRegion) => {
+        setRegion(newRegion)
+        let reg = await Location.reverseGeocodeAsync(newRegion)
+        setLocation({id:1, name:`${reg[0].street}, ${reg[0].streetNumber}, ${reg[0].city}`})
+    }
+    const onSelected = async (item) => {
+        let reg = await Location.geocodeAsync(item.name)
+        setLocation(item)
+        setRegion({ latitude: reg[0].latitude, longitude: reg[0].longitude })
+    }
         //[] means that useEffect runs in the first render.
         useEffect(() => {
-            getProvinces()
+            getCurrentPosition()
+            registerForPushNotificationsAsync().then(token => setExpoPushToken(token))
         }, [])
 
         return (
             <View style={{flex: 1, backgroundColor: colors.yellow, padding: 24}}>
+                <Back onPress={() => navigation.goBack()} headerStyle={registerScreenStyle.header}/>
                 <Loader loading={loading}/>
                 {loading ?
                     <Loader loading={loading}/> :
@@ -169,26 +175,7 @@ const RegisterScreen = forwardRef(({navigation}, ref) => {
                                 onSubmitEditing={() => userStreetInputRef.current && userStreetInputRef.current.focus()}
                                 floatingLabel
                             />
-                            <FormItemGeneric
-                                value={userStreet}
-                                label={"Calle"}
-                                onChange={(street) => setUserStreet(street)}
-                                inputRef={() => userStreetNumberInputRef.current && userStreetNumberInputRef.current.focus()}
-                                ref={userStreetInputRef}
-                                keyboardType={"default"}
-                            />
-                            <FormItem
-                                value={userStreetNumber}
-                                label="Altura"
-                                onChangeText={(streetNumber) => setUserStreetNumber(streetNumber)}
-                                showErrorIcon={false}
-                                keyboardType={"default"}
-                                ref={userStreetNumberInputRef}
-                                onSubmitEditing={() => passwordInputRef.current && passwordInputRef.current.focus()}
-                                floatingLabel
-                                isRequired
-                                asterik
-                            />
+
                             <FormItem
                                 value={userPassword}
                                 label="Contraseña"
@@ -219,43 +206,73 @@ const RegisterScreen = forwardRef(({navigation}, ref) => {
                                 isRequired
                                 secureTextEntry
                             />
-                            <Picker
-                                items={provinces.map((province) => ({label: province.nombre, value: province.nombre}))}
-                                label="Elegir una provincia"
-                                placeholder="Sin selección"
-                                selectedValue={province}
-                                onSelection={(item) => setProvinceAndMunicipality(item.value)}
-                                asterik
-                            />
-                            {!province ?
-                                < Picker
-                                    items={[]}
-                                    label="Elegir la ciudad"
-                                    placeholder="Sin selección"
-                                    selectedValue={municipality}
-                                    onSelection={() => {
-                                    }}
-                                    asterik
-                                />
-                                : < Picker
-                                    items={municipalities.map((municipality) => ({
-                                        label: municipality.nombre,
-                                        value: municipality.nombre
-                                    }))}
-                                    label="Elegir la ciudad"
-                                    placeholder="Sin selección"
-                                    selectedValue={municipality}
-                                    onSelection={(item) => setMunicipality(item.value)}
-                                    asterik
-                                />}
-                            {errorText !== '' ? (
-                                <Text style={registerScreenStyle.errorTextStyle}>
-                                    {errorText}
-                                </Text>
-                            ) : null}
+
                         </Form>
                     </ScrollView>
                 }
+                <View>
+                    <SearchableDropdown
+                        multi={true}
+                        selectedItems={[location]}
+                        onTextChange= {(text) => onChangeText(text)}
+                        onItemSelect={(item) => {
+                            onSelected(item)
+                        }}
+                        onRemoveItem={() => {
+                            setLocation([])
+                            setLocations([])
+                        }}
+                        containerStyle={{ padding: 5 }}
+                        itemStyle={{
+                            padding: 10,
+                            marginTop: 2,
+                            backgroundColor: '#ddd',
+                            borderColor: '#bbb',
+                            borderWidth: 1,
+                            borderRadius: 5,
+                        }}
+                        itemTextStyle={{ color: '#222' }}
+                        itemsContainerStyle={{ maxHeight: 140 }}
+                        items={locations}
+                        resetValue={true}
+                        textInputProps={
+                            {
+                                placeholder: "Direccion",
+                                underlineColorAndroid: "transparent",
+                                style: {
+                                    padding: 12,
+                                    borderWidth: 1,
+                                    borderColor: '#ccc',
+                                    borderRadius: 5,
+                                }
+                            }
+                        }
+
+                    />
+
+                    <MapView
+                        style={{width: "100%", height: 200}}
+                        initialRegion={{
+                            latitude: region.latitude,
+                            longitude: region.longitude,
+                            latitudeDelta: 0.05,
+                            longitudeDelta: 0.05,
+                        }}
+                        region={{
+                            latitude: region.latitude,
+                            longitude: region.longitude,
+                            latitudeDelta: 0.05,
+                            longitudeDelta: 0.05,
+                        }}
+                        onPress={(e) => onChangeRegion(e.nativeEvent.coordinate)}
+                    >
+                        <Marker
+                            coordinate={region}
+                            onDrag={(e) => setRegion(e.nativeEvent.coordinate)}
+                        />
+                        <Circle center={region} radius={1000}/>
+                    </MapView>
+                </View>
             </View>
         )
     }
@@ -276,7 +293,6 @@ async function registerForPushNotificationsAsync() {
             return;
         }
         token = (await Notifications.getExpoPushTokenAsync()).data;
-        console.log(token);
     } else {
         alert('Must use physical device for Push Notifications');
     }
@@ -289,7 +305,6 @@ async function registerForPushNotificationsAsync() {
             lightColor: '#FF231F7C',
         });
     }
-
     return token;
 }
 

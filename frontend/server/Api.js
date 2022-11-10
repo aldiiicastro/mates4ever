@@ -1,5 +1,5 @@
 import axios from 'axios'
-const baseUrl = 'http://192.168.0.14:8070'
+const baseUrl = 'http://192.168.0.66:8070'
 
 const axinst = axios.create({
     baseURL: baseUrl,
@@ -34,8 +34,9 @@ export const getUserDataByEmail = async (email) => {
 
 //******************** Pet ********************
 export const createPet = async (pet) => {
+
     return await axinst.post(
-        '/api/pet/create',
+        `${baseUrl}/api/pet/create`,
         pet)
 }
 
@@ -63,3 +64,6 @@ export const getMunicipalities = async(municipality) => {
     return await axinst.get(`https://apis.datos.gob.ar/georef/api/municipios?provincia=${municipality}&max=100`)
 }
 
+export const getDir = async(dir) => {
+    return axinst.get(`https://apis.datos.gob.ar/georef/api/direcciones?direccion=${dir}`)
+}
