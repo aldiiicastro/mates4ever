@@ -44,7 +44,7 @@ export default function PetCreation({navigation}) {
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false)
     const [loading, setLoading] = useState(false)
     const [error, setErrors] = useState('')
-    const [region, setRegion] = useState({})
+    const [region, setRegion] = useState({latitude: -36.6769415180527, longitude: 	-60.5588319815719})
     const [locations, setLocations] = useState([])
     const [location, setLocation] = useState([])
     const nameInputRef = createRef()
@@ -144,6 +144,7 @@ export default function PetCreation({navigation}) {
           }
 
           let reg = await Location.getCurrentPositionAsync({});
+          await onChangeRegion(reg["coords"])
           setRegion({ latitude: reg["coords"].latitude, longitude: reg["coords"].longitude })
     }
     const onChangeRegion = async (newRegion) => {
@@ -292,6 +293,12 @@ export default function PetCreation({navigation}) {
         <MapView
             style={{width: "100%", height: 200}}
             initialRegion={{
+                latitude: region.latitude,
+                longitude: region.longitude,
+                latitudeDelta: 0.05,
+                longitudeDelta: 0.05,
+            }}
+            region={{
                 latitude: region.latitude,
                 longitude: region.longitude,
                 latitudeDelta: 0.05,

@@ -53,27 +53,27 @@ export default function PetDetails({navigation, pet}) {
                             justifyContent: 'space-between',
                             alignItems: 'center',
                         }}>
-                        <View
+                        <View testID={"pet-details-age"}
                             style={style.alignItems}>
                             <Text style={[style.bold, {fontSize: 18}]}>Edad: </Text>
-                            <Text testID={"pet-details-age"}
+                            <Text
                                   style={{fontSize: 18}}> {pet.age ? pet.age : "No especifica"}</Text>
                         </View>
                         <Tag value={pet.state}/>
                     </View>
                     {pet.type &&
-                        <View
-                            style={[style.alignItems, {marginLeft: 15}]}>
-                            <Text testID={"pet-details-age"} style={[style.bold, {fontSize: 18}]}> Tipo: </Text>
-                            <Text testID={"pet-details-age"} style={{fontSize: 18}}> {pet.type}</Text>
+                        <View testID={"pet-details-type"}
+                              style={[style.alignItems, {marginLeft: 15}]}>
+                            <Text style={[style.bold, {fontSize: 18}]}> Tipo: </Text>
+                            <Text style={{fontSize: 18}}> {pet.type}</Text>
                         </View>
                     }
 
                     {pet.breed &&
-                        <View
+                        <View testID={"pet-details-breed"}
                             style={[style.alignItems, {marginLeft: 15}]}>
-                            <Text testID={"pet-details-age"} style={[style.bold, {fontSize: 18}]}> Raza: </Text>
-                            <Text testID={"pet-details-age"} style={{fontSize: 18}}> {pet.breed}</Text>
+                            <Text style={[style.bold, {fontSize: 18}]}> Raza: </Text>
+                            <Text  style={{fontSize: 18}}> {pet.breed}</Text>
                         </View>
                     }
 
@@ -96,12 +96,13 @@ export default function PetDetails({navigation, pet}) {
                             style={petDetailsStyle.descriptionDetail}>
                             {pet.medicalHistory ? pet.medicalHistory : "-"}
                         </Text>
-                        <Text testID={"pet-details-castrado"}
+                        <Text testID={"pet-details-castrated"}
                               style={[petDetailsStyle.descriptionDetail, style.bold]}> • {pet.castrated ? "Esta castrado" : "No esta castrado"}</Text>
                         <Text testID={"pet-details-vaccinate"}
                               style={[petDetailsStyle.descriptionDetail, style.bold]}> • {pet.vaccine ? "Esta vacunado" : "No esta vacunado"}</Text>
                     </View>
-                  { pet.coordinates &&  
+
+                  { pet.coordinates &&
                     <MapView
                         style={{ marginHorizontal: 10, marginTop: 30, height: 200}}
                         initialRegion={{
@@ -111,6 +112,7 @@ export default function PetDetails({navigation, pet}) {
                             longitudeDelta: 0.05,
                         }}
                         showsUserLocation={true} >
+
                         <Marker coordinate={pet.coordinates} />
                         <Circle center={pet.coordinates} radius={1000}/>
                     </MapView>}
