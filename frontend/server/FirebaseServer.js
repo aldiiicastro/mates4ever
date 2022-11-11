@@ -1,6 +1,7 @@
 import {getApps, initializeApp} from "firebase/app"
 import {getStorage, ref, uploadBytes, getDownloadURL} from "firebase/storage"
-import uuid from "uuid"
+import 'react-native-get-random-values';
+import { v4 as uuidv4 } from 'uuid';
 import * as ImagePicker from 'expo-image-picker'
 
 const firebaseConfig = {
@@ -43,7 +44,6 @@ export const handleImagePicked = async (pickerResult) => {
             return uploadUrl
         }
     } catch (e) {
-        console.log(e)
         alert("Fallo la subida, intente de nuevo mas tarde")
     }
 }
@@ -55,7 +55,6 @@ export async function uploadImageAsync(uri) {
             resolve(xhr.response)
         }
         xhr.onerror = function (e) {
-            console.log(e)
             reject(new TypeError("Network request failed"))
         }
         xhr.responseType = "blob"
@@ -63,7 +62,7 @@ export async function uploadImageAsync(uri) {
         xhr.send(null)
     })
 
-    const uid = uuid.v4()
+    const uid = uuidv4();
     const fileRef = ref(getStorage(), uid)
 
     const result = await uploadBytes(fileRef, blob)
@@ -71,5 +70,4 @@ export async function uploadImageAsync(uri) {
 
     return getDownloadURL(fileRef)
 }
-
 

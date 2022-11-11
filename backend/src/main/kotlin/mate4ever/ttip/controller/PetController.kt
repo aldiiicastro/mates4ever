@@ -60,6 +60,10 @@ class PetController {
         }, null, HttpStatus.OK)
     }
 
+    @GetMapping("/api/pet/getNearbyPets")
+    fun getNearbyPets(): MutableIterable<Pet> {
+        return petService.getNearbyPets()
+    }
     fun deleteAll() {
         return petService.deleteAll()
     }

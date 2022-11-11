@@ -67,11 +67,11 @@ export default function PetCreation({navigation}) {
         setLoading(true)
 
         const userEmail = await AsyncStorage.getItem("user_id")
-        const image = await uploadedImage()
+        const imageUpload = await uploadedImage()
 
         const pet = {
             "name": name,
-            "image": image,
+            "image": imageUpload,
             "birth": age,
             "state": state,
             "type": type,
@@ -81,7 +81,7 @@ export default function PetCreation({navigation}) {
             "medicalHistory": medicalHistory,
             "description": description,
             "tutor": userEmail,
-            "coordinates": region
+            "coordinates": state === 'Perdido' ? region : null
         }
         try {
             await createPet(pet)
@@ -92,6 +92,7 @@ export default function PetCreation({navigation}) {
 
         } catch (error) {
             setErrors(error.errors)
+            console.log("holaaa")
         }
         setLoading(false)
     }
@@ -117,6 +118,7 @@ export default function PetCreation({navigation}) {
     const getCurrentPosition = async () => {
         let { status } = await Location.requestForegroundPermissionsAsync();
           if (status !== 'granted') {
+            setRegion({ latitude: -34.706753, longitude: -58.277948  })
             return;
           }
 
