@@ -55,11 +55,6 @@ export const getPetByUser  = async (user) => {
 }
 
 //******************** Location ********************
-export const getProvince = async() => {
-    return await axinst.get("https://apis.datos.gob.ar/georef/api/provincias")
+export const getDir = async(dir) => {
+    return axinst.get(`https://apis.datos.gob.ar/georef/api/direcciones?direccion=${dir}`)
 }
-
-export const getMunicipalities = async(municipality) => {
-    return await axinst.get(`https://apis.datos.gob.ar/georef/api/municipios?provincia=${municipality}&max=100`)
-}
-

@@ -1,0 +1,46 @@
+diff --git a/node_modules/react-native-searchable-dropdown/index.js b/node_modules/react-native-searchable-dropdown/index.js
+index e649836..ba0d42c 100644
+--- a/node_modules/react-native-searchable-dropdown/index.js
++++ b/node_modules/react-native-searchable-dropdown/index.js
+@@ -96,6 +96,7 @@ export default class SearchableDropDown extends Component {
+           this.props.selectedItems.find(sitem => sitem.id === item.id)
+           ?
+           <TouchableOpacity style={{ ...this.props.itemStyle, flex: 1, flexDirection: 'row' }}>
++
+             <View style={{ flex: 0.9, flexDirection: 'row', alignItems: 'flex-start' }}>
+               <Text>{ item.name }</Text>
+             </View>
+@@ -114,6 +115,7 @@ export default class SearchableDropDown extends Component {
+             }, 0);
+           }}
+           style={{ ...this.props.itemStyle, flex: 1, flexDirection: 'row' }}>
++
+             <View style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-start' }}>
+               <Text>{ item.name }</Text>
+             </View>
+@@ -205,7 +207,9 @@ export default class SearchableDropDown extends Component {
+         }
+       }
+     });
++
+     return (
++
+       <TextInput
+       { ...textInputProps }
+       onBlur={(e) => {
+@@ -218,6 +222,7 @@ export default class SearchableDropDown extends Component {
+         this.setState({ focus: false, item: this.props.selectedItems });
+       }
+       }
++      value={this.props.selectedItems[0].name}
+       />
+     )
+   }
+@@ -236,6 +241,7 @@ export default class SearchableDropDown extends Component {
+   };
+   renderSelectedItems(){
+     let items = this.props.selectedItems || [];
++
+     if(items !== undefined && items.length > 0 && this.props.chip && this.props.multi){
+      return  <View style={{flexDirection: 'row',  flexWrap: 'wrap', paddingBottom: 10, marginTop: 5 }}>
+                  { items.map((item, index) => {

@@ -9,10 +9,7 @@ data class UserResponseDTO(
     val lastname: String,
     val email: String,
     val phone: Number?,
-    val street: String,
-    val streetNumber: Number,
-    val municipality: String,
-    val province: String,
+    val coordinates: Map<String, Double>?,
     val image: String?,
     val pets: Iterable<Pet>?
 )

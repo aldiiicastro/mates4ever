@@ -9,12 +9,12 @@ on:
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Cypress io
-        uses: cypress-io/github-action@v2.9.7
+        uses: cypress-io/github-action@v4.1.0
         with:
+          config-file: cypress.config.js
           start: npm start
-        

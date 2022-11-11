@@ -47,7 +47,7 @@ class UserController {
     fun getCompleteUser(@PathVariable(required = true) email: String): ResponseEntity<*> {
         val user = userService.findUserByEmail(email)
         val pets = petService.getPets(user!!.pets)
-        val userDTO = UserResponseDTO(user.name, user.lastname, user.email, user.phone,user.street, user.streetNumber, user.municipality, user.province, user.image, pets)
+        val userDTO = UserResponseDTO(user.name, user.lastname, user.email, user.phone,user.coordinates, user.image, pets)
         return ResponseEntity<UserResponseDTO>(userDTO, null, HttpStatus.OK)
     }
     @GetMapping("/api/user/all")

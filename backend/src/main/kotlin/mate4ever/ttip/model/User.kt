@@ -22,13 +22,9 @@ class User(
     @Column(nullable = false, unique = true) var email: String,
     var password: String,
     var phone: Number?,
-    val street: String,
-    val streetNumber: Number,
-    var municipality: String,
-    var province: String,
+    val coordinates: Map<String, Double>?,
     var image: String?,
     var expoPushToken: String?,
-//    @OneToMany(mappedBy="user", cascade = [CascadeType.ALL], orphanRemoval = true, fetch = FetchType.LAZY)
 
 ){
     var pets: MutableList<String> = mutableListOf()

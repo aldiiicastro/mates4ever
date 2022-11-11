@@ -20,8 +20,8 @@ import {
 } from "../../drawerlayout/FormItemGeneric"
 import {petCreationScreenStyle} from "../../../styles/pet/PetCreationScreenStyle"
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import MapView, {Callout, Circle, Marker} from "react-native-maps";
-
+import MapView, {Circle, Marker} from "react-native-maps";
+import geodist from "geodist"
 import * as Location from 'expo-location';
 import { View } from "react-native-web"
 
@@ -116,7 +116,11 @@ export default function PetCreation({navigation}) {
         const dateArray = dateInput.toLocaleDateString().split("/")
         return ([dateArray[1], dateArray[0], dateInput.getFullYear()].join("/"))
     }
-
+    const onSelected = async (item) => {
+        let reg = await Location.geocodeAsync(item.name)
+        setLocation(item)
+        setRegion({ latitude: reg[0].latitude, longitude: reg[0].longitude })
+    }
     const getCurrentPosition = async () => {
         let { status } = await Location.requestForegroundPermissionsAsync();
           if (status !== 'granted') {
@@ -127,6 +131,15 @@ export default function PetCreation({navigation}) {
           let reg = await Location.getCurrentPositionAsync({});
           await onChangeRegion(reg["coords"])
           setRegion({ latitude: reg["coords"].latitude, longitude: reg["coords"].longitude })
+    }
+    const onChangeText = async(dir) => {
+        try {
+            let algo = await getDir(dir)
+            setLocation([])
+            setLocations(algo.data["direcciones"].map((dire, index) => mapDir(index, dire)))
+        } catch (e) {
+            console.log(e)
+        }
     }
     const onChangeRegion = async (newRegion) => {
         setRegion(newRegion)
@@ -204,9 +217,9 @@ export default function PetCreation({navigation}) {
                             }}
                             onPress={(e) => setRegion(e.nativeEvent.coordinate)}
                             showsUserLocation={true}
-                            
+
                         >
-                            <Marker 
+                            <Marker
                                     coordinate={region}
                                     onDrag={(e) => setRegion(e.nativeEvent.coordinate)}
                             />
@@ -325,18 +338,20 @@ export default function PetCreation({navigation}) {
         </View>
     )
 }
-
-async function sendPushNotification() {
+const calculateDist = (userCoordinates, petCoordinates) => {
+    const dist = geodist({lat: petCoordinates.latitude, lon: petCoordinates.longitude}, {lat:userCoordinates.latitude, lon: userCoordinates.longitude}, {exact: true, unit: 'km'})
+    return dist < 1
+}
+async function sendPushNotification(pet) {
     const allUsers = await getAllUser()
-    const tokens = allUsers.data.map((user) => user.expoPushToken)
+    const users = allUsers.data.filter((user) => calculateDist(user.coordinates, pet.coordinates))
+    const tokens = users.map((user) => user.expoPushToken)
     const message = {
         to: tokens,
-        sound: 'default',
-        title: 'Original Title',
-        body: 'And here is the body!',
-        data: { someData: 'goes here' },
+        title: 'Se perdio ' + pet.name,
+        body: pet.description,
+        data: { id: pet.id },
     };
-
     await fetch('https://exp.host/--/api/v2/push/send', {
         method: 'POST',
         headers: {
