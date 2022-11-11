@@ -6,7 +6,7 @@
   "id": "1", "image": "https://github.com/aldiiicastro/mates4ever/blob/main/frontend/assets/gatitos/Mia.jpg?raw=true",
   "name": "Mía",
   "state": "Transito",
-  "tutor": "aldana@gmail.com",
+  "user": "aldana@gmail.com",
   "type": "Gato",
   "castrated": false,
   "vaccine": false

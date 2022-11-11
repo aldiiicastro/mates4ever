@@ -7,7 +7,7 @@ export default function Back({onPress, text, headerStyle}) {
     return (
         <View style={headerStyle}>
             <View style={style.alignItems}>
-                <Icon name="arrow-back" style={{marginStart: 10}} size={25} onPress={onPress}/>
+                <Icon testID={'goBack'} name="arrow-back" style={{marginStart: 10}} size={25} onPress={onPress}/>
                 <Text style={[style.titleText]}>
                     {text}
                 </Text>

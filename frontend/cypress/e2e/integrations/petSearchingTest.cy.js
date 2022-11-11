@@ -1,9 +1,9 @@
 
-describe('Initial pets', () => {
+describe('Pet searching', () => {
     beforeEach( () => {
         cy.loginBeforeEach()
     })
-    it('Searching Per', ()=> {
+    it('Searching Pet', ()=> {
         //Fixture create the seed data
         cy.intercept('GET', '/api/pet/search?query=', {fixture: 'pets_data.json'}).as('gets')
         cy.intercept('GET', '/api/pet/search?query=P', {fixture: 'searchPer_data.json'})

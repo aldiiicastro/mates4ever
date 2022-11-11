@@ -13,7 +13,7 @@ export default function PerfilButton({ navigation}) {
 
     return (
         <View style={{marginTop: -32, flexDirection: 'row', justifyContent: 'flex-end'}}>
-            <Icon style={{padding: 2, paddingLeft: 4, borderRadius: 100, borderWidth: 1, backgroundColor: colors.white}}
+            <Icon testID={'profileButton'} style={{padding: 2, paddingLeft: 4, borderRadius: 100, borderWidth: 1, backgroundColor: colors.white}}
                   name="person" size={25} onPress={() => navigation.navigate('Perfil', email)}/>
         </View>
     )

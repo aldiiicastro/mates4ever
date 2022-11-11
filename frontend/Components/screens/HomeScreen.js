@@ -25,6 +25,7 @@ export default function HomeScreen({navigation}) {
             <PetScreen navigation={navigation}></PetScreen>
             <View>
                 <TouchableOpacity
+                    testID={'create-pet'}
                     style={[style.floatButton]}
                     onPress={() => navigation.navigate('Agregar')}
                 >

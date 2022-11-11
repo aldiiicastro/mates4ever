@@ -29,6 +29,7 @@ export default function UserProfileScreen({navigation, route}) {
         } catch (error) {
             alert('Ha habido un error. Contactese con el administrador')
         }
+
     }
     useEffect(() => {
         getUserProfile()
@@ -45,11 +46,11 @@ export default function UserProfileScreen({navigation, route}) {
                 </View>
 
                 <View style={profileStyles.coverMetaContainer}>
-                    <Text style={profileStyles.coverName}>{user.name} {user.lastname}</Text>
+                    <Text testID={'user-name'} style={profileStyles.coverName}>{user.name} {user.lastname}</Text>
                 </View>
                 <View style={profileStyles.locationStyle}>
                     <Icon name="location-pin" size={25}/>
-                    <Text style={profileStyles.coverBio}> {user.municipality}, {user.province} </Text>
+                    <Text testID={'user-location'} style={profileStyles.coverBio}> {user.municipality}, {user.province} </Text>
                 </View>
             </View>
         </View>)
@@ -73,7 +74,7 @@ export default function UserProfileScreen({navigation, route}) {
     const renderLogOut = () => {
         return (
             <View style={{flexDirection: 'row', justifyContent: 'flex-start'}}>
-                <Icon name="logout" size={25} style={petCreationScreenStyle.iconSearch} onPress={() => {
+                <Icon testID={'logOut'} name="logout" size={25} style={petCreationScreenStyle.iconSearch} onPress={() => {
                     AsyncStorage.clear()
                     navigation.navigate("Login")
                 }}/>

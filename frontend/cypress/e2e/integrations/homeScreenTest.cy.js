@@ -1,5 +1,5 @@
 
-describe('Initial pets', () => {
+describe('Home', () => {
     beforeEach( () => {
         cy.loginBeforeEach()
     })

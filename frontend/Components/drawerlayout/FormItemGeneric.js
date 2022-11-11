@@ -76,6 +76,7 @@ export const RequiredLineLabel = forwardRef((props, ref) => {
 export const SimpleLinePicker = (props) => {
     return (
         <Picker
+            testID={'testIDD'}
             items={props.items}
             label={props.label}
             selectedValue={props.selectedValue}
@@ -103,7 +104,7 @@ export const SimpleCheckBox = (props) => {
 export const ImageForm = (props) => {
     return (
         <View style={form.image} on>
-            <TouchableHighlight onPress={props.onPress}>
+            <TouchableHighlight onPress={props.onPress} testID={'image-create'}>
                 <Image source= {props.imageUri ? {uri: props.imageUri } : require('../../assets/DefaultPet.png')} style={form.imageSize}/>
             </TouchableHighlight>
             <View style={form.imageIcon}>
