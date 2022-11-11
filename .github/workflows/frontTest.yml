@@ -17,4 +17,4 @@ jobs:
         uses: cypress-io/github-action@v4.1.0
         with:
           config-file: cypress.config.js
-          start: npm start
+          start: npm run web
