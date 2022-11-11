@@ -42,6 +42,12 @@ export default function PetCreation({navigation}) {
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false)
     const [loading, setLoading] = useState(false)
     const [error, setErrors] = useState('')
+<<<<<<< HEAD
+=======
+    const [region, setRegion] = useState({latitude: -36.6769415180527, longitude: 	-60.5588319815719})
+    const [locations, setLocations] = useState([])
+    const [location, setLocation] = useState([])
+>>>>>>> 6a07166bed7140c7d9186d721ede6fe138a959f9
     const nameInputRef = createRef()
 
     useEffect(() => {
@@ -122,8 +128,19 @@ export default function PetCreation({navigation}) {
             return;
           }
 
+<<<<<<< HEAD
           let location = await Location.getCurrentPositionAsync({});
           setRegion({ latitude: location["coords"].latitude, longitude: location["coords"].longitude })
+=======
+          let reg = await Location.getCurrentPositionAsync({});
+          await onChangeRegion(reg["coords"])
+          setRegion({ latitude: reg["coords"].latitude, longitude: reg["coords"].longitude })
+    }
+    const onChangeRegion = async (newRegion) => {
+        setRegion(newRegion)
+        let reg = await Location.reverseGeocodeAsync(newRegion)
+        setLocation({id:1, name:`${reg[0].street}, ${reg[0].streetNumber}, ${reg[0].city}`})
+>>>>>>> 6a07166bed7140c7d9186d721ede6fe138a959f9
     }
     return (
         <ScrollView style={style.fullContainer}>
@@ -250,6 +267,72 @@ export default function PetCreation({navigation}) {
                 />
             </Form>
         </ScrollView>
+<<<<<<< HEAD
+=======
+    {state === "Perdido" &&
+    <View>
+        <SearchableDropdown
+            multi={true}
+            selectedItems={[location]}
+            onTextChange= {(text) => onChangeText(text)}
+            onItemSelect={(item) => {
+              onSelected(item)
+            }}
+            onRemoveItem={() => setLocation([])}
+            containerStyle={{ padding: 5 }}
+            itemStyle={{
+                padding: 10,
+                marginTop: 2,
+                backgroundColor: '#ddd',
+                borderColor: '#bbb',
+                borderWidth: 1,
+                borderRadius: 5,
+            }}
+            itemTextStyle={{ color: '#222' }}
+            itemsContainerStyle={{ maxHeight: 140 }}
+            items={locations}
+            defaultIndex={2}
+            resetValue={true}
+            textInputProps={
+                {
+                    placeholder: "Direccion",
+                    underlineColorAndroid: "transparent",
+                    style: {
+                        padding: 12,
+                        borderWidth: 1,
+                        borderColor: '#ccc',
+                        borderRadius: 5,
+                    }
+                }
+            }
+
+        />
+
+        <MapView
+            style={{width: "100%", height: 200}}
+            initialRegion={{
+                latitude: region.latitude,
+                longitude: region.longitude,
+                latitudeDelta: 0.05,
+                longitudeDelta: 0.05,
+            }}
+            region={{
+                latitude: region.latitude,
+                longitude: region.longitude,
+                latitudeDelta: 0.05,
+                longitudeDelta: 0.05,
+            }}
+            onPress={(e) => onChangeRegion(e.nativeEvent.coordinate)}
+        >
+            <Marker
+                coordinate={region}
+                onDrag={(e) => setRegion(e.nativeEvent.coordinate)}
+            />
+            <Circle center={region} radius={1000}/>
+        </MapView>
+    </View>
+    }</View>
+>>>>>>> 6a07166bed7140c7d9186d721ede6fe138a959f9
     )
 }
 

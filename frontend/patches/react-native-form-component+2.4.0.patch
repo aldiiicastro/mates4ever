@@ -1,5 +1,5 @@
 diff --git a/node_modules/react-native-form-component/src/components/FormItem/index.tsx b/node_modules/react-native-form-component/src/components/FormItem/index.tsx
-index 459cd85..916bbbb 100644
+index 459cd85..fc2f9a7 100644
 --- a/node_modules/react-native-form-component/src/components/FormItem/index.tsx
 +++ b/node_modules/react-native-form-component/src/components/FormItem/index.tsx
 @@ -43,6 +43,7 @@ interface Props extends ComponentProps<typeof TextInput> {
@@ -72,17 +72,16 @@ index 459cd85..916bbbb 100644
 -    return { status: true, message: 'Invalid number' };
 -  if (keyboardType == 'phone-pad' && !validatePhoneNumber(value))
 -    return { status: true, message: 'Invalid phone number' };
--  if (keyboardType == 'decimal-pad' && !validateDecimalNumber(value))
--    return { status: true, message: 'Invalid number' };
 +    return { status: true, message: 'Ingresar un número válido' };
-+  if (keyboardType == 'phone-pad' && (value.length < 8 ))
++  if (value.length > 0 && keyboardType == 'phone-pad' && (value.length < 8 ))
 +    return { status: true, message: 'El número de teléfono debe contener al menos 8 números' };
 +  if (isRequired && keyboardType == 'phone-pad' && !validatePhoneNumber(value))
 +    return { status: true, message: 'Ingresar un número de teléfono válido' };
- 
-+  if (keyboardType == 'decimal-pad' && !validateDecimalNumber(value))
++
+   if (keyboardType == 'decimal-pad' && !validateDecimalNumber(value))
+-    return { status: true, message: 'Invalid number' };
 +    return { status: true, message: 'Ingresar un número válido' };
-+  console.log(initialPassword)
+   
 +  if (!initialPassword && password && !validatePassword(value))
 +    return {status: true, message: 'La contraseña debe contener 8 caracteres incluyendo: al menos 1 mayúscula, una miniscula, un numero'}
    return { status: false, message: '' };
