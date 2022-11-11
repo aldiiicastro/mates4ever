@@ -8,6 +8,7 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "clear": "expo start -c",
+       "web:frontend": "cd frontend && npm run web",
     "web": "expo start --web",
     "postinstall": "patch-package"
   },
