@@ -11,7 +11,6 @@ import User from '../../model/User'
 import PetCard from '../pets/card/PetCard'
 import {petsStatesStyle} from "../../styles/pet/PetStatesStyle";
 import Pet from "../../model/Pet";
-import * as Location from "expo-location";
 
 export default function UserProfileScreen({navigation, route}) {
     const [user, setUser] = useState({})
@@ -20,8 +19,7 @@ export default function UserProfileScreen({navigation, route}) {
         const userEmail = route.params
         const response = await getUserDataByEmail(userEmail)
         try {
-            let reg = await Location.reverseGeocodeAsync(response.data.coordinates)
-            setUser(new User(response.data, reg[0].name, reg[0].region))
+            setUser(new User(response.data))
             //Si buscasemos los pets según el email
             // const petResponse = await getPetByUser(response.data.email)
             // setPets(petResponse.data.pets.map((pet)=> new Pet(pet)))

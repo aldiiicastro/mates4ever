@@ -11,9 +11,13 @@ class UserFactory {
         email: String = "aldana@gmail.com",
         password: String = "contrasena...",
         phone: Int? = 1139538873,
+        street: String = "Victoria",
+        numberStreet : Int = 89,
+        province: String = "Buenos Aires",
+        municipality: String = "Quilmes",
         image: String? = "Example",
         pets: List<Pet> = listOf()
     ): User {
-        return User(id, name, lastname, email, password, phone,mapOf("latitude" to -36.6769415180527, "longitude" to 	-60.5588319815719),image, "")
+        return User(id, name, lastname, email, password, phone,street, numberStreet, municipality, province,image, "")
     }
 }

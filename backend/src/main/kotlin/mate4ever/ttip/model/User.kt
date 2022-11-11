@@ -22,7 +22,10 @@ class User(
     @Column(nullable = false, unique = true) var email: String,
     var password: String,
     var phone: Number?,
-    val coordinates: Map<String, Double>?,
+    val street: String,
+    val streetNumber: Number,
+    var municipality: String,
+    var province: String,
     var image: String?,
     var expoPushToken: String?,
 //    @OneToMany(mappedBy="user", cascade = [CascadeType.ALL], orphanRemoval = true, fetch = FetchType.LAZY)

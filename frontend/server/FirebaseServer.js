@@ -71,4 +71,3 @@ export async function uploadImageAsync(uri) {
     return getDownloadURL(fileRef)
 }
 
-

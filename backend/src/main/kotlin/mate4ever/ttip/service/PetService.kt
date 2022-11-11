@@ -75,6 +75,18 @@ class PetService {
         return mongoTemplate.find(query, Pet::class.java)
     }
 
+    fun getNearbyPets(): MutableIterable<Pet> {
+//        val query = Query()
+//        query.addCriteria(Criteria.where("coordinates").exists(true))
+//        query.addCriteria(Criteria.where("coordinates.latitude").)
+//        val nameCriteria = criteriaForm(, "Math.abs(coordinates.latitude) - 34.8266321 <= 0.2 ")
+//        val stateCriteria = criteriaForm("coordinates.longitude", "Math.abs(coordinates.longitude) - 58.187748 <= 0.2 ")
+//        val typeCriteria = criteriaForm("coordinates", "!= null")
+//        val criteria = Criteria().orOperator(typeCriteria, nameCriteria, stateCriteria)
+//        return mongoTemplate.find(query, Pet::class.java)
+        return petRepository.getNearbyPets( 34.8266321, 58.187748)
+    }
+
     private fun criteriaForm(fieldName: String, value: String): Criteria {
         return Criteria.where(fieldName).regex(value, "i")
     }
@@ -94,6 +106,9 @@ class PetService {
         } else {
             null
         }
+
     }
+
+
 
 }

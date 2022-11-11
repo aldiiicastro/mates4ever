@@ -2,12 +2,8 @@ import {StyleSheet} from "react-native";
 import {colors} from "./Colors";
 
 const registerScreenStyle = StyleSheet.create({
-    header: {
-        backgroundColor: colors.yellow,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-    },
     SectionStyle: {
+
         height: 40,
         marginTop: 5,
         marginLeft: 35,

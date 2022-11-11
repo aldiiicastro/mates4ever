@@ -18,7 +18,9 @@ class UserTest {
         assert(user.email == "aldana@gmail.com")
         assert(user.password == "contrasena...")
         assert(user.phone == 1139538873)
-        assert(user.coordinates == mapOf("latitude" to -36.6769415180527, "longitude" to 	-60.5588319815719))
+        assert(user.municipality == "Quilmes")
+        assert(user.province == "Buenos Aires")
         assert(user.pets.size == 0)
+//        assert(user.pets!![0].name == "Gatito")
     }
 }

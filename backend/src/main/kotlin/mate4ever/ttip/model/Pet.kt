@@ -17,6 +17,8 @@ class Pet(
     @NotEmpty(message = "Debes elegir en que estado se encuentra el animal")
     var state: String,
     @NotEmpty(message = "El tutor es obligatorio")
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "pets")
     var user: String,
     var vaccine: Boolean,
     var castrated: Boolean,
