@@ -17,6 +17,7 @@ export default function HomeScreen({navigation}) {
             lastNotificationResponse.notification.request.content.data.id &&
             lastNotificationResponse.actionIdentifier === Notifications.DEFAULT_ACTION_IDENTIFIER
         ) {
+            console.log(lastNotificationResponse.notification.request.content.data.id)
             navigation.navigate('Detalles', lastNotificationResponse.notification.request.content.data.id)
         }
     }, [lastNotificationResponse]);

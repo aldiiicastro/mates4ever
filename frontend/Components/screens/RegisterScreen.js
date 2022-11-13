@@ -171,7 +171,7 @@ const RegisterScreen = forwardRef(({navigation}, ref) => {
                                 onChangeText={(phoneNumber) => setPhoneNumber(phoneNumber)}
                                 showErrorIcon={false}
                                 keyboardType={"phone-pad"}
-                                ref={phoneNumberInputRef}
+                                // ref={phoneNumberInputRef}
                                 onSubmitEditing={() => userStreetInputRef.current && userStreetInputRef.current.focus()}
                                 floatingLabel
                             />
@@ -305,6 +305,7 @@ async function registerForPushNotificationsAsync() {
             lightColor: '#FF231F7C',
         });
     }
+    
     return token;
 }
 

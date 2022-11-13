@@ -1,9 +1,12 @@
 package mate4ever.ttip.controller
 
+import com.mongodb.client.AggregateIterable
+import mate4ever.ttip.dto.PetDocumentDTO
 import mate4ever.ttip.dto.PetRequestDTO
 import mate4ever.ttip.dto.PetResponseDTO
 import mate4ever.ttip.model.Pet
 import mate4ever.ttip.service.PetService
+import org.bson.Document
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.http.HttpStatus
@@ -61,7 +64,7 @@ class PetController {
     }
 
     @GetMapping("/api/pet/getNearbyPets")
-    fun getNearbyPets(): MutableIterable<Pet> {
+    fun getNearbyPets(): List<Map<String, *>> {
         return petService.getNearbyPets()
     }
     fun deleteAll() {

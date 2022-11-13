@@ -17,8 +17,7 @@ interface PetRepository : MongoRepository<Pet?, String?> {
     fun findAllThin(ids: Iterable<String?>?): Iterable<Pet>?
 
     @Query(
-        "{ 'coordinates' : { \$where: " +
-                "coordinates " +
+        "{ 'coordinates' : { \$where: coordinates " +
                 "&& Math.abs(coordinates.latitude) - 34.8266321 <= 0.2 " +
                 "&&  Math.abs(coordinates.longitude) - 58.187748 <= 0.2 }}",
     )

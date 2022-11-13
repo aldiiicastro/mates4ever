@@ -6,7 +6,7 @@ import {style} from "../../../styles/Commons"
 import {form} from "../../../styles/Form"
 import {colors} from "../../../styles/Colors"
 
-import {createPet, getAllUser} from "../../../server/Api.js"
+import {createPet, getAllUser, getDir} from "../../../server/Api.js"
 import {handleImagePicked, pickImage} from "../../../server/FirebaseServer"
 import Loader from "../../drawerlayout/Loader"
 import Back from "../../drawerlayout/Back"
@@ -23,7 +23,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 import MapView, {Circle, Marker} from "react-native-maps";
 import geodist from "geodist"
 import * as Location from 'expo-location';
-import { View } from "react-native-web"
+import { View } from "react-native"
+import SearchableDropdown from 'react-native-searchable-dropdown';
+
 
 
 export default function PetCreation({navigation}) {
@@ -44,6 +46,7 @@ export default function PetCreation({navigation}) {
     const [region, setRegion] = useState({latitude: -36.6769415180527, longitude: 	-60.5588319815719})
     const [locations, setLocations] = useState([])
     const [location, setLocation] = useState([])
+    const [isDatePickerVisible, setDatePickerVisibility] = useState(false)
     const nameInputRef = createRef()
 
     useEffect(() => {
@@ -87,14 +90,15 @@ export default function PetCreation({navigation}) {
         }
         try {
             await createPet(pet)
+            
             if (pet.state === 'Perdido') {
-                sendPushNotification()
+                sendPushNotification(pet)
             }
             navigation.navigate("Inicio")
 
         } catch (error) {
             setErrors(error.errors)
-            console.log("holaaa")
+            console.log(error)
         }
         setLoading(false)
     }
@@ -206,7 +210,7 @@ export default function PetCreation({navigation}) {
                         selectedValue={state}
                         onSelection={(item) => setState(item.value)}
                     />
-                    {state === "Perdido" &&
+                    {/* {state === "Perdido" &&
                         <MapView
                             style={{width: "100%", height: 200}}
                             initialRegion={{
@@ -215,7 +219,7 @@ export default function PetCreation({navigation}) {
                                 latitudeDelta: 0.05,
                                 longitudeDelta: 0.05,
                             }}
-                            onPress={(e) => setRegion(e.nativeEvent.coordinate)}
+                            onPress={(e) => setRegion({latitude: e.nativeEvent.coordinate.latitude, longitude: e.nativeEvent.coordinate.longitude})}
                             showsUserLocation={true}
 
                         >
@@ -225,7 +229,7 @@ export default function PetCreation({navigation}) {
                             />
                             <Circle center={region} radius={1000}/>
                         </MapView>
-                    }
+                    } */}
                     <SimpleLinePicker
                         items={[
                             {label: "Perro", value: "Perro"},
@@ -340,11 +344,13 @@ export default function PetCreation({navigation}) {
 }
 const calculateDist = (userCoordinates, petCoordinates) => {
     const dist = geodist({lat: petCoordinates.latitude, lon: petCoordinates.longitude}, {lat:userCoordinates.latitude, lon: userCoordinates.longitude}, {exact: true, unit: 'km'})
-    return dist < 1
+    
+    return dist < 1.0
 }
 async function sendPushNotification(pet) {
     const allUsers = await getAllUser()
     const users = allUsers.data.filter((user) => calculateDist(user.coordinates, pet.coordinates))
+    console.log(users)
     const tokens = users.map((user) => user.expoPushToken)
     const message = {
         to: tokens,
