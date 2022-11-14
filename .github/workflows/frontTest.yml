@@ -23,3 +23,6 @@ jobs:
         with:
           config-file: cypress.config.js
           start: npm run web:frontend
+        env:
+          CYPRESS_port: 19006
+            
