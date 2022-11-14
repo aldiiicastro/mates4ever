@@ -31,3 +31,12 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: cd backend; mvn -B package --file pom.xml
+      
+    - name: Monitor coverage
+      uses: slavcodev/coverage-monitor-action@v1
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        coverage_path: ".coverage/clover.xml"
+        threshold_alert: 10
+        threshold_warning: 50
+        threshold_metric: "lines"
