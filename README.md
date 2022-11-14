@@ -1,6 +1,8 @@
 # Mates4ever
 ![example workflow](https://github.com/aldiiicastro/mates4ever/actions/workflows/backTest.yml/badge.svg)
 ![example workflow](https://github.com/aldiiicastro/mates4ever/actions/workflows/frontTest.yml/badge.svg)
+[![codecov](https://codecov.io/gh/aldiiicastro/mates4ever/branch/main/graph/badge.svg?token=C32HVTNM8W)](https://codecov.io/gh/aldiiicastro/mates4ever)
+
 ## Instalación
 
 
