@@ -33,7 +33,6 @@
     "android": "^0.0.8",
     "axios": "^0.27.2",
     "body-parser": "^1.20.0",
-    "check-code-coverage": "^1.10.4",
     "cypress": "^10.8.0",
     "expo": "~46.0.9",
     "expo-device": "^4.3.0",
