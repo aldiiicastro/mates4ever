@@ -24,5 +24,10 @@ jobs:
           config-file: cypress.config.js
           start: npm run web:frontend
           wait-on: 'http://localhost:19006'
+      - name: Set code coverage badge
+        run: npx update-badge
+        uses: mikeal/publish-to-github-action@master
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
