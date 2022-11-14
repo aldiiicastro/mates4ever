@@ -1,8 +1,8 @@
-import { View, Text, Modal, StyleSheet, Pressable, ScrollView, Dimensions, FlatList, Alert } from 'react-native'
+import { View, Text, Modal, StyleSheet, Pressable, Dimensions, Alert } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { getSearchedPets } from '../../server/Api';
 import Pet from '../../model/Pet';
-import MapView, { Circle, Marker } from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 
 export default function LostsPets({navigation}) {
@@ -91,6 +91,7 @@ export default function LostsPets({navigation}) {
                         <Pressable
                             style={[styles.button, styles.buttonClose]}
                             onPress={() => setModalVisible(!modalVisible)}
+                            testID={'hideModal'}
                             >
                             <Text style={styles.textStyle}>Hide Modal</Text>
                         </Pressable>
@@ -143,4 +144,3 @@ const styles = StyleSheet.create({
         textAlign: "center"
     }
   });
-  

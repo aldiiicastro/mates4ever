@@ -1,14 +1,16 @@
 
 describe('Profile screen', () => {
     beforeEach( () => {
+        cy.intercept('GET', '/api/pet/search?query=', {fixture: 'pets_data.json'}).as('gets')
         cy.loginBeforeEach()
+        cy.wait('@gets')
+        cy.get('[data-testid="hideModal"]').click()
     })
     it('Profile from contact', ()=> {
         //Fixture create the seed data
-        cy.intercept('GET', '/api/pet/search?query=', {fixture: 'pets_data.json'}).as('gets')
         cy.intercept('GET', '/api/pet/1', {fixture: 'pet_data_transit.json'}).as('getPet')
         cy.intercept('GET', 'api/user/allData/aldana@gmail.com', {fixture: 'user_data.json'}).as('getUser')
-        cy.wait('@gets')
+
         //Click on pet card
         cy.get('[data-testid="pet-details-1"]').click()
         cy.wait('@getPet')
@@ -21,11 +23,7 @@ describe('Profile screen', () => {
         cy.getTransitPet()
     })
     it('Profile from icon', ()=> {
-        //Fixture create the seed data
-        cy.intercept('GET', '/api/pet/search?query=', {fixture: 'pets_data.json'}).as('gets')
         cy.intercept('GET', 'api/user/allData/aldana@gmail.com', {fixture: 'user_data.json'}).as('getUser')
-        cy.wait('@gets')
-        //
         cy.get('[data-testid="profileButton"]').click()
         //Testing button
         cy.wait('@getUser')
@@ -35,11 +33,7 @@ describe('Profile screen', () => {
         cy.getTransitPet()
     })
     it('Profile go back', ()=> {
-        //Fixture create the seed data
-        cy.intercept('GET', '/api/pet/search?query=', {fixture: 'pets_data.json'}).as('gets')
         cy.intercept('GET', 'api/user/allData/aldana@gmail.com', {fixture: 'user_data.json'}).as('getUser')
-        cy.wait('@gets')
-        //
         cy.get('[data-testid="profileButton"]').click()
         //Testing button
         cy.wait('@getUser')
@@ -48,15 +42,11 @@ describe('Profile screen', () => {
     })
 
     it('Profile log out', ()=> {
-        //Fixture create the seed data
-        cy.intercept('GET', '/api/pet/search?query=', {fixture: 'pets_data.json'}).as('gets')
         cy.intercept('GET', 'api/user/allData/aldana@gmail.com', {fixture: 'user_data.json'}).as('getUser')
-        cy.wait('@gets')
-        //
         cy.get('[data-testid="profileButton"]').click()
         //Testing button
         cy.wait('@getUser')
-        cy.get('[data-testid="logOut"').click()
+        cy.get('[data-testid="logOut"').click({force: true})
         cy.get('div').contains('Iniciar sesión')
     })
 })

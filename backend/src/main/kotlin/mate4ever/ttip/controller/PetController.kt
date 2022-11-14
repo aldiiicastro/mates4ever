@@ -64,7 +64,7 @@ class PetController {
     }
 
     @GetMapping("/api/pet/getNearbyPets")
-    fun getNearbyPets(): List<Map<String, *>> {
+    fun getNearbyPets(): List<PetRequestDTO> {
         return petService.getNearbyPets()
     }
     fun deleteAll() {

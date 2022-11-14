@@ -1,13 +1,14 @@
 
 describe('Initial pets', () => {
     beforeEach( () => {
+        cy.intercept('GET', '/api/pet/search?query=', {fixture: 'pets_data.json'}).as('gets')
         cy.loginBeforeEach()
+        cy.wait('@gets')
+        cy.get('[data-testid="hideModal"]').click()
     })
     it('Can see pet in transit', ()=> {
         //Fixture create the seed data
-        cy.intercept('GET', '/api/pet/search?query=', {fixture: 'pets_data.json'}).as('gets')
         cy.intercept('GET', '/api/pet/1', {fixture: 'pet_data_transit.json'}).as('getPet')
-        cy.wait('@gets')
         //Click on pet card
         cy.get('[data-testid="pet-details-1"]').click()
         cy.wait('@getPet')
@@ -24,9 +25,7 @@ describe('Initial pets', () => {
     })
     it('Can see pet lost', ()=> {
         //Fixture create the seed data
-        cy.intercept('GET', '/api/pet/search?query=', {fixture: 'pets_data.json'}).as('gets')
         cy.intercept('GET', '/api/pet/2', {fixture: 'pet_data_lost.json'}).as('getPet')
-        cy.wait('@gets')
         //Click on pet card
         cy.get('[data-testid="pet-details-2"]').click()
         cy.wait('@getPet')
