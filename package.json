@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
   "jsx": "react-jsx",
+  "nyc": {
+    "exclude": [ "src/serviceWorker.ts", "src/serviceWorkerRegistration.ts"]
+  },
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
@@ -12,8 +15,11 @@
     "web:frontend": "cd frontend && npm run web",
     "web": "expo start --web",
     "postinstall": "patch-package"
+
   },
   "dependencies": {
+    "@cypress/code-coverage": "^3.10.0",
+    "@cypress/instrument-cra": "^1.4.0",
     "@expo/webpack-config": "^0.17.0",
     "@react-native-async-storage/async-storage": "^1.17.10",
     "@react-native-community/datetimepicker": "^6.2.0",
@@ -67,6 +73,7 @@
     "@babel/plugin-syntax-jsx": "^7.18.6",
     "@babel/preset-env": "^7.19.1",
     "@babel/preset-react": "^7.18.6",
+    "babel-plugin-istanbul": "^6.1.1",
     "sharp-cli": "^2.1.0"
   }
 }
