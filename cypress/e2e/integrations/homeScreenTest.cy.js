@@ -9,7 +9,7 @@ describe('Home', () => {
     })
     it('List of pets', () => {
         cy.intercept('GET', '/api/pet/search?query=', {fixture: 'pets_data.json'}).as('gets')
-        cy.wait('@gets')
+        // cy.wait('@gets')
         //Testing transit pet
         cy.getTransitPet()
         //Testing lost pet
