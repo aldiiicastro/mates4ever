@@ -1,5 +1,6 @@
 # Mates4ever
-
+![example workflow](https://github.com/aldiiicastro/mates4ever/actions/workflows/backTest.yml/badge.svg)
+![example workflow](https://github.com/aldiiicastro/mates4ever/actions/workflows/frontTest.yml/badge.svg)
 ## Instalación
 
 
