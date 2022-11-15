@@ -1,0 +1,43 @@
+[{
+      "age": 5,
+      "breed": "Sin Raza",
+      "date": null,
+      "description": "Tenemos muchos animales y necesitamos que alguien pueda transitarlo o adoptarlo",
+      "id": "1", "image": "https://github.com/aldiiicastro/mates4ever/blob/main/frontend/assets/gatitos/Mia.jpg?raw=true",
+      "name": "Mía", "state": "Transito", "tutor": "Octavio", "type": "Gato"
+},
+      {
+            "age": 8,
+            "breed": "Sin Raza",
+            "date": null,
+            "description": "Tenemos muchos animales y necesitamos que alguien pueda transitarlo o adoptarlo",
+            "id": "2",
+            "image": "https://github.com/aldiiicastro/mates4ever/blob/main/frontend/assets/gatitos/Mia.jpg?raw=true",
+            "name": "Gatito",
+            "state": "Perdido",
+            "tutor": "Octavio",
+            "type": "Gato"
+      },
+      {
+            "age": 6,
+            "breed": "Sin Raza",
+            "date": null,
+            "description": "Tenemos muchos animales y necesitamos que alguien pueda transitarlo o adoptarlo",
+            "id": "3",
+            "image": "https://github.com/aldiiicastro/mates4ever/blob/main/frontend/assets/gatitos/Mia.jpg?raw=true",
+            "name": "Perrito",
+            "state": "Adopción",
+            "tutor": "Octavio",
+            "type": "Perro"
+      },
+      {
+            "name": "Animal",
+            "age": 5,
+            "image": "https://github.com/aldiiicastro/mates4ever/blob/main/frontend/assets/gatitos/Mia.jpg?raw=true",
+            "date": null,
+            "state": "Adopción",
+            "type": "Perro",
+            "breed": "Beagle"
+      }
+]
+

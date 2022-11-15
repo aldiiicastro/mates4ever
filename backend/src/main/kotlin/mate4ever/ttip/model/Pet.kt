@@ -22,8 +22,9 @@ open class Pet(
     var castrated: Boolean,
     var medicalHistory: String?,
     var description: String?,
-    var coordinates: Map<String, Double>?
-) {
+    var coordinates: Map<String, Double>?,
     @Id
     var id: String? = null
+) {
+
 }
