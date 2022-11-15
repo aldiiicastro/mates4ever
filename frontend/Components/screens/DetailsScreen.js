@@ -25,7 +25,7 @@ export default function DetailsScreen({navigation, route}) {
     return (
         <View style={{flex: 1, alignItems: 'center', backgroundColor: '#fff'}}>
             <PetDetails navigation={navigation} pet={pet}></PetDetails>
-            <TouchableOpacity
+            <TouchableOpacity testID={'contactar'}
                 style={[petDetailsStyle.floatButton, style.alignItems]}
                 onPress={() => navigation.navigate('Perfil', pet.tutor)}
             >

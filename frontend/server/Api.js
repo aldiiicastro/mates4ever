@@ -55,14 +55,12 @@ export const getPetByUser  = async (user) => {
     return await axinst.get(url)
 }
 
-//******************** Location ********************
-export const getProvince = async() => {
-    return await axinst.get("https://apis.datos.gob.ar/georef/api/provincias")
+export const getNearByPets = async() => {
+    const url = `${baseUrl}/api/pet/getNearbyPets`
+    return await axinst.get(url)
 }
 
-export const getMunicipalities = async(municipality) => {
-    return await axinst.get(`https://apis.datos.gob.ar/georef/api/municipios?provincia=${municipality}&max=100`)
-}
+//******************** Location ********************
 
 export const getDir = async(dir) => {
     return axinst.get(`https://apis.datos.gob.ar/georef/api/direcciones?direccion=${dir}`)

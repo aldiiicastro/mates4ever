@@ -72,20 +72,20 @@ export default function PetCreation({navigation}) {
         setLoading(true)
         const userEmail = await AsyncStorage.getItem("user_id")
 
-        const image = await uploadedImage()
+        const imageUpload = await uploadedImage()
         const pet = {
             "name": name,
-            "image": image,
+            "image": imageUpload,
             "birth": age,
             "state": state,
             "type": type,
             "breed": breed,
-            "castrated": castrated,
             "vaccine": vaccine,
+            "castrated": castrated,
             "medicalHistory": medicalHistory,
             "description": description,
             "tutor": userEmail,
-            "coordinates": region
+            "coordinates": state === 'Perdido' ? region : null
         }
 
         try {

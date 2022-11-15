@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDate
 import javax.validation.constraints.NotEmpty
 @Document("pet")
-class Pet(
+open class Pet(
     @NotEmpty(message = "El nombre es obligatorio")
     var name: String,
     @NotEmpty(message = "La imagen es obligatoria")

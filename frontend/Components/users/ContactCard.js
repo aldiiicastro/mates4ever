@@ -17,7 +17,7 @@ export default function ContactCard({containerStyle, onPress, contact, icon}) {
                 </View>
                 <View style={contactCardStyles.row}>
                     <View style={contactCardStyles.column}>
-                        <Text style={contactCardStyles.contactText}>{contact}</Text>
+                        <Text testID={`${icon}`} style={contactCardStyles.contactText}>{contact}</Text>
                     </View>
                 </View>
             </View>

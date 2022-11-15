@@ -10,10 +10,10 @@ import SplashScreen from "./Components/screens/SplashScreen"
 import {colors} from "./styles/Colors.js"
 import LoginScreen from "./Components/screens/LoginScreen.js"
 import RegisterScreen from "./Components/screens/RegisterScreen"
-
+import * as Location from "expo-location"
 
 const Stack = createNativeStackNavigator()
-
+Location.setGoogleApiKey("AIzaSyAPsx4L1yV5YTdbPU7yakAKJwxQsj-9zXQ")
 function App() {
     return (
         <NavigationContainer>

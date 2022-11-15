@@ -50,12 +50,12 @@ const RegisterScreen = forwardRef(({navigation}, ref) => {
 
     const getCurrentPosition = async () => {
         setLoading(true)
-        let { status } = await Location.requestForegroundPermissionsAsync();
+        let { status } = await Location.requestForegroundPermissionsAsync()
         if (status !== 'granted') {
-            return;
+            return
         }
 
-        let reg = await Location.getCurrentPositionAsync({});
+        let reg = await Location.getCurrentPositionAsync({})
         await onChangeRegion(reg["coords"])
         setLoading(false)
     }

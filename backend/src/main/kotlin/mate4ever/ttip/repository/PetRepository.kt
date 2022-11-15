@@ -15,5 +15,18 @@ interface PetRepository : MongoRepository<Pet?, String?> {
     fun findByUser(user: String) : MutableIterable<Pet>
     @Query(value = "{ '_id' : {'\$in' : ?0 } }", fields = "{ 'description': 0 }")
     fun findAllThin(ids: Iterable<String?>?): Iterable<Pet>?
+
+    @Query(
+        "{ 'coordinates' : { \$where: coordinates " +
+                "&& Math.abs(coordinates.latitude) - 34.8266321 <= 0.2 " +
+                "&&  Math.abs(coordinates.longitude) - 58.187748 <= 0.2 }}",
+    )
+    fun getNearbyPets(lat : Double, long : Double) : MutableIterable<Pet>
+
+    @Query(value = "'_coordinates' : { \$where: " +
+            "_coordinates " +
+            "&& Math.abs(_coordinates.latitude) - 34.8266321 <= 0.2 " +
+            "&&  Math.abs(_coordinates.longitude) - 58.187748 <= 0.2 }")
+    fun findByCoordinates(lat : Double, long : Double): MutableIterable<Pet>
 //    override fun deleteAll()
 }

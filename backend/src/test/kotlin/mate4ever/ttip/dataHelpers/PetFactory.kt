@@ -18,7 +18,7 @@ class PetFactory() {
         castrated: Boolean = true,
         medicalHistory: String? = null,
         description: String? = "Se perdio en Bernal",
-        coordinates: Map<String, Double>? = null
+        coordinates: Map<String, Double>? = mapOf("latitude" to -36.6769415180527, "longitude" to 	-60.5588319815719)
     ): PetRequestDTO {
 
         return PetRequestDTO(
