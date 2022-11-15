@@ -60,7 +60,7 @@ export default function UserProfileScreen({ navigation, route }) {
             <ContactCard
                 contact={user.email}
                 icon={"email"}
-                onPress={() => Linking.openURL('mailto:support@example.com')}
+                onPress={() => Linking.openURL('mailto:'+ user.email)}
             />
             {user.phone ? <ContactCard
                 contact={user.phone}

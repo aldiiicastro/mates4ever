@@ -59,6 +59,17 @@ export const getNearByPets = async() => {
     const url = `${baseUrl}/api/pet/getNearbyPets`
     return await axinst.get(url)
 }
+//******************** Create comment ********************
+export  const createComment = async(comment) => {
+    return await axinst.post(
+        `${baseUrl}/api/comment/create`,
+        comment)
+}
+
+export const getComments = async(petID) => {
+    const url = `${baseUrl}/api/comment/${petID}`
+    return await axinst.get(url)
+}
 
 //******************** Location ********************
 

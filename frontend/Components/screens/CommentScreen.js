@@ -1,53 +1,50 @@
-import React, {createRef, useEffect, useState} from "react"
-import {Form, FormItem} from "react-native-form-component"
+import React, {useEffect, useState} from "react"
+import {Form} from "react-native-form-component"
 import {ScrollView} from "react-native-gesture-handler"
-
-import {style} from "../../../styles/Commons"
-import {form} from "../../../styles/Form"
-import {colors} from "../../../styles/Colors"
-
-import {createPet, getAllUser, getDir} from "../../../server/Api.js"
-import {handleImagePicked, pickImage} from "../../../server/FirebaseServer"
-import Loader from "../../drawerlayout/Loader"
-import Back from "../../drawerlayout/Back"
-import {
-    CalendarForm,
-    ImageForm,
-    MultiLineLabel,
-    SimpleCheckBox,
-    SimpleLineLabel,
-    SimpleLinePicker
-} from "../../drawerlayout/FormItemGeneric"
-import {petCreationScreenStyle} from "../../../styles/pet/PetCreationScreenStyle"
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import MapView, {Circle, Marker} from "react-native-maps";
+import MapView, {Circle, Marker} from "react-native-maps"
+import * as Location from 'expo-location'
+import SearchableDropdown from 'react-native-searchable-dropdown'
+import {createComment, getDir, getUserByEmail} from "../../server/Api"
+import {handleImagePicked, pickImage} from "../../server/FirebaseServer"
+import Loader from "../drawerlayout/Loader"
+import {CalendarForm, ImageForm, MultiLineLabel} from "../drawerlayout/FormItemGeneric"
+import {colors} from "../../styles/Colors"
+import {petCreationScreenStyle} from "../../styles/pet/PetCreationScreenStyle"
+import {style} from "../../styles/Commons"
+import Back from "../drawerlayout/Back"
 
-import * as Location from 'expo-location';
-import {View} from "react-native";
-import SearchableDropdown from 'react-native-searchable-dropdown';
-import geodist from "geodist"
-import {getUserByEmail} from "../../server/Api";
-
-
-export default function PetCreation({navigation, pet}) {
+export default function CommentScreen({navigation, pet}) {
     const [image, setImage] = useState(null)
     const [imageUri, setImageUri] = useState(null)
-    const [age, setAge] = useState(null)
+    const [dateOfSeen, setDateOfSeen] = useState(null)
     const [ageDate, setAgeDate] = useState(new Date())
-    const [description, setDescription] = useState('')
+    const [commentary, setCommentary] = useState('')
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false)
     const [loading, setLoading] = useState(false)
     const [error, setErrors] = useState('')
     const [region, setRegion] = useState({latitude: -36.6769415180527, longitude: 	-60.5588319815719})
     const [locations, setLocations] = useState([])
-    const [location, setLocation] = useState([])
-    const nameInputRef = createRef()
+    const [location, setLocation] = useState({})
 
     useEffect(() => {
         getCurrentPosition()
     }, []);
 
+    //************GET CURRENT POSITION*******************
+    const getCurrentPosition = async () => {
 
+        let { status } = await Location.requestForegroundPermissionsAsync()
+        if (status !== 'granted') {
+            return;
+        }
+
+        let reg = await Location.getCurrentPositionAsync({})
+        await onChangeRegion(reg["coords"])
+        setRegion({ latitude: reg["coords"].latitude, longitude: reg["coords"].longitude })
+    }
+
+    //************LOAD IMAGE*******************
     const pickAnImage = async () => {
         const pickerResult = await pickImage()
         setImage(pickerResult)
@@ -61,30 +58,7 @@ export default function PetCreation({navigation, pet}) {
         return await handleImagePicked(image)
     }
 
-    const publish = async () => {
-
-        setLoading(true)
-        const userEmail = await AsyncStorage.getItem("user_id")
-
-        const imageUpload = await uploadedImage()
-        const comment = {
-            "petID": pet.id,
-            "image": imageUpload,
-            "dateOfSeen": dateOfSeen,
-            "commentary": commentary,
-            "contact": userEmail,
-            "coordinates": region
-        }
-
-        try {
-            await createComment(comment)
-            sendPushNotification(pet)
-            navigation.navigate("Inicio")
-        } catch (error) {
-            setErrors(error.errors)
-        }
-        setLoading(false)
-    }
+    //************DATE PIKER and AUXILIARIES*******************
     const showDatePicker = () => {
         setDatePickerVisibility(true)
     }
@@ -94,15 +68,17 @@ export default function PetCreation({navigation, pet}) {
     }
 
     const handleConfirm = (date) => {
-        setAge(getAge(date))
+        setDateOfSeen(getDate(date))
         setAgeDate(date)
         hideDatePicker()
     }
 
-    const getAge = (dateInput) => {
+    const getDate = (dateInput) => {
         const dateArray = dateInput.toLocaleDateString().split("/")
         return ([dateArray[1], dateArray[0], dateInput.getFullYear()].join("/"))
     }
+
+    //************MAP AUXILIARIES*******************
     const mapDir = (index, dire) => {
         return { id: index, name: dire.nomenclatura}
     }
@@ -112,6 +88,7 @@ export default function PetCreation({navigation, pet}) {
         setLocation(item)
         setRegion({ latitude: reg[0].latitude, longitude: reg[0].longitude })
     }
+
     const onChangeText = async(dir) => {
         try {
             let algo = await getDir(dir)
@@ -121,27 +98,42 @@ export default function PetCreation({navigation, pet}) {
             console.log(e)
         }
     }
-    const getCurrentPosition = async () => {
 
-        let { status } = await Location.requestForegroundPermissionsAsync();
-        if (status !== 'granted') {
-            return;
-        }
-
-        let reg = await Location.getCurrentPositionAsync({});
-        await onChangeRegion(reg["coords"])
-        setRegion({ latitude: reg["coords"].latitude, longitude: reg["coords"].longitude })
-    }
     const onChangeRegion = async (newRegion) => {
         setRegion(newRegion)
         let reg = await Location.reverseGeocodeAsync(newRegion)
         setLocation({id:1, name:`${reg[0].street}, ${reg[0].streetNumber}, ${reg[0].city}`})
     }
+
+    // *********************PUBLISH*********************
+    const publish = async () => {
+
+        setLoading(true)
+        const userEmail = await AsyncStorage.getItem("user_id")
+
+        const imageUpload = await uploadedImage()
+        const comment = {
+            "petID": pet.id,
+            "image": imageUpload,
+            "dateOfSeen": dateOfSeen ? dateOfSeen : getDate(Date.now()),
+            "commentary": commentary,
+            "contact": userEmail,
+            "coordinates": region
+        }
+
+        try {
+            await createComment(comment)
+            await sendPushNotification(pet, userEmail)
+            navigation.navigate("Detalles", pet.id)
+        } catch (error) {
+            setErrors(error.errors)
+        }
+        setLoading(false)
+    }
     return (
-        <View>
             <ScrollView style={style.fullContainer}>
                 <Loader loading={loading}/>
-                <Back onPress={() => navigation.goBack()} text="Cargar una mascota"
+                <Back onPress={() => navigation.goBack()}
                       headerStyle={petCreationScreenStyle.header}/>
                 <ImageForm
                     imageUri={imageUri}
@@ -149,7 +141,8 @@ export default function PetCreation({navigation, pet}) {
                 />
 
                 <Form
-                    GenericInput={"Cargar un comentario"} onButtonPress={() => publish()}
+                    GenericInput={"Cargar un comentario"}
+                    onButtonPress={() => publish()}
                     buttonStyle={{backgroundColor: colors.violet}}
                     buttonText="Publicar"
                     style={[style.marginX, style.bgWhite]}>
@@ -161,17 +154,13 @@ export default function PetCreation({navigation, pet}) {
                         dateText={dateOfSeen}
                         defaultText="Fecha aproximada que se lo vio"
                         onPress={showDatePicker}
-
                     />
-
                     <MultiLineLabel
-                        value={description}
+                        value={commentary}
                         label={"Cuentanos un poco sobre el encuentro"}
-                        onChangeText={setDescription}
+                        onChangeText={setCommentary}
                     />
-                </Form>
-            </ScrollView>
-                <View>
+
                     <SearchableDropdown
                         multi={true}
                         selectedItems={[location]}
@@ -231,18 +220,18 @@ export default function PetCreation({navigation, pet}) {
                         />
                         <Circle center={region} radius={1000}/>
                     </MapView>
-                </View>
-            }</View>
+                </Form>
+            </ScrollView>
     )
 }
 
-async function sendPushNotification(pet) {
+async function sendPushNotification(pet, comment) {
     const user = await getUserByEmail(pet.user)
     const tokens = user.data.expoPushToken
     const message = {
         to: tokens,
-        title: 'Nuevo comentario sobre' + pet.name,
-        body: pet.description,
+        title: "Nuevo comentario sobre" + pet.name,
+        body: comment.contact,
         data: { id: pet.id },
     };
 
