@@ -1,17 +1,16 @@
 package mate4ever.ttip.controller
 
-import com.mongodb.client.AggregateIterable
 import mate4ever.ttip.dto.PetDocumentDTO
 import mate4ever.ttip.dto.PetRequestDTO
 import mate4ever.ttip.dto.PetResponseDTO
 import mate4ever.ttip.model.Pet
 import mate4ever.ttip.service.PetService
-import org.bson.Document
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import kotlin.math.absoluteValue
 
 @RestController
 @EnableAutoConfiguration
@@ -64,8 +63,8 @@ class PetController {
     }
 
     @GetMapping("/api/pet/getNearbyPets")
-    fun getNearbyPets(): List<PetRequestDTO> {
-        return petService.getNearbyPets()
+    fun getNearbyPets(@RequestParam latitude: Double, @RequestParam longitude: Double): List<PetDocumentDTO> {
+        return petService.getNearbyPets(latitude.absoluteValue, longitude.absoluteValue)
     }
     fun deleteAll() {
         return petService.deleteAll()

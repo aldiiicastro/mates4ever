@@ -1,13 +1,11 @@
 package mate4ever.ttip.service
 
-import com.mongodb.client.AggregateIterable
-import com.mongodb.client.MongoCollection
 import mate4ever.ttip.dto.PetDocumentDTO
 import mate4ever.ttip.dto.PetRequestDTO
 import mate4ever.ttip.exceptions.PetNotFoundException
 import mate4ever.ttip.model.Pet
 import mate4ever.ttip.repository.PetRepository
-import org.bson.Document
+import org.bson.types.ObjectId
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.mongodb.core.MongoTemplate
 import org.springframework.data.mongodb.core.query.Criteria
@@ -16,6 +14,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+
 
 @Service
 @Transactional
@@ -80,19 +79,20 @@ class PetService {
         return mongoTemplate.find(query, Pet::class.java)
     }
 
-    fun getNearbyPets(): List<PetRequestDTO> {
+    fun getNearbyPets(lat: Double, long : Double): List<PetDocumentDTO> {
         val document =
-            mongoTemplate.executeCommand("{ find: 'pet', filter : {\$where: 'this.coordinates && Math.abs(this.coordinates.latitude) - 34.7754008 <= 0.02 &&  Math.abs(this.coordinates.longitude) - 58.2696931 <= 0.02 '}}")
+            mongoTemplate.executeCommand("{ find: 'pet', filter : {\$where: 'this.coordinates && Math.abs(Math.abs(this.coordinates.latitude) - $lat) <= 0.02 &&  Math.abs(Math.abs(this.coordinates.longitude) - $long) <= 0.02 '}}")
         val listOfPets = (document["cursor"] as Map<*, *>)["firstBatch"] as List<Map<String, *>>
         return listOfPets.map { it ->
-            PetRequestDTO(
-                "sadsa",
+            PetDocumentDTO(
+                (listOfPets[0]["_id"] as ObjectId).toString(),
+                it["name"] as String,
                 it["image"] as String,
-                it["birth"] as String?,
+                null,
                 it["type"] as String,
                 it["breed"] as String?,
                 it["state"] as String,
-                it["tutor"] as String,
+                it["user"] as String,
                 it["vaccine"] as Boolean,
                 it["castrated"] as Boolean,
                 it["medicalHistory"] as String?,
@@ -100,34 +100,8 @@ class PetService {
                 it["coordinates"] as Map<String,Double>?
             )
         }
-
     }
 
-//    fun getNearbyPets(): AggregateIterable<Document> {
-//        val collection: MongoCollection<Document> = mongoTemplate.getCollection("pet")
-//        collection.createIndex(Document("coordinates", "2dsphere"))
-//
-//        val result: AggregateIterable<Document> = collection.aggregate(
-//            listOf(
-//                Document(
-//                    "\$geoNear",
-//                    Document(
-//                        "near",
-//                        Document("type", "Point")
-//                            .append("coordinates", listOf(-34.7109048, -58.2794572))
-//                    )
-//                        .append("distanceField", "km")
-//                        .append("maxDistance", 1L)
-//                        .append(
-//                            "query",
-//                            Document()
-//                        )
-//                ),
-//                Document("\$out", "pet")
-//            )
-//        )
-//        return result
-//    }
     private fun criteriaForm(fieldName: String, value: String): Criteria {
         return Criteria.where(fieldName).regex(value, "i")
     }

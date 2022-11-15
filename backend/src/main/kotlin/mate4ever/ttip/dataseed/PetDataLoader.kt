@@ -2,7 +2,6 @@ package mate4ever.ttip.dataseed
 
 import mate4ever.ttip.dto.PetRequestDTO
 import mate4ever.ttip.model.User
-import mate4ever.ttip.repository.PetRepository
 import mate4ever.ttip.repository.UserRepository
 import mate4ever.ttip.service.PetService
 import org.springframework.beans.factory.annotation.Autowired
@@ -13,8 +12,6 @@ import org.springframework.stereotype.Component
 class PetDataLoader : CommandLineRunner {
     @Autowired
     private lateinit var petService: PetService
-    @Autowired
-    private lateinit var petRepository: PetRepository
 
     @Autowired
     private lateinit var userRepository: UserRepository
@@ -44,11 +41,11 @@ class PetDataLoader : CommandLineRunner {
             PetRequestDTO("Leia", "https://github.com/aldiiicastro/mates4ever/blob/main/frontend/assets/gatitos/Leia.jpg?raw=true",
                 null,"Gato", null, "Adopción", "mates4ever@gmail.com",  true, true, null, "Mi gatita los tuvo hace poco y buscamos a alguien que les den un buen hogar", null),
             PetRequestDTO("Batman", "https://github.com/aldiiicastro/mates4ever/blob/main/frontend/assets/gatitos/Batman.jpg?raw=true",
-                null,"Gato", null, "Perdido", "mates4ever@gmail.com", true, true, null, "Lo encontre en la puerta de mi casa", null),
-            PetRequestDTO("Frappe", "https://github.com/aldiiicastro/mates4ever/blob/main/frontend/assets/gatitos/Frappe.jpg?raw=true",
-                null,"Gato", null, "Perdido", "mates4ever@gmail.com", true, true, null, "Lo encontre en la puerta de mi casa", null),
-            PetRequestDTO("Jabba", "https://github.com/aldiiicastro/mates4ever/blob/main/frontend/assets/gatitos/Jabba.jpg?raw=true",
-                null,"Gato", null, "Perdido", "mates4ever@gmail.com", true, true, null, "Lo encontre en la puerta de mi casa", null),
+                "11/11/2022","Gato", "", "Perdido", "mates4ever@gmail.com", true, true, "", "Lo encontre en la puerta de mi casa", mapOf("latitude" to -34.7109181, "longitude" to -58.279441)),
+//            PetRequestDTO("Frappe", "https://github.com/aldiiicastro/mates4ever/blob/main/frontend/assets/gatitos/Frappe.jpg?raw=true",
+//                null,"Gato", null, "Perdido", "mates4ever@gmail.com", true, true, null, "Lo encontre en la puerta de mi casa", mapOf("latitude" to -34.7109181, "longitude" to -58.279441)),
+//            PetRequestDTO("Jabba", "https://github.com/aldiiicastro/mates4ever/blob/main/frontend/assets/gatitos/Jabba.jpg?raw=true",
+//                null,"Gato", null, "Perdido", "mates4ever@gmail.com", true, true, null, "Lo encontre en la puerta de mi casa", mapOf("latitude" to -34.7109181, "longitude" to -58.279441)),
             PetRequestDTO("Nella", "https://github.com/aldiiicastro/mates4ever/blob/main/frontend/assets/conejitos/Nella.jpg?raw=true",
                 null,"Conejo", null, "Transito", "mates4ever@gmail.com", true, true, null, "Tenemos muchos animales y necesitamos que alguien pueda transitarlo o adoptarlo", null),
             PetRequestDTO("Luna", "https://github.com/aldiiicastro/mates4ever/blob/main/frontend/assets/conejitos/Luna.jpg?raw=true",

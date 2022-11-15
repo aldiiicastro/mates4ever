@@ -12,5 +12,5 @@ class PetRequestDTO(
     val castrated: Boolean,
     val medicalHistory: String?,
     val description: String?,
-    val coordinates: Map<String, Double>?
+    var coordinates: Map<String, Double>?
 ) {}

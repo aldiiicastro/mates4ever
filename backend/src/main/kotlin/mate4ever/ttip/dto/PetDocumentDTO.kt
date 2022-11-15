@@ -4,10 +4,10 @@ import mate4ever.ttip.model.Pet
 import java.time.LocalDate
 
 class PetDocumentDTO(
-    val _class: String,
     id: String,
+    name: String,
     image: String,
-    birth: String,
+    birth: LocalDate?,
     type: String,
     breed: String?,
     state: String,
@@ -17,4 +17,4 @@ class PetDocumentDTO(
     medicalHistory: String?,
     description: String?,
     coordinates: Map<String, Double>?
-) : Pet(id,image,LocalDate.parse(birth),type,breed,state,tutor,vaccine,castrated, medicalHistory, description, coordinates){}
+) : Pet(name,image,birth,type,breed,state,tutor,vaccine,castrated, medicalHistory, description, coordinates, id){}
