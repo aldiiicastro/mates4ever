@@ -10,7 +10,6 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import kotlin.math.absoluteValue
 
 @RestController
 @EnableAutoConfiguration
@@ -64,7 +63,7 @@ class PetController {
     }
     @GetMapping("/api/pet/getNearbyPets")
     fun getNearbyPets(@RequestParam latitude: Double, @RequestParam longitude: Double): List<PetDocumentDTO> {
-        return petService.getNearbyPets(latitude.absoluteValue, longitude.absoluteValue)
+        return petService.getNearbyPets(latitude, longitude)
     }
 
     fun deleteAll() {
