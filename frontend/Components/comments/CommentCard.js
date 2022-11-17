@@ -1,8 +1,9 @@
-import {Image, Linking, Text, TouchableOpacity, View} from "react-native"
+import {FlatList, Image, Linking, Text, TouchableOpacity, View} from "react-native"
 import {style} from "../../styles/Commons.js"
 import {commentCardStyle} from "../../styles/CommentCardStyle"
 import Icon from "react-native-vector-icons/MaterialIcons";
 import SavedMapView from "../SavedMapView";
+import React from "react";
 
 export default function CommentCard({comment, index}) {
 
@@ -11,7 +12,9 @@ export default function CommentCard({comment, index}) {
             <View style={commentCardStyle.detailsContainer}>
                 {comment.image ?
                     <View style={commentCardStyle.imageContainer}>
-                        <Image source={{uri: comment.image}} style={commentCardStyle.imageDetail}/>
+                        <FlatList horizontal={true} data={comment.image} renderItem={(item) => {
+                            return <Image source={{uri: item.item}} style={commentCardStyle.imageDetail}/>
+                        }}/>
                     </View> : null}
                 <TouchableOpacity style={{marginLeft: 20, flexDirection: 'row', alignItems: 'flex-end'}}
                                   onPress={() => Linking.openURL('mailto:' + comment.contact)}>

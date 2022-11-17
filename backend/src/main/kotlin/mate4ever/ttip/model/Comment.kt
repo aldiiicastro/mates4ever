@@ -11,7 +11,7 @@ open class Comment(
     var id: String? = null,
     @NotEmpty(message = "Debe haber una mascota")
     var petID: String,
-    var image: String?,
+    var image: MutableList<String>?,
     var dateOfSeen: LocalDate?,
     @NotEmpty(message = "Debes escribir un comentario")
     var commentary: String,

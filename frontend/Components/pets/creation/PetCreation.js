@@ -69,8 +69,12 @@ export default function PetCreation({navigation}) {
 
         setLoading(true)
         const userEmail = await AsyncStorage.getItem("user_id")
-
-        const imageUpload = await uploadedImage()
+        let imageUpload = ''
+        try {
+            imageUpload = await uploadedImage()
+        } catch (e) {
+            console.log(e)
+        }
         const pet = {
             "name": name,
             "image": imageUpload,
@@ -88,9 +92,8 @@ export default function PetCreation({navigation}) {
 
         try {
             const petDB = await createPet(pet)
-
             if (pet.state === 'Perdido') {
-                sendPushNotification(petDB.data)
+               await sendPushNotification(petDB.data)
             }
             navigation.navigate("Inicio")
         } catch (error) {
@@ -154,6 +157,7 @@ export default function PetCreation({navigation}) {
         setLocations([])
         setLocation({})
     }
+
     return (
         <View>
             <ScrollView style={style.fullContainer}>

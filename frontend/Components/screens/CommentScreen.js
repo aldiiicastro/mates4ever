@@ -4,18 +4,25 @@ import {ScrollView} from "react-native-gesture-handler"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import * as Location from 'expo-location'
 import {createComment, getDir, getUserByEmail} from "../../server/Api"
-import {handleImagePicked, pickImage} from "../../server/FirebaseServer"
+import {handleImagePicked, handleImagesPicked, pickImage, pickMultipleImage} from "../../server/FirebaseServer"
 import Loader from "../drawerlayout/Loader"
-import {CalendarForm, ImageForm, MultiLineLabel, SimpleCheckBox} from "../drawerlayout/FormItemGeneric"
+import {
+    CalendarForm, EmptyImage,
+    ImageForm, ImageGallery,
+    MultiLineLabelRequired,
+    SimpleCheckBox
+} from "../drawerlayout/FormItemGeneric"
 import {colors} from "../../styles/Colors"
 import {petCreationScreenStyle} from "../../styles/pet/PetCreationScreenStyle"
 import {style} from "../../styles/Commons"
 import Back from "../drawerlayout/Back"
-import {Alert} from "react-native"
+import {Alert, FlatList, Image, SafeAreaView, TouchableHighlight, View} from "react-native"
+import MapViewWithLabel from "../MapViewWithLabel";
+import {form} from "../../styles/Form";
+import Icon from "react-native-vector-icons/MaterialIcons";
 
 export default function CommentScreen({navigation, route}) {
-    const [image, setImage] = useState(null)
-    const [imageUri, setImageUri] = useState(null)
+    const [images, setImages] = useState(null)
     const [dateOfSeen, setDateOfSeen] = useState(null)
     const [ageDate, setAgeDate] = useState(new Date())
     const [commentary, setCommentary] = useState('')
@@ -47,16 +54,20 @@ export default function CommentScreen({navigation, route}) {
 
     //************LOAD IMAGE*******************
     const pickAnImage = async () => {
-        const pickerResult = await pickImage()
-        setImage(pickerResult)
-        setImageUri(pickerResult.uri)
+        const pickerResult = await pickMultipleImage()
+        if (pickerResult.cancelled) {
+            setImages(undefined)
+        } else {
+            setImages(pickerResult["selected"])
+        }
+
     }
 
     const uploadedImage = async () => {
-        if (!image) {
-            return ""
+        if (!images) {
+            return []
         }
-        return await handleImagePicked(image)
+        return await handleImagesPicked(images)
     }
 
     //************DATE PIKER and AUXILIARIES*******************
@@ -116,7 +127,12 @@ export default function CommentScreen({navigation, route}) {
 
         setLoading(true)
         const userEmail = await AsyncStorage.getItem("user_id")
-        const imageUpload = await uploadedImage()
+        let imageUpload = []
+        try {
+            imageUpload = await uploadedImage()
+        } catch (e) {
+            console.log(e)
+        }
         const comment = {
             "petID": pet.id,
             "image": imageUpload,
@@ -125,16 +141,17 @@ export default function CommentScreen({navigation, route}) {
             "contact": userEmail,
             "coordinates": wantLocation ? region : {latitude: '', longitude: ''}
         }
-
         try {
             await createComment(comment)
         } catch (error) {
             setErrors(error.errors)
         }
         try {
+
             await sendPushNotification(pet, userEmail)
             navigation.navigate("Detalles", pet.id)
         } catch (e) {
+
             Alert.alert(
                 "Notificación",
                 "No se ha podido enviar la notificación. ¿Desa continuar?",
@@ -146,14 +163,20 @@ export default function CommentScreen({navigation, route}) {
         setLoading(false)
     }
     return (
+        <SafeAreaView style={{flex: 1}}>
         <ScrollView style={style.fullContainer}>
             <Loader loading={loading}/>
-            <Back onPress={() => navigation.goBack()}
+            <Back onPress={() => navigation.goBack()} text="Cargar un comentario"
                   headerStyle={petCreationScreenStyle.header}/>
-            <ImageForm
-                imageUri={imageUri}
-                onPress={pickAnImage}
-            />
+            <View style={form.image} on>
+                <FlatList horizontal={true}
+                          ListEmptyComponent={ <EmptyImage onPress={pickAnImage}/>}
+                          data={images} renderItem={(item)=> {
+                    return <Image source= { {uri: item["item"].uri}} style={form.imageSize}/>}}/>
+                <View style={form.imageIcon}>
+                    <Icon name="create" size={28} onPress={() => pickAnImage()} />
+                </View>
+            </View>
 
             <Form
                 GenericInput={"Cargar un comentario"}
@@ -170,7 +193,7 @@ export default function CommentScreen({navigation, route}) {
                     defaultText="Fecha aproximada que se lo vio"
                     onPress={showDatePicker}
                 />
-                <MultiLineLabel
+                <MultiLineLabelRequired
                     value={commentary}
                     label={"Cuentanos un poco sobre el encuentro"}
                     onChangeText={setCommentary}
@@ -182,25 +205,26 @@ export default function CommentScreen({navigation, route}) {
                     }}
                     text={"¿Queres poner una ubicación?"}
                 />
-
-                {wantLocation && <MapViewWithLabel region={region} onSelected={(item) => onSelected(item)}
-                                                   removeItem={() => onRemoveItem()} location={location}
-                                                   locations={locations}
-                                                   onPressMap={(e) => onChangeRegion(e.nativeEvent.coordinate)}
-                                                   onDragMarker={(e) => setRegion(e.nativeEvent.coordinate)}
-                                                   onChangeText={(text) => onChangeText(text)}/>}
             </Form>
         </ScrollView>
+    {wantLocation && <MapViewWithLabel region={region} onSelected={(item) => onSelected(item)}
+                                       removeItem={() => onRemoveItem()} location={location}
+                                       locations={locations}
+                                       onPressMap={(e) => onChangeRegion(e.nativeEvent.coordinate)}
+                                       onDragMarker={(e) => setRegion(e.nativeEvent.coordinate)}
+                                       onChangeText={(text) => onChangeText(text)}/>}
+        </SafeAreaView>
     )
 }
 
 async function sendPushNotification(pet, comment) {
-    const user = await getUserByEmail(pet.user)
+
+    const user = await getUserByEmail(pet.tutor)
     const tokens = user.data.expoPushToken
     const message = {
         to: tokens,
-        title: "Nuevo comentario sobre" + pet.name,
-        body: comment.contact,
+        title: 'Nuevo comentario sobre' + pet.name,
+        body: 'De parte de ' + comment,
         data: {id: pet.id},
     };
 

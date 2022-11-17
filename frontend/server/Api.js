@@ -1,4 +1,5 @@
 import axios from 'axios'
+
 const baseUrl = 'http://192.168.0.66:8070'
 
 const axinst = axios.create({
@@ -14,7 +15,7 @@ export const createUser = async (user) => {
 
 export const loginUser = async (userData) => {
     const url = `${baseUrl}/api/user/userData`;
-  return await axinst.post(url, {email: userData.email, password: userData.password})
+    return await axinst.post(url, {email: userData.email, password: userData.password})
 }
 export const getAllUser = async () => {
     const url = `${baseUrl}/api/user/all`;
@@ -24,7 +25,7 @@ export const getAllUser = async () => {
 
 export const getUserByEmail = async (email) => {
     const url = `${baseUrl}/api/user/email/${email}`;
-  return await axinst.get(url)
+    return await axinst.get(url)
 }
 
 export const getUserDataByEmail = async (email) => {
@@ -45,34 +46,51 @@ export const getSearchedPets = async (query) => {
     return await axinst.get(url)
 }
 
-export const getPetById  = async (id) => {
+export const getPetById = async (id) => {
     const url = `${baseUrl}/api/pet/${id}`
     return await axinst.get(url)
 }
 
-export const getPetByUser  = async (user) => {
+export const getPetByUser = async (user) => {
     const url = `${baseUrl}/api/pets/${user}`
     return await axinst.get(url)
 }
 
-export const getNearByPets = async() => {
+export const getNearByPets = async () => {
     const url = `${baseUrl}/api/pet/getNearbyPets`
     return await axinst.get(url)
 }
 //******************** Create comment ********************
-export  const createComment = async(comment) => {
+export const createComment = async (comment) => {
     return await axinst.post(
         `${baseUrl}/api/comment/create`,
         comment)
 }
 
-export const getComments = async(petID) => {
+export const getComments = async (petID) => {
     const url = `${baseUrl}/api/comment/${petID}`
     return await axinst.get(url)
 }
 
 //******************** Location ********************
 
-export const getDir = async(dir) => {
+export const getDir = async (dir) => {
     return axinst.get(`https://apis.datos.gob.ar/georef/api/direcciones?direccion=${dir}`)
+}
+
+
+//******************** Notifications ***************
+export const postNotifications = async (body) => {
+    const headers = {
+        headers:
+            {
+                'Accept':
+                    'application/json',
+                'Accept-encoding':
+                    'gzip, deflate',
+                'Content-Type':
+                    'application/json',
+            }
+    }
+    return await axios.post('https://exp.host/--/api/v2/push/send', {body: body});
 }

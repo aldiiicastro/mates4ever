@@ -61,7 +61,7 @@ class UserControllerTest {
     fun getUserLoginWrongPassword() {
         val user = userFactory.anyUser()
         userController.createUser(user)
-        assertThrows<UserIncorrectArgumentsException>("El mail o la contraseña son incorrectos") {userController.getUser(UserDTO("aldana@gmail.com", "contrasena."))}
+        assertThrows<UserIncorrectArgumentsException>("El mail o la contraseña son incorrectos") {userController.getUser(UserDTO("aldana@gmail.com", "contrasena.", "ExponentPushToken[0XZ0dzHNirdz-ogo3o64e1]"))}
     }
 
     @Test
