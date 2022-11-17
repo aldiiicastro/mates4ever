@@ -51,7 +51,7 @@ class UserServiceTest {
     fun findUserLogin() {
         var user = userFactory.anyUser(pets = listOf())
         user = userService.createUser(user)
-        val findUser = userService.findUser(UserDTO("aldana@gmail.com", "contrasena..."))
+        val findUser = userService.findUser(UserDTO("aldana@gmail.com", "contrasena...", "ExponentPushToken[0XZ0dzHNirdz-ogo3o64e1]"))
         assert(findUser!!.name == user.name)
     }
 
@@ -61,7 +61,7 @@ class UserServiceTest {
         userService.createUser(user)
         assertThrows<UserIncorrectArgumentsException>("No existe ningun usuario con ese id en la base de datos") {
             userService.findUser(
-                UserDTO("aldana@gmail.com", "contrasena45...")
+                UserDTO("aldana@gmail.com", "contrasena45...", "ExponentPushToken[0XZ0dzHNirdz-ogo3o64e1]")
             )
         }
     }
@@ -72,7 +72,7 @@ class UserServiceTest {
         userService.createUser(user)
         assertThrows<UserIncorrectArgumentsException>("No existe ningun usuario con ese id en la base de datos") {
             userService.findUser(
-                UserDTO("aldanadd@gmail.com", "contrasena...")
+                UserDTO("aldanadd@gmail.com", "contrasena...", "ExponentPushToken[0XZ0dzHNirdz-ogo3o64e1]")
             )
         }
     }

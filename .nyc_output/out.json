@@ -1,6 +1,6 @@
 {
-  "E:\\UNQui\\CA Trabajo de Insercion Profesional\\mates4everWrong\\mates4ever\\cypress\\support\\commands.js": {
-    "path": "E:\\UNQui\\CA Trabajo de Insercion Profesional\\mates4everWrong\\mates4ever\\cypress\\support\\commands.js",
+  "E:\\UNQui\\CA Trabajo de Insercion Profesional\\mates4ever\\cypress\\support\\commands.js": {
+    "path": "E:\\UNQui\\CA Trabajo de Insercion Profesional\\mates4ever\\cypress\\support\\commands.js",
     "statementMap": {
       "0": {
         "start": {
@@ -332,10 +332,10 @@
     },
     "b": {},
     "_coverageSchema": "1a1c01bbd47fc00a2c39e90264f33305004495a9",
-    "hash": "20ddc827a6466a2c9b825f6e26e1534ecc994e59"
+    "hash": "2b3188985e901841e09954f8478078ea6016f28f"
   },
-  "E:\\UNQui\\CA Trabajo de Insercion Profesional\\mates4everWrong\\mates4ever\\cypress\\support\\e2e.js": {
-    "path": "E:\\UNQui\\CA Trabajo de Insercion Profesional\\mates4everWrong\\mates4ever\\cypress\\support\\e2e.js",
+  "E:\\UNQui\\CA Trabajo de Insercion Profesional\\mates4ever\\cypress\\support\\e2e.js": {
+    "path": "E:\\UNQui\\CA Trabajo de Insercion Profesional\\mates4ever\\cypress\\support\\e2e.js",
     "statementMap": {},
     "fnMap": {},
     "branchMap": {},
@@ -343,10 +343,10 @@
     "f": {},
     "b": {},
     "_coverageSchema": "1a1c01bbd47fc00a2c39e90264f33305004495a9",
-    "hash": "6c30790ee65455ca86fb1ede74d9f9483162ec87"
+    "hash": "3492589bc435bd5f2a241690c6b83c52553aa1f8"
   },
-  "E:\\UNQui\\CA Trabajo de Insercion Profesional\\mates4everWrong\\mates4ever\\cypress\\e2e\\integrations\\allTest.cy.js": {
-    "path": "E:\\UNQui\\CA Trabajo de Insercion Profesional\\mates4everWrong\\mates4ever\\cypress\\e2e\\integrations\\allTest.cy.js",
+  "E:\\UNQui\\CA Trabajo de Insercion Profesional\\mates4ever\\cypress\\e2e\\integrations\\allTest.cy.js": {
+    "path": "E:\\UNQui\\CA Trabajo de Insercion Profesional\\mates4ever\\cypress\\e2e\\integrations\\allTest.cy.js",
     "statementMap": {
       "0": {
         "start": {
@@ -2438,6 +2438,6 @@
     },
     "b": {},
     "_coverageSchema": "1a1c01bbd47fc00a2c39e90264f33305004495a9",
-    "hash": "1a0b02726a14e75a30bc10d257761d855abddfc4"
+    "hash": "526420a91b61ee7d5a08e1999b78290d525d0740"
   }
 }

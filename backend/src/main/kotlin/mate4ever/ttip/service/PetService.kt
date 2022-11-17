@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-
+import java.util.*
 
 @Service
 @Transactional
@@ -81,14 +81,14 @@ class PetService {
 
     fun getNearbyPets(lat: Double, long : Double): List<PetDocumentDTO> {
         val document =
-            mongoTemplate.executeCommand("{ find: 'pet', filter : {\$where: 'this.coordinates && Math.abs(Math.abs(this.coordinates.latitude) - $lat) <= 0.02 &&  Math.abs(Math.abs(this.coordinates.longitude) - $long) <= 0.02 '}}")
+            mongoTemplate.executeCommand("{ find: 'pet', filter : {\$where: 'this.coordinates && Math.abs(this.coordinates.latitude - $lat) <= 0.02 &&  Math.abs(this.coordinates.longitude - $long) <= 0.02 '}}")
         val listOfPets = (document["cursor"] as Map<*, *>)["firstBatch"] as List<Map<String, *>>
         return listOfPets.map { it ->
             PetDocumentDTO(
                 (listOfPets[0]["_id"] as ObjectId).toString(),
                 it["name"] as String,
                 it["image"] as String,
-                null,
+                dateToLocalDate(it["birth"] as Date?),
                 it["type"] as String,
                 it["breed"] as String?,
                 it["state"] as String,
@@ -101,7 +101,6 @@ class PetService {
             )
         }
     }
-
     private fun criteriaForm(fieldName: String, value: String): Criteria {
         return Criteria.where(fieldName).regex(value, "i")
     }
@@ -123,6 +122,16 @@ class PetService {
         }
 
     }
+    fun dateToLocalDate(date: Date?) : LocalDate? {
+        return if (date != null) {
+            val calendar: Calendar = GregorianCalendar()
+            calendar.time = date
+            LocalDate.of(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH)+1, calendar.get(Calendar.DATE))
+        }else{
+            null
+        }
+    }
+
 
 
 }

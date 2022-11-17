@@ -1,15 +1,20 @@
-import { View, Text, Modal, StyleSheet, Pressable, Dimensions, Alert } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import { getSearchedPets } from '../../server/Api';
+import {View, Text, Modal, StyleSheet, Pressable, Dimensions, Alert} from 'react-native'
+import React, {useEffect, useState} from 'react'
+import {getSearchedPets} from '../../server/Api';
 import Pet from '../../model/Pet';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, {Marker} from 'react-native-maps';
 import * as Location from 'expo-location';
 
 export default function LostsPets({navigation}) {
     const [modalVisible, setModalVisible] = useState(true);
     const [petsSearching, setPetsSearching] = useState([])
     const [isAlreadyShownAlert, setIsAlreadyShownAlert] = useState(false)
-    const [currentLocation, setCurrentLocation] = useState(false)
+    const [currentLocation, setCurrentLocation] = useState({
+        latitude: -36.6769415180527,
+        longitude: -60.5588319815719,
+        latitudeDelta: 0.1,
+        longitudeDelta: 0.1
+    })
 
     useEffect(() => {
         search('')
@@ -33,17 +38,18 @@ export default function LostsPets({navigation}) {
     }
 
     const getCurrentPosition = async () => {
-        let { status } = await Location.requestForegroundPermissionsAsync();
-          if (status !== 'granted') {
+        let {status} = await Location.requestForegroundPermissionsAsync();
+        if (status !== 'granted') {
             return;
-          }
+        }
 
-          let location = await Location.getCurrentPositionAsync({});
-          setCurrentLocation({
+        let location = await Location.getCurrentPositionAsync({});
+        setCurrentLocation({
             latitude: location["coords"].latitude,
             longitude: location["coords"].longitude,
             latitudeDelta: 0.1,
-            longitudeDelta: 0.1 })
+            longitudeDelta: 0.1
+        })
     }
 
     return (
@@ -59,40 +65,45 @@ export default function LostsPets({navigation}) {
                 transparent={true}
                 visible={modalVisible}
                 onRequestClose={() => {
-                Alert.alert("Modal has been closed.");
-                setModalVisible(!modalVisible);
+                    Alert.alert("Modal has been closed.");
+                    setModalVisible(!modalVisible);
                 }}
             >
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
-                    <Text style={styles.modalText}>Animales perdidos en tu zona</Text>
-                    <MapView
-                        style={{width: "100%", height: "90%"}}
-                        initialRegion={currentLocation}
-                        showsUserLocation={true}
-                        followsUserLocation={true}
-                        zoomControlEnabled={true}
+                        <Text style={styles.modalText}>Animales perdidos en tu zona</Text>
+                        <MapView
+                            style={{width: "100%", height: "90%"}}
+                            initialRegion={currentLocation}
+                            region={currentLocation}
+                            showsUserLocation={true}
+                            followsUserLocation={true}
+                            zoomControlEnabled={true}
 
-                    >
-                        { petsSearching.map(pet =>
-                            pet.coordinates != null && pet.coordinates.latitude ?
-                                <Marker
-                                    coordinate={pet.coordinates}
-                                    onPress={() => {
-                                        setModalVisible(!modalVisible)
-                                        navigation.navigate('Detalles', pet.id)}
-                                    }
+                        >
+                            {petsSearching.map((pet, index) =>
+                                pet.coordinates != null ?
+                                    <Marker
+                                        key={index}
+                                        coordinate={{
+                                            latitude: pet.coordinates.latitude,
+                                            longitude: pet.coordinates.longitude
+                                        }}
+                                        onPress={() => {
+                                            setModalVisible(!modalVisible)
+                                            navigation.navigate('Detalles', pet.id)
+                                        }
+                                        }
                                     />
-                                // console.log()
-                                : null
-                        )}
+                                    : null
+                            )}
 
-                    </MapView>
+                        </MapView>
                         <Pressable
                             style={[styles.button, styles.buttonClose]}
                             onPress={() => setModalVisible(!modalVisible)}
                             testID={'hideModal'}
-                            >
+                        >
                             <Text style={styles.textStyle}>Hide Modal</Text>
                         </Pressable>
                     </View>
@@ -109,8 +120,8 @@ const styles = StyleSheet.create({
         marginTop: 22
     },
     modalView: {
-        width: Dimensions.get('window').width -40,
-        height: Dimensions.get('window').height -80,
+        width: Dimensions.get('window').width - 40,
+        height: Dimensions.get('window').height - 80,
         backgroundColor: "white",
         borderRadius: 20,
         alignItems: "center",
@@ -143,4 +154,4 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         textAlign: "center"
     }
-  });
+});

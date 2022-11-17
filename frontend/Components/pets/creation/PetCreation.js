@@ -1,4 +1,4 @@
-import React, {createRef, useState, useEffect} from "react"
+import React, {createRef, useEffect, useState} from "react"
 import {Form, FormItem} from "react-native-form-component"
 import {ScrollView} from "react-native-gesture-handler"
 
@@ -20,12 +20,10 @@ import {
 } from "../../drawerlayout/FormItemGeneric"
 import {petCreationScreenStyle} from "../../../styles/pet/PetCreationScreenStyle"
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import MapView, {Circle, Marker} from "react-native-maps";
+import * as Location from 'expo-location'
+import {View} from "react-native"
 import geodist from "geodist"
-import * as Location from 'expo-location';
-import { View } from "react-native"
-import SearchableDropdown from 'react-native-searchable-dropdown';
-
+import MapViewWithLabel from "../../MapViewWithLabel"
 
 
 export default function PetCreation({navigation}) {
@@ -41,17 +39,17 @@ export default function PetCreation({navigation}) {
     const [castrated, setCastrated] = useState(false)
     const [medicalHistory, setMedicalHistory] = useState('')
     const [description, setDescription] = useState('')
+    const [isDatePickerVisible, setDatePickerVisibility] = useState(false)
     const [loading, setLoading] = useState(false)
     const [error, setErrors] = useState('')
-    const [region, setRegion] = useState({latitude: -36.6769415180527, longitude: 	-60.5588319815719})
+    const [region, setRegion] = useState({latitude: -36.6769415180527, longitude: -60.5588319815719})
     const [locations, setLocations] = useState([])
-    const [location, setLocation] = useState([])
-    const [isDatePickerVisible, setDatePickerVisibility] = useState(false)
+    const [location, setLocation] = useState({})
     const nameInputRef = createRef()
 
     useEffect(() => {
-          getCurrentPosition()
-      }, []);
+        getCurrentPosition()
+    }, []);
 
 
     const pickAnImage = async () => {
@@ -64,16 +62,19 @@ export default function PetCreation({navigation}) {
         if (!image) {
             return ""
         }
-        const uuid = await handleImagePicked(image)
-        return uuid
+        return await handleImagePicked(image)
     }
 
     const publish = async () => {
+
         setLoading(true)
-
         const userEmail = await AsyncStorage.getItem("user_id")
-        const imageUpload = await uploadedImage()
-
+        let imageUpload = ''
+        try {
+            imageUpload = await uploadedImage()
+        } catch (e) {
+            console.log(e)
+        }
         const pet = {
             "name": name,
             "image": imageUpload,
@@ -88,17 +89,15 @@ export default function PetCreation({navigation}) {
             "tutor": userEmail,
             "coordinates": state === 'Perdido' ? region : null
         }
+
         try {
-            await createPet(pet)
-            
+            const petDB = await createPet(pet)
             if (pet.state === 'Perdido') {
-                sendPushNotification(pet)
+               await sendPushNotification(petDB.data)
             }
             navigation.navigate("Inicio")
-
         } catch (error) {
             setErrors(error.errors)
-            console.log(error)
         }
         setLoading(false)
     }
@@ -120,23 +119,16 @@ export default function PetCreation({navigation}) {
         const dateArray = dateInput.toLocaleDateString().split("/")
         return ([dateArray[1], dateArray[0], dateInput.getFullYear()].join("/"))
     }
+    const mapDir = (index, dire) => {
+        return {id: index, name: dire.nomenclatura}
+    }
+
     const onSelected = async (item) => {
         let reg = await Location.geocodeAsync(item.name)
         setLocation(item)
-        setRegion({ latitude: reg[0].latitude, longitude: reg[0].longitude })
+        setRegion({latitude: reg[0].latitude, longitude: reg[0].longitude})
     }
-    const getCurrentPosition = async () => {
-        let { status } = await Location.requestForegroundPermissionsAsync();
-          if (status !== 'granted') {
-            setRegion({ latitude: -34.706753, longitude: -58.277948  })
-            return;
-          }
-
-          let reg = await Location.getCurrentPositionAsync({});
-          await onChangeRegion(reg["coords"])
-          setRegion({ latitude: reg["coords"].latitude, longitude: reg["coords"].longitude })
-    }
-    const onChangeText = async(dir) => {
+    const onChangeText = async (dir) => {
         try {
             let algo = await getDir(dir)
             setLocation([])
@@ -145,17 +137,33 @@ export default function PetCreation({navigation}) {
             console.log(e)
         }
     }
+    const getCurrentPosition = async () => {
+
+        let {status} = await Location.requestForegroundPermissionsAsync();
+        if (status !== 'granted') {
+            return;
+        }
+
+        let reg = await Location.getCurrentPositionAsync({});
+        await onChangeRegion(reg["coords"])
+        setRegion({latitude: reg["coords"].latitude, longitude: reg["coords"].longitude})
+    }
     const onChangeRegion = async (newRegion) => {
         setRegion(newRegion)
         let reg = await Location.reverseGeocodeAsync(newRegion)
-        setLocation({id:1, name:`${reg[0].street}, ${reg[0].streetNumber}, ${reg[0].city}`})
+        setLocation({id: 1, name: `${reg[0].street}, ${reg[0].streetNumber}, ${reg[0].city}`})
     }
+    const onRemoveItem = () => {
+        setLocations([])
+        setLocation({})
+    }
+
     return (
         <View>
             <ScrollView style={style.fullContainer}>
                 <Loader loading={loading}/>
                 <Back onPress={() => navigation.goBack()} text="Cargar una mascota"
-                    headerStyle={petCreationScreenStyle.header}/>
+                      headerStyle={petCreationScreenStyle.header}/>
 
                 <ImageForm
                     imageUri={imageUri}
@@ -181,14 +189,6 @@ export default function PetCreation({navigation}) {
                         ref={nameInputRef}
                         errorBorderColor="white"
                     />
-                    {/* <RequiredLineLabel
-                        value = {name}
-                        label = "Nombre"
-                        onChangeText = {setName}
-                        ref = {nameInputRef}
-                        inputRef={nameInputRef.current && nameInputRef.current.focus()}
-                    /> */}
-
                     <CalendarForm
                         isVisible={isDatePickerVisible}
                         date={ageDate}
@@ -210,26 +210,7 @@ export default function PetCreation({navigation}) {
                         selectedValue={state}
                         onSelection={(item) => setState(item.value)}
                     />
-                    {/* {state === "Perdido" &&
-                        <MapView
-                            style={{width: "100%", height: 200}}
-                            initialRegion={{
-                                latitude: region.latitude,
-                                longitude: region.longitude,
-                                latitudeDelta: 0.05,
-                                longitudeDelta: 0.05,
-                            }}
-                            onPress={(e) => setRegion({latitude: e.nativeEvent.coordinate.latitude, longitude: e.nativeEvent.coordinate.longitude})}
-                            showsUserLocation={true}
 
-                        >
-                            <Marker
-                                    coordinate={region}
-                                    onDrag={(e) => setRegion(e.nativeEvent.coordinate)}
-                            />
-                            <Circle center={region} radius={1000}/>
-                        </MapView>
-                    } */}
                     <SimpleLinePicker
                         items={[
                             {label: "Perro", value: "Perro"},
@@ -276,88 +257,34 @@ export default function PetCreation({navigation}) {
                     />
                 </Form>
             </ScrollView>
-            { state === "Perdido" &&
-                <View>
-                    <SearchableDropdown
-                        multi={true}
-                        selectedItems={[location]}
-                        onTextChange= {(text) => onChangeText(text)}
-                        onItemSelect={(item) => {
-                        onSelected(item)
-                        }}
-                        onRemoveItem={() => setLocation([])}
-                        containerStyle={{ padding: 5 }}
-                        itemStyle={{
-                            padding: 10,
-                            marginTop: 2,
-                            backgroundColor: '#ddd',
-                            borderColor: '#bbb',
-                            borderWidth: 1,
-                            borderRadius: 5,
-                        }}
-                        itemTextStyle={{ color: '#222' }}
-                        itemsContainerStyle={{ maxHeight: 140 }}
-                        items={locations}
-                        defaultIndex={2}
-                        resetValue={true}
-                        textInputProps={
-                            {
-                                placeholder: "Direccion",
-                                underlineColorAndroid: "transparent",
-                                style: {
-                                    padding: 12,
-                                    borderWidth: 1,
-                                    borderColor: '#ccc',
-                                    borderRadius: 5,
-                                }
-                            }
-                        }
-
-                    />
-
-                    <MapView
-                        style={{width: "100%", height: 200}}
-                        initialRegion={{
-                            latitude: region.latitude,
-                            longitude: region.longitude,
-                            latitudeDelta: 0.05,
-                            longitudeDelta: 0.05,
-                        }}
-                        region={{
-                            latitude: region.latitude,
-                            longitude: region.longitude,
-                            latitudeDelta: 0.05,
-                            longitudeDelta: 0.05,
-                        }}
-                        onPress={(e) => onChangeRegion(e.nativeEvent.coordinate)}
-                    >
-                        <Marker
-                            coordinate={region}
-                            onDrag={(e) => setRegion(e.nativeEvent.coordinate)}
-                        />
-                        <Circle center={region} radius={1000}/>
-                    </MapView>
-                </View>
-            }
+            {state === "Perdido" && <MapViewWithLabel region={region} onSelected={(item) => onSelected(item)}
+                                                      removeItem={() => onRemoveItem()} location={location}
+                                                      locations={locations}
+                                                      onPressMap={(e) => onChangeRegion(e.nativeEvent.coordinate)}
+                                                      onDragMarker={(e) => setRegion(e.nativeEvent.coordinate)}
+                                                      onChangeText={(text) => onChangeText(text)}/>}
         </View>
     )
 }
 const calculateDist = (userCoordinates, petCoordinates) => {
-    const dist = geodist({lat: petCoordinates.latitude, lon: petCoordinates.longitude}, {lat:userCoordinates.latitude, lon: userCoordinates.longitude}, {exact: true, unit: 'km'})
-    
-    return dist < 1.0
+    const dist = geodist({lat: petCoordinates.latitude, lon: petCoordinates.longitude}, {
+        lat: userCoordinates.latitude,
+        lon: userCoordinates.longitude
+    }, {exact: true, unit: 'km'})
+    return dist < 1
 }
+
 async function sendPushNotification(pet) {
     const allUsers = await getAllUser()
     const users = allUsers.data.filter((user) => calculateDist(user.coordinates, pet.coordinates))
-    console.log(users)
     const tokens = users.map((user) => user.expoPushToken)
     const message = {
         to: tokens,
         title: 'Se perdio ' + pet.name,
         body: pet.description,
-        data: { id: pet.id },
+        data: {id: pet.id},
     };
+
     await fetch('https://exp.host/--/api/v2/push/send', {
         method: 'POST',
         headers: {

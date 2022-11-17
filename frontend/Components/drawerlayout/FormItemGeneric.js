@@ -52,6 +52,24 @@ export const MultiLineLabel = forwardRef(({...props}, ref) => {
         />
     )
 })
+export const MultiLineLabelRequired = forwardRef(({...props}, ref) => {
+    return (
+        <FormItem
+            value={props.value}
+            label={props.label}
+            onChangeText={props.onChangeText}
+            showErrorIcon={false}
+            textInputStyle={form.inputLineBox}
+            numberOfLines={4}
+            floatingLabel
+            asterik
+            isRequired
+            multiline
+        />
+    )
+})
+
+
 
 
 export const RequiredLineLabel = forwardRef((props, ref) => {
@@ -108,8 +126,19 @@ export const ImageForm = (props) => {
                 <Image source= {props.imageUri ? {uri: props.imageUri } : require('../../assets/DefaultPet.png')} style={form.imageSize}/>
             </TouchableHighlight>
             <View style={form.imageIcon}>
-                <Icon name="create" size={28} onPress={props.onPress}/>
+                <Icon name="create" size={28} onPress={props.onPress} />
             </View>
+        </View>
+    )
+}
+
+
+export const EmptyImage = (props) => {
+    return (
+        <View>
+            <TouchableHighlight onPress={props.onPress} testID={'image-create'}>
+                <Image source= {require('../../assets/DefaultPet.png')} style={form.imageSize}/>
+            </TouchableHighlight>
         </View>
     )
 }

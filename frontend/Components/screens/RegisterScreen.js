@@ -48,65 +48,65 @@ const RegisterScreen = forwardRef(({navigation}, ref) => {
         const userStreetInputRef = createRef()
 
 
-        const getCurrentPosition = async () => {
-            setLoading(true)
-            let { status } = await Location.requestForegroundPermissionsAsync();
-            if (status !== 'granted') {
-                return;
-            }
+    const getCurrentPosition = async () => {
+        setLoading(true)
+        let { status } = await Location.requestForegroundPermissionsAsync()
+        if (status !== 'granted') {
+            return
+        }
 
-            let reg = await Location.getCurrentPositionAsync({});
-            await onChangeRegion(reg["coords"])
+        let reg = await Location.getCurrentPositionAsync({})
+        await onChangeRegion(reg["coords"])
+        setLoading(false)
+    }
+    const dataToSend = {
+        name: userName,
+        lastname: lastName,
+        email: userEmail,
+        phone: phoneNumber,
+        coordinates: region,
+        password: userPassword,
+        expoPushToken: expoPushToken,
+        pets: [],
+    }
+
+    const handleSubmitButton = async () => {
+        setLoading(true)
+        try {
+            const response = await createUser(dataToSend)
             setLoading(false)
+            await AsyncStorage.setItem('user_id', response.data.email)
+            navigation.navigate('Inicio')
+        } catch (error) {
+            setLoading(false)
+            setErrorText(error.response.data)
         }
-        const dataToSend = {
-            name: userName,
-            lastname: lastName,
-            email: userEmail,
-            phone: phoneNumber,
-            coordinates: region,
-            password: userPassword,
-            expoPushToken: expoPushToken,
-            pets: [],
-        }
-
-        const handleSubmitButton = async () => {
-            setLoading(true)
-            try {
-                const response = await createUser(dataToSend)
-                setLoading(false)
-                await AsyncStorage.setItem('user_id', response.data.email)
-                navigation.navigate('Inicio')
-            } catch (error) {
-                setLoading(false)
-                setErrorText(error.response.data)
-            }
-        }
+    }
 
 
-        const mapDir = (index, dire) => {
-            return { id: index, name: dire.nomenclatura}
-        }
+    const mapDir = (index, dire) => {
+        return { id: index, name: dire.nomenclatura}
+    }
 
-        const onChangeText = async(dir) => {
-            try {
-                let allDir = await getDir(dir)
-                setLocation([])
-                setLocations(allDir.data["direcciones"].map((dire, index) => mapDir(index, dire)))
-            } catch (e) {
-                console.log(e)
-            }
+    const onChangeText = async(dir) => {
+        try {
+            let allDir = await getDir(dir)
+            setLocation([])
+            setLocations(allDir.data["direcciones"].map((dire, index) => mapDir(index, dire)))
+        } catch (e) {
+            console.log(e)
         }
-        const onChangeRegion = async (newRegion) => {
-            setRegion(newRegion)
-            let reg = await Location.reverseGeocodeAsync(newRegion)
-            setLocation({id:1, name:`${reg[0].street}, ${reg[0].streetNumber}, ${reg[0].city}`})
-        }
-        const onSelected = async (item) => {
-            let reg = await Location.geocodeAsync(item.name)
-            setLocation(item)
-            setRegion({ latitude: reg[0].latitude, longitude: reg[0].longitude })
-        }
+    }
+    const onChangeRegion = async (newRegion) => {
+        setRegion(newRegion)
+        let reg = await Location.reverseGeocodeAsync(newRegion)
+        setLocation({id:1, name:`${reg[0].street}, ${reg[0].streetNumber}, ${reg[0].city}`})
+    }
+    const onSelected = async (item) => {
+        let reg = await Location.geocodeAsync(item.name)
+        setLocation(item)
+        setRegion({ latitude: reg[0].latitude, longitude: reg[0].longitude })
+    }
         //[] means that useEffect runs in the first render.
         useEffect(() => {
             getCurrentPosition()
@@ -171,7 +171,7 @@ const RegisterScreen = forwardRef(({navigation}, ref) => {
                                 onChangeText={(phoneNumber) => setPhoneNumber(phoneNumber)}
                                 showErrorIcon={false}
                                 keyboardType={"phone-pad"}
-                                // ref={phoneNumberInputRef}
+                                ref={phoneNumberInputRef}
                                 onSubmitEditing={() => userStreetInputRef.current && userStreetInputRef.current.focus()}
                                 floatingLabel
                             />
@@ -305,7 +305,6 @@ async function registerForPushNotificationsAsync() {
             lightColor: '#FF231F7C',
         });
     }
-    
     return token;
 }
 

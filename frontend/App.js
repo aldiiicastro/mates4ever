@@ -10,8 +10,8 @@ import SplashScreen from "./Components/screens/SplashScreen"
 import {colors} from "./styles/Colors.js"
 import LoginScreen from "./Components/screens/LoginScreen.js"
 import RegisterScreen from "./Components/screens/RegisterScreen"
-import * as Location from "expo-location";
-
+import * as Location from "expo-location"
+import CommentScreen from "./Components/screens/CommentScreen";
 
 const Stack = createNativeStackNavigator()
 Location.setGoogleApiKey("AIzaSyAPsx4L1yV5YTdbPU7yakAKJwxQsj-9zXQ")
@@ -26,6 +26,7 @@ function App() {
                 <Stack.Screen name={"Detalles"} component={DetailsScreen}/>
                 <Stack.Screen name={"Perfil"} component={UserProfileScreen}/>
                 <Stack.Screen name={"Agregar"} component={CreatePetScreen}/>
+                <Stack.Screen name={"Comentar"} component={CommentScreen}/>
                 <Stack.Screen name={"Registro"} component={RegisterScreen}
                               options={{
                                   title: 'Registro', //Set Header Title

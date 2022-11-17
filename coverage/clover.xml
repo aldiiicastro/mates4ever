@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1668401270942" clover="3.2.0">
-  <project timestamp="1668401270943" name="All files">
+<coverage generated="1668715844265" clover="3.2.0">
+  <project timestamp="1668715844265" name="All files">
     <metrics statements="150" coveredstatements="150" conditionals="0" coveredconditionals="0" methods="30" coveredmethods="30" elements="180" coveredelements="180" complexity="0" loc="150" ncloc="150" packages="2" files="3" classes="3"/>
     <package name="e2e.integrations">
       <metrics statements="130" coveredstatements="130" conditionals="0" coveredconditionals="0" methods="26" coveredmethods="26"/>
-      <file name="allTest.cy.js" path="E:\UNQui\CA Trabajo de Insercion Profesional\mates4everWrong\mates4ever\cypress\e2e\integrations\allTest.cy.js">
+      <file name="allTest.cy.js" path="E:\UNQui\CA Trabajo de Insercion Profesional\mates4ever\cypress\e2e\integrations\allTest.cy.js">
         <metrics statements="130" coveredstatements="130" conditionals="0" coveredconditionals="0" methods="26" coveredmethods="26"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
@@ -140,7 +140,7 @@
     </package>
     <package name="support">
       <metrics statements="20" coveredstatements="20" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="4"/>
-      <file name="commands.js" path="E:\UNQui\CA Trabajo de Insercion Profesional\mates4everWrong\mates4ever\cypress\support\commands.js">
+      <file name="commands.js" path="E:\UNQui\CA Trabajo de Insercion Profesional\mates4ever\cypress\support\commands.js">
         <metrics statements="20" coveredstatements="20" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="4"/>
         <line num="27" count="1" type="stmt"/>
         <line num="28" count="14" type="stmt"/>
@@ -163,7 +163,7 @@
         <line num="52" count="3" type="stmt"/>
         <line num="53" count="3" type="stmt"/>
       </file>
-      <file name="e2e.js" path="E:\UNQui\CA Trabajo de Insercion Profesional\mates4everWrong\mates4ever\cypress\support\e2e.js">
+      <file name="e2e.js" path="E:\UNQui\CA Trabajo de Insercion Profesional\mates4ever\cypress\support\e2e.js">
         <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       </file>
     </package>

@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "mates4ever",
+    "name": "frontend",
     "slug": "mates4ever",
     "owner": "aldiiicastro",
     "version": "1.0.0",
@@ -25,11 +25,6 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      },
-      "config": {
-        "googleMaps": {
-          "apiKey": "AIzaSyAPsx4L1yV5YTdbPU7yakAKJwxQsj-9zXQ"
-        }
       }
     },
     "web": {
