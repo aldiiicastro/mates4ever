@@ -1,19 +1,20 @@
 import {Image, Linking, Text, TouchableOpacity, View} from "react-native"
 import {style} from "../../styles/Commons.js"
-import MapView, {Circle, Marker} from "react-native-maps"
 import {commentCardStyle} from "../../styles/CommentCardStyle"
 import Icon from "react-native-vector-icons/MaterialIcons";
+import SavedMapView from "../SavedMapView";
 
-export default function CommentCard({comment}) {
+export default function CommentCard({comment, index}) {
 
     return (
-        <View style={{marginBottom: 10}}>
-            {comment.image ?
-                <View style={commentCardStyle.imageContainer}>
-                    <Image source={{uri: comment.image}} style={commentCardStyle.imageDetail}/>
-                </View> : null}
+        <View style={{marginTop: 10, marginHorizontal: 12, borderRadius: 20}} key={index}>
             <View style={commentCardStyle.detailsContainer}>
-                <TouchableOpacity style={{marginLeft: 20, flexDirection: 'row', alignItems: 'flex-end'}} onPress={() => Linking.openURL('mailto:' + comment.contact)}>
+                {comment.image ?
+                    <View style={commentCardStyle.imageContainer}>
+                        <Image source={{uri: comment.image}} style={commentCardStyle.imageDetail}/>
+                    </View> : null}
+                <TouchableOpacity style={{marginLeft: 20, flexDirection: 'row', alignItems: 'flex-end'}}
+                                  onPress={() => Linking.openURL('mailto:' + comment.contact)}>
                     <Icon name={"email"} style={commentCardStyle.emailIcon}/>
                     <Text testID={"pet-details-name"} style={commentCardStyle.commentContact}>{comment.contact}</Text>
                 </TouchableOpacity>
@@ -38,19 +39,7 @@ export default function CommentCard({comment}) {
                         {comment.commentary}
                     </Text>
                 </View>
-
-                {comment.coordinates && <MapView
-                    style={{marginHorizontal: 10, marginTop: 30, height: 200}}
-                    initialRegion={{
-                        latitude: comment.coordinates.latitude,
-                        longitude: comment.coordinates.longitude,
-                        latitudeDelta: 0.05,
-                        longitudeDelta: 0.05,
-                    }}
-                    showsUserLocation={true}>
-                    <Marker coordinate={comment.coordinates}/>
-                    <Circle center={comment.coordinates} radius={1000}/>
-                </MapView>}
+                {comment.coordinates.latitude && <SavedMapView param={comment}/>}
             </View>
         </View>
     )

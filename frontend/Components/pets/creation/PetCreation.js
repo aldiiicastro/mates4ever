@@ -20,12 +20,10 @@ import {
 } from "../../drawerlayout/FormItemGeneric"
 import {petCreationScreenStyle} from "../../../styles/pet/PetCreationScreenStyle"
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import MapView, {Circle, Marker} from "react-native-maps";
-
-import * as Location from 'expo-location';
-import {View} from "react-native";
-import SearchableDropdown from 'react-native-searchable-dropdown';
+import * as Location from 'expo-location'
+import {View} from "react-native"
 import geodist from "geodist"
+import MapViewWithLabel from "../../MapViewWithLabel"
 
 
 export default function PetCreation({navigation}) {
@@ -44,14 +42,14 @@ export default function PetCreation({navigation}) {
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false)
     const [loading, setLoading] = useState(false)
     const [error, setErrors] = useState('')
-    const [region, setRegion] = useState({latitude: -36.6769415180527, longitude: 	-60.5588319815719})
+    const [region, setRegion] = useState({latitude: -36.6769415180527, longitude: -60.5588319815719})
     const [locations, setLocations] = useState([])
-    const [location, setLocation] = useState([])
+    const [location, setLocation] = useState({})
     const nameInputRef = createRef()
 
     useEffect(() => {
-          getCurrentPosition()
-      }, []);
+        getCurrentPosition()
+    }, []);
 
 
     const pickAnImage = async () => {
@@ -119,15 +117,15 @@ export default function PetCreation({navigation}) {
         return ([dateArray[1], dateArray[0], dateInput.getFullYear()].join("/"))
     }
     const mapDir = (index, dire) => {
-        return { id: index, name: dire.nomenclatura}
+        return {id: index, name: dire.nomenclatura}
     }
 
     const onSelected = async (item) => {
         let reg = await Location.geocodeAsync(item.name)
         setLocation(item)
-        setRegion({ latitude: reg[0].latitude, longitude: reg[0].longitude })
+        setRegion({latitude: reg[0].latitude, longitude: reg[0].longitude})
     }
-    const onChangeText = async(dir) => {
+    const onChangeText = async (dir) => {
         try {
             let algo = await getDir(dir)
             setLocation([])
@@ -138,188 +136,140 @@ export default function PetCreation({navigation}) {
     }
     const getCurrentPosition = async () => {
 
-        let { status } = await Location.requestForegroundPermissionsAsync();
-          if (status !== 'granted') {
+        let {status} = await Location.requestForegroundPermissionsAsync();
+        if (status !== 'granted') {
             return;
-          }
+        }
 
-          let reg = await Location.getCurrentPositionAsync({});
-          await onChangeRegion(reg["coords"])
-          setRegion({ latitude: reg["coords"].latitude, longitude: reg["coords"].longitude })
+        let reg = await Location.getCurrentPositionAsync({});
+        await onChangeRegion(reg["coords"])
+        setRegion({latitude: reg["coords"].latitude, longitude: reg["coords"].longitude})
     }
     const onChangeRegion = async (newRegion) => {
         setRegion(newRegion)
         let reg = await Location.reverseGeocodeAsync(newRegion)
-        setLocation({id:1, name:`${reg[0].street}, ${reg[0].streetNumber}, ${reg[0].city}`})
+        setLocation({id: 1, name: `${reg[0].street}, ${reg[0].streetNumber}, ${reg[0].city}`})
+    }
+    const onRemoveItem = () => {
+        setLocations([])
+        setLocation({})
     }
     return (
         <View>
-        <ScrollView style={style.fullContainer}>
-            <Loader loading={loading}/>
-            <Back onPress={() => navigation.goBack()} text="Cargar una mascota"
-                  headerStyle={petCreationScreenStyle.header}/>
+            <ScrollView style={style.fullContainer}>
+                <Loader loading={loading}/>
+                <Back onPress={() => navigation.goBack()} text="Cargar una mascota"
+                      headerStyle={petCreationScreenStyle.header}/>
 
-            <ImageForm
-                imageUri={imageUri}
-                onPress={pickAnImage}
-            />
-
-            <Form
-                GenericInput={"Cargar una mascota"} onButtonPress={() => publish()}
-                buttonStyle={{backgroundColor: colors.violet}}
-                buttonText="Publicar"
-                style={[style.marginX, style.bgWhite]}>
-
-                <FormItem
-                    value={name}
-                    label={"Nombre"}
-                    onChangeText={setName}
-                    showErrorIcon={false}
-                    asterik
-                    floatingLabel
-                    isRequired
-                    textInputStyle={form.inputLineBox}
-                    onSubmitEditing={() => nameInputRef.current && nameInputRef.current.focus()}
-                    ref={nameInputRef}
-                    errorBorderColor="white"
-                />
-                <CalendarForm
-                    isVisible={isDatePickerVisible}
-                    date={ageDate}
-                    onConfirm={handleConfirm}
-                    onCancel={hideDatePicker}
-                    dateText={age}
-                    defaultText="Fecha aproximada de nacimiento"
-                    onPress={showDatePicker}
-
+                <ImageForm
+                    imageUri={imageUri}
+                    onPress={pickAnImage}
                 />
 
-                <SimpleLinePicker
-                    items={[
-                        {label: "Adopción", value: "Adopción"},
-                        {label: "Transito", value: "Transito"},
-                        {label: "Perdido", value: "Perdido"},
-                    ]}
-                    label="Tipo de publicacion"
-                    selectedValue={state}
-                    onSelection={(item) => setState(item.value)}
-                />
+                <Form
+                    GenericInput={"Cargar una mascota"} onButtonPress={() => publish()}
+                    buttonStyle={{backgroundColor: colors.violet}}
+                    buttonText="Publicar"
+                    style={[style.marginX, style.bgWhite]}>
 
-                <SimpleLinePicker
-                    items={[
-                        {label: "Perro", value: "Perro"},
-                        {label: "Gato", value: "Gato"},
-                        {label: "Otro", value: "Otro"},
-                    ]}
-                    label="Tipo de animal"
-                    selectedValue={type}
-                    onSelection={(item) => setType(item.value)}
-                />
+                    <FormItem
+                        value={name}
+                        label={"Nombre"}
+                        onChangeText={setName}
+                        showErrorIcon={false}
+                        asterik
+                        floatingLabel
+                        isRequired
+                        textInputStyle={form.inputLineBox}
+                        onSubmitEditing={() => nameInputRef.current && nameInputRef.current.focus()}
+                        ref={nameInputRef}
+                        errorBorderColor="white"
+                    />
+                    <CalendarForm
+                        isVisible={isDatePickerVisible}
+                        date={ageDate}
+                        onConfirm={handleConfirm}
+                        onCancel={hideDatePicker}
+                        dateText={age}
+                        defaultText="Fecha aproximada de nacimiento"
+                        onPress={showDatePicker}
 
-                <SimpleLineLabel
-                    value={breed}
-                    label={"Tiene raza? Cual?"}
-                    onChangeText={setBreed}
-                />
+                    />
 
-                <MultiLineLabel
-                    value={description}
-                    label={"Cuentanos un poco sobre " + (name ? name : "el/ella")}
-                    onChangeText={setDescription}
-                />
+                    <SimpleLinePicker
+                        items={[
+                            {label: "Adopción", value: "Adopción"},
+                            {label: "Transito", value: "Transito"},
+                            {label: "Perdido", value: "Perdido"},
+                        ]}
+                        label="Tipo de publicacion"
+                        selectedValue={state}
+                        onSelection={(item) => setState(item.value)}
+                    />
 
-                <MultiLineLabel
-                    value={medicalHistory}
-                    label={"Tiene algun problema medico? Algo que quieras destacar?"}
-                    onChangeText={setMedicalHistory}
-                />
+                    <SimpleLinePicker
+                        items={[
+                            {label: "Perro", value: "Perro"},
+                            {label: "Gato", value: "Gato"},
+                            {label: "Otro", value: "Otro"},
+                        ]}
+                        label="Tipo de animal"
+                        selectedValue={type}
+                        onSelection={(item) => setType(item.value)}
+                    />
 
-                <SimpleCheckBox
-                    status={vaccine ? "checked" : "unchecked"}
-                    onPress={() => {
-                        setVaccine(!vaccine)
-                    }}
-                    text={"¿Tiene las vacunas al día?"}
-                />
+                    <SimpleLineLabel
+                        value={breed}
+                        label={"Tiene raza? Cual?"}
+                        onChangeText={setBreed}
+                    />
 
-                <SimpleCheckBox
-                    status={castrated ? "checked" : "unchecked"}
-                    onPress={() => {
-                        setCastrated(!castrated)
-                    }}
-                    text={"¿Esta castrado?"}
-                />
-            </Form>
-        </ScrollView>
-    {state === "Perdido" &&
-    <View>
-        <SearchableDropdown
-            multi={true}
-            selectedItems={[location]}
-            onTextChange= {(text) => onChangeText(text)}
-            onItemSelect={(item) => {
-              onSelected(item)
-            }}
-            onRemoveItem={() => setLocation([])}
-            containerStyle={{ padding: 5 }}
-            itemStyle={{
-                padding: 10,
-                marginTop: 2,
-                backgroundColor: '#ddd',
-                borderColor: '#bbb',
-                borderWidth: 1,
-                borderRadius: 5,
-            }}
-            itemTextStyle={{ color: '#222' }}
-            itemsContainerStyle={{ maxHeight: 140 }}
-            items={locations}
-            defaultIndex={2}
-            resetValue={true}
-            textInputProps={
-                {
-                    placeholder: "Direccion",
-                    underlineColorAndroid: "transparent",
-                    style: {
-                        padding: 12,
-                        borderWidth: 1,
-                        borderColor: '#ccc',
-                        borderRadius: 5,
-                    }
-                }
-            }
+                    <MultiLineLabel
+                        value={description}
+                        label={"Cuentanos un poco sobre " + (name ? name : "el/ella")}
+                        onChangeText={setDescription}
+                    />
 
-        />
+                    <MultiLineLabel
+                        value={medicalHistory}
+                        label={"Tiene algun problema medico? Algo que quieras destacar?"}
+                        onChangeText={setMedicalHistory}
+                    />
 
-        <MapView
-            style={{width: "100%", height: 200}}
-            initialRegion={{
-                latitude: region.latitude,
-                longitude: region.longitude,
-                latitudeDelta: 0.05,
-                longitudeDelta: 0.05,
-            }}
-            region={{
-                latitude: region.latitude,
-                longitude: region.longitude,
-                latitudeDelta: 0.05,
-                longitudeDelta: 0.05,
-            }}
-            onPress={(e) => onChangeRegion(e.nativeEvent.coordinate)}
-        >
-            <Marker
-                coordinate={region}
-                onDrag={(e) => setRegion(e.nativeEvent.coordinate)}
-            />
-            <Circle center={region} radius={1000}/>
-        </MapView>
-    </View>
-    }</View>
+                    <SimpleCheckBox
+                        status={vaccine ? "checked" : "unchecked"}
+                        onPress={() => {
+                            setVaccine(!vaccine)
+                        }}
+                        text={"¿Tiene las vacunas al día?"}
+                    />
+
+                    <SimpleCheckBox
+                        status={castrated ? "checked" : "unchecked"}
+                        onPress={() => {
+                            setCastrated(!castrated)
+                        }}
+                        text={"¿Esta castrado?"}
+                    />
+                </Form>
+            </ScrollView>
+            {state === "Perdido" && <MapViewWithLabel region={region} onSelected={(item) => onSelected(item)}
+                                                      removeItem={() => onRemoveItem()} location={location}
+                                                      locations={locations}
+                                                      onPressMap={(e) => onChangeRegion(e.nativeEvent.coordinate)}
+                                                      onDragMarker={(e) => setRegion(e.nativeEvent.coordinate)}
+                                                      onChangeText={(text) => onChangeText(text)}/>}
+        </View>
     )
 }
 const calculateDist = (userCoordinates, petCoordinates) => {
-    const dist = geodist({lat: petCoordinates.latitude, lon: petCoordinates.longitude}, {lat:userCoordinates.latitude, lon: userCoordinates.longitude}, {exact: true, unit: 'km'})
+    const dist = geodist({lat: petCoordinates.latitude, lon: petCoordinates.longitude}, {
+        lat: userCoordinates.latitude,
+        lon: userCoordinates.longitude
+    }, {exact: true, unit: 'km'})
     return dist < 1
 }
+
 async function sendPushNotification(pet) {
     const allUsers = await getAllUser()
     const users = allUsers.data.filter((user) => calculateDist(user.coordinates, pet.coordinates))
@@ -328,7 +278,7 @@ async function sendPushNotification(pet) {
         to: tokens,
         title: 'Se perdio ' + pet.name,
         body: pet.description,
-        data: { id: pet.id },
+        data: {id: pet.id},
     };
 
     await fetch('https://exp.host/--/api/v2/push/send', {

@@ -3,6 +3,7 @@ package mate4ever.ttip.dataseed
 import mate4ever.ttip.dto.PetRequestDTO
 import mate4ever.ttip.model.User
 import mate4ever.ttip.repository.UserRepository
+import mate4ever.ttip.service.CommentService
 import mate4ever.ttip.service.PetService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.CommandLineRunner
@@ -16,6 +17,8 @@ class PetDataLoader : CommandLineRunner {
     @Autowired
     private lateinit var userRepository: UserRepository
 
+    @Autowired
+    private lateinit var commentService: CommentService
     @Throws(Exception::class)
     override fun run(vararg args: String?) {
         loadPetData()
@@ -24,7 +27,7 @@ class PetDataLoader : CommandLineRunner {
     fun loadPetData() {
         userRepository.deleteAll()
         petService.deleteAll()
-
+        commentService.deleteAll()
         val user = User(null, "Mates4Ever", "Org", "mates4ever@gmail.com", "qriRBfSToWq0GnZQC16PPTmYFZdpp0Uh", 1112345678,mapOf("latitude" to -34.7086053, "longitude" to -58.2809884), "undefine","ExponentPushToken[0XZ0dzHNirdz-ogo3o64e1]")
 
         val pets = listOf(

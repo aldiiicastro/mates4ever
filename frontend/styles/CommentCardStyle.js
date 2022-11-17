@@ -61,8 +61,9 @@ const commentCardStyle = StyleSheet.create({
     imageDetail: {
         resizeMode: 'cover',
         flex: 1,
-        width: Dimensions.get('window').width - 30,
-        height: Dimensions.get('window').width - 30
+        borderRadius: 10,
+        width: Dimensions.get('window').width - 250,
+        height: Dimensions.get('window').width - 250
     },
     contentContainerStyle: {
         marginTop: 5

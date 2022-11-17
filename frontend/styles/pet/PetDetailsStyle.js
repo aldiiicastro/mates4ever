@@ -19,8 +19,7 @@ const petDetailsStyle = StyleSheet.create({
         flex: 1,
         backgroundColor: colors.bg_grey,
         marginHorizontal: 12,
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
+        borderRadius: 20,
         marginTop: 10,
         paddingBottom: 30,
         paddingTop: 30,
@@ -56,6 +55,28 @@ const petDetailsStyle = StyleSheet.create({
         flex: 1,
         width: Dimensions.get('window').width - 30,
         height: Dimensions.get('window').width - 30
+    },
+    centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 10,
+        marginBottom: 100
+    },
+    modalView: {
+        borderRadius: 20, alignItems: "center",
+    },
+    button: {
+        borderRadius: 20, padding: 10, elevation: 2, marginBottom: 10
+    },
+    buttonClose: {
+        backgroundColor: colors.yellow,
+    },
+    textStyle: {
+        color: colors.violet, fontWeight: "bold", textAlign: "center"
+    },
+    modalText: {
+        marginBottom: 15, textAlign: "center"
     }
 })
 export {petDetailsStyle};

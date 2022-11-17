@@ -1,5 +1,6 @@
 package mate4ever.ttip.controller
 
+import mate4ever.ttip.dto.CommentRequestDTO
 import mate4ever.ttip.model.Comment
 import mate4ever.ttip.model.Pet
 import mate4ever.ttip.service.CommentService
@@ -8,6 +9,8 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @RestController
 @EnableAutoConfiguration
@@ -16,8 +19,8 @@ class CommentController {
     private lateinit var commentService : CommentService
 
     @PostMapping("/api/comment/create")
-    fun createPet(@RequestBody comment: Comment): ResponseEntity<*> {
-        val commentSaved = commentService.createComment(comment)
+    fun createComment(@RequestBody commentRequestDTO: CommentRequestDTO): ResponseEntity<*> {
+        val commentSaved = commentService.createComment(commentRequestDTO)
         return ResponseEntity(commentSaved, null, HttpStatus.OK)
     }
 

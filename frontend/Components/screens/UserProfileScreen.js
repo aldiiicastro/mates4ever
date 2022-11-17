@@ -21,7 +21,7 @@ export default function UserProfileScreen({ navigation, route }) {
         const response = await getUserDataByEmail(userEmail)
         try {
             let reg = await Location.reverseGeocodeAsync(response.data.coordinates)
-            setUser(new User(response.data, reg[0].name, reg[0].region))
+            setUser(new User(response.data, reg[0].city, reg[0].region))
             //Si buscasemos los pets según el email
             // const petResponse = await getPetByUser(response.data.email)
             // setPets(petResponse.data.pets.map((pet)=> new Pet(pet)))
