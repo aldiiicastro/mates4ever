@@ -9,6 +9,7 @@ import {petCreationScreenStyle} from "../../styles/pet/PetCreationScreenStyle.js
 import {getSearchedPets} from "../../server/Api"
 import {style} from "../../styles/Commons"
 import PerfilButton from '../drawerlayout/PerfilButton.js'
+import LostsPets from '../modals/LostsPets.js'
 
 export default function PetScreen({navigation}) {
     const [petsSearching, setPetsSearching] = useState([])
@@ -59,9 +60,7 @@ export default function PetScreen({navigation}) {
 
                     }}/>
                 </View>
-                <View style={petCreationScreenStyle.sortBtn}>
-                    <Icon name="sort" size={30} style={petCreationScreenStyle.iconSrt}/>
-                </View>
+            <LostsPets navigation={navigation} />
             </View>
             <ScrollView horizontal={true}>
                 {((petsSearching && petsSearching.length) ?

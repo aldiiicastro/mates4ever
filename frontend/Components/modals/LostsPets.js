@@ -4,30 +4,35 @@ import {getNearByPets, getSearchedPets} from '../../server/Api';
 import Pet from '../../model/Pet';
 import MapView, {Marker} from 'react-native-maps';
 import * as Location from 'expo-location';
+import { petCreationScreenStyle } from '../../styles/pet/PetCreationScreenStyle';
+import Icon from 'react-native-vector-icons/MaterialIcons'
+import { colors } from '../../styles/Colors';
+
 
 export default function LostsPets({navigation}) {
     const [modalVisible, setModalVisible] = useState(true);
     const [pets, setPets] = useState([])
     const [isAlreadyShownAlert, setIsAlreadyShownAlert] = useState(false)
     const [currentLocation, setCurrentLocation] = useState({
-        latitude: -36.6769415180527,
-        longitude: -60.5588319815719,
+        latitude: -34.706527,
+        longitude: -58.277439,
         latitudeDelta: 0.1,
         longitudeDelta: 0.1
     })
 
     useEffect(() => {
-        getCurrentPosition()
+        (async () => {
+            getCurrentPosition()
+        })();
         nearbyPets()
     }, [])
 
-    const nearbyPets = async query => {
+    const nearbyPets = async () => {
         try {
             const response = await getNearByPets(currentLocation.latitude, currentLocation.longitude)
-            const pets = response.data.map((pet) => (new Pet(pet)))
-            setPets(pets)
+            const nearby = response.data.map((pet) => (new Pet(pet)))
+            setPets(nearby)
         } catch (error) {
-            console.log("fallo")
             setPets([])
             isAlreadyShownAlert ?
                 (Alert.alert(
@@ -44,35 +49,41 @@ export default function LostsPets({navigation}) {
             return;
         }
 
-        let location = await Location.getCurrentPositionAsync({});
+        let location = await Location.getCurrentPositionAsync();
         setCurrentLocation({
             latitude: location["coords"].latitude,
             longitude: location["coords"].longitude,
             latitudeDelta: 0.015,
             longitudeDelta: 0.015
         })
+        return location
     }
 
     return (
         <View>
-            <Pressable
-                style={[styles.button, styles.buttonOpen]}
-                onPress={() => setModalVisible(true)}
-            >
-                <Text style={styles.textStyle}>Show Modal</Text>
-            </Pressable>
+            <View style={petCreationScreenStyle.sortBtn}>
+                <Icon name="place" size={30} style={petCreationScreenStyle.iconSrt} onPress={() => setModalVisible(true)} />
+            </View>
+
             <Modal
                 animationType="slide"
                 transparent={true}
                 visible={modalVisible}
                 onRequestClose={() => {
-                    Alert.alert("Modal has been closed.");
                     setModalVisible(!modalVisible);
                 }}
             >
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
-                        <Text style={styles.modalText}>Animales perdidos en tu zona</Text>
+                        <View style={{ margin: 10, flexDirection: 'row', justifyContent: 'space-around' }}>
+                            <Text style={styles.modalText}>Animales perdidos en tu zona</Text>
+                            <Icon
+                                name="close" size={30} style={{ color: colors.grey }}
+                                onPress={() => setModalVisible(false)}
+                                testID={'hideModal'}
+                            />
+                        </View>
+
                         <MapView
                             style={{width: "100%", height: "90%"}}
                             initialRegion={currentLocation}
@@ -80,31 +91,23 @@ export default function LostsPets({navigation}) {
                             showsUserLocation={true}
                             followsUserLocation={true}
                             zoomControlEnabled={true}
-
                         >
+
                             {pets.map((pet, index) =>
-                                    <Marker
-                                        key={index}
-                                        coordinate={{
-                                            latitude: pet.coordinates.latitude,
-                                            longitude: pet.coordinates.longitude
-                                        }}
-                                        onPress={() => {
-                                            setModalVisible(!modalVisible)
-                                            navigation.navigate('Detalles', pet.id)
-                                        }
-                                    }
-                                    />
-                            )}
+                                <Marker
+                                    key={index}
+                                    coordinate={{
+                                        latitude: pet.coordinates.latitude,
+                                        longitude: pet.coordinates.longitude
+                                    }}
+                                    onPress={() => {
+                                        setModalVisible(!modalVisible)
+                                        navigation.navigate('Detalles', pet.id)
+                                    }}
+                                />
 
+                            )}
                         </MapView>
-                        <Pressable
-                            style={[styles.button, styles.buttonClose]}
-                            onPress={() => setModalVisible(!modalVisible)}
-                            testID={'hideModal'}
-                        >
-                            <Text style={styles.textStyle}>Hide Modal</Text>
-                        </Pressable>
                     </View>
                 </View>
             </Modal>
@@ -116,14 +119,15 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        marginTop: 22
+        // marginTop: 22
     },
     modalView: {
         width: Dimensions.get('window').width - 40,
-        height: Dimensions.get('window').height - 80,
+        height: Dimensions.get('window').height - 40,
         backgroundColor: "white",
-        borderRadius: 20,
-        alignItems: "center",
+        // borderTopLeftRadius: 20,
+        // borderTopRightRadius: 20,
+        borderRadius:20,
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
@@ -150,7 +154,8 @@ const styles = StyleSheet.create({
         textAlign: "center"
     },
     modalText: {
-        marginBottom: 15,
-        textAlign: "center"
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: colors.violet,
     }
 });

@@ -23,7 +23,6 @@ export default function HomeScreen({ navigation }) {
     return (
         <View testID={"homeScreenView"}
             style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.beige }}>
-            <LostsPets navigation={navigation} />
             <PetScreen navigation={navigation}></PetScreen>
             <View>
                 <TouchableOpacity
