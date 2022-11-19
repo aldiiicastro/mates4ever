@@ -12,5 +12,6 @@ class PetResponseDTO(
     val vaccine: Boolean,
     val castrated: Boolean,
     val medicalHistory: String?,
-    val description: String?
+    val description: String?,
+    val coordinates: Map<String, Double>?
 ) {}

@@ -1,5 +1,6 @@
 package mate4ever.ttip.controller
 
+import mate4ever.ttip.dto.PetDocumentDTO
 import mate4ever.ttip.dto.PetRequestDTO
 import mate4ever.ttip.dto.PetResponseDTO
 import mate4ever.ttip.model.Pet
@@ -55,20 +56,21 @@ class PetController {
                 it.vaccine,
                 it.castrated,
                 it.medicalHistory,
-                it.description
+                it.description,
+                it.coordinates
             )
         }, null, HttpStatus.OK)
     }
-
     @GetMapping("/api/pet/getNearbyPets")
-    fun getNearbyPets(): MutableIterable<Pet> {
-        return petService.getNearbyPets()
+    fun getNearbyPets(@RequestParam latitude: Double, @RequestParam longitude: Double): List<PetDocumentDTO> {
+        return petService.getNearbyPets(latitude, longitude)
     }
+
     fun deleteAll() {
         return petService.deleteAll()
     }
-
-    fun deleteById(id: String) {
+    @DeleteMapping("api/pet/delete/{id}")
+    fun deleteById(@PathVariable id: String) {
         return petService.deleteById(id)
     }
 }

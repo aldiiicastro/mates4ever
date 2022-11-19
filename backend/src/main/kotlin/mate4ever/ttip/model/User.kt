@@ -25,6 +25,7 @@ class User(
     val coordinates: Map<String, Double>?,
     var image: String?,
     var expoPushToken: String?,
+//    @OneToMany(mappedBy="user", cascade = [CascadeType.ALL], orphanRemoval = true, fetch = FetchType.LAZY)
 
 ){
     var pets: MutableList<String> = mutableListOf()

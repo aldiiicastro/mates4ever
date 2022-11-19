@@ -1,8 +1,8 @@
-import {getApps, initializeApp} from "firebase/app"
-import {getStorage, ref, uploadBytes, getDownloadURL} from "firebase/storage"
+import {initializeApp} from "firebase/app"
+import {getDownloadURL, getStorage, ref, uploadBytes} from "firebase/storage"
 import 'react-native-get-random-values';
-import { v4 as uuidv4 } from 'uuid';
-import * as ImagePicker from 'expo-image-picker'
+import {v4 as uuidv4} from 'uuid';
+import * as Picker from 'expo-image-picker'
 
 const firebaseConfig = {
     apiKey: "AIzaSyAU3hYL4RddVNuaEhoM5I47RzfjV9bRepk",
@@ -21,14 +21,14 @@ export const pickImage = async () => {
     if (Platform.OS !== "web") {
         const {
             status,
-        } = await ImagePicker.requestMediaLibraryPermissionsAsync()
+        } = await Picker.requestMediaLibraryPermissionsAsync()
         if (status !== "granted") {
             alert("Lo lamentamos, necesitamos acceder a la galeria para realizar esta función")
         }
     }
 
-    let pickerResult = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
+    let pickerResult = await Picker.launchImageLibraryAsync({
+        mediaTypes: Picker.MediaTypeOptions.All,
         allowsEditing: true,
         aspect: [4, 4],
         quality: 1
@@ -37,10 +37,42 @@ export const pickImage = async () => {
     return pickerResult
 }
 
+
+export const pickMultipleImage = async () => {
+    if (Platform.OS !== "web") {
+        const {
+            status,
+        } = await Picker.requestMediaLibraryPermissionsAsync()
+        if (status !== "granted") {
+            alert("Lo lamentamos, necesitamos acceder a la galeria para realizar esta función")
+        }
+    }
+
+    let result = await Picker.launchImageLibraryAsync({
+        mediaTypes: Picker.MediaTypeOptions.All,
+        allowsMultipleSelection: true,
+        aspect: [4, 4],
+        quality: 1
+    })
+
+    return result["uri"] ? {cancelled: false, selected: [result]} : result
+}
+
 export const handleImagePicked = async (pickerResult) => {
     try {
         if (!pickerResult.cancelled) {
             const uploadUrl = await uploadImageAsync(pickerResult.uri)
+            return uploadUrl
+        }
+    } catch (e) {
+        alert("Fallo la subida, intente de nuevo mas tarde")
+    }
+}
+
+export const handleImagesPicked = async (pickerResult) => {
+    try {
+        if (!pickerResult.cancelled) {
+            const uploadUrl = await Promise.all( pickerResult.map(async (image) => await uploadImageAsync(image.uri)))
             return uploadUrl
         }
     } catch (e) {
@@ -70,4 +102,5 @@ export async function uploadImageAsync(uri) {
 
     return getDownloadURL(fileRef)
 }
+
 

@@ -13,8 +13,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Install Frontend modules
+        uses: cypress-io/github-action@v2
+        with:
+          install-command: npm run install:frontend
+          runTests: false
       - name: Cypress io
         uses: cypress-io/github-action@v4.1.0
         with:
           config-file: cypress.config.js
-          start: npm start
+          start: npm run web:frontend
+          wait-on: 'http://localhost:19006'
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v2

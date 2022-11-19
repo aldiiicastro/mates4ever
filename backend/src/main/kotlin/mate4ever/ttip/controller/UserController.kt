@@ -23,14 +23,14 @@ class UserController {
     @PostMapping("/api/user/create")
     fun createUser(@RequestBody user: User): ResponseEntity<*> {
         userService.createUser(user)
-        val userDTO = UserDTO(user.email, user.password)
+        val userDTO = UserDTO(user.email, user.password, user.expoPushToken)
         return ResponseEntity<UserDTO>(userDTO, null, HttpStatus.OK)
 
     }
     @PostMapping("/api/user/userData")
     fun getUser(@RequestBody userData : UserDTO): ResponseEntity<*> {
         val user = userService.findUser(userData)
-        return ResponseEntity<UserDTO>(UserDTO(user!!.email, user.password),null, HttpStatus.OK)
+        return ResponseEntity<UserDTO>(UserDTO(user!!.email, user.password, user.expoPushToken),null, HttpStatus.OK)
     }
     @GetMapping("/api/user/{id}")
     fun getUserBy(@PathVariable(required = true) id: String): ResponseEntity<*> {
@@ -41,13 +41,13 @@ class UserController {
     @GetMapping("/api/user/email/{email}")
     fun getUser(@PathVariable(required = true) email: String): ResponseEntity<*> {
         val user = userService.findUserByEmail(email)
-        return ResponseEntity<UserDTO>(UserDTO(user!!.email, user.password), null, HttpStatus.OK)
+        return ResponseEntity<UserDTO>(UserDTO(user!!.email, user.password, user.expoPushToken), null, HttpStatus.OK)
     }
     @GetMapping("/api/user/allData/{email}")
     fun getCompleteUser(@PathVariable(required = true) email: String): ResponseEntity<*> {
         val user = userService.findUserByEmail(email)
         val pets = petService.getPets(user!!.pets)
-        val userDTO = UserResponseDTO(user.name, user.lastname, user.email, user.phone,user.coordinates, user.image, pets)
+        val userDTO = UserResponseDTO(user.name, user.lastname, user.email, user.phone, user.coordinates, user.image, pets)
         return ResponseEntity<UserResponseDTO>(userDTO, null, HttpStatus.OK)
     }
     @GetMapping("/api/user/all")

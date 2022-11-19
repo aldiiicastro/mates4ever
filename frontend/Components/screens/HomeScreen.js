@@ -4,12 +4,12 @@ import PetScreen from "./PetScreen.js"
 import {colors} from "../../styles/Colors.js"
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import {style} from "../../styles/Commons"
-import LostPetGeolocationNotification from '../geolocation/LostPetGeolocationNotification.js'
-import LostsPets from '../modals/LostsPets.js'
 import * as Notifications from "expo-notifications";
 import {useEffect} from "react";
+import LostPets from "../modals/LostPets";
 
 export default function HomeScreen({navigation}) {
+
     const lastNotificationResponse = Notifications.useLastNotificationResponse();
     useEffect(() => {
         if (
@@ -22,9 +22,8 @@ export default function HomeScreen({navigation}) {
     }, [lastNotificationResponse]);
     return (
         <View testID={"homeScreenView"}
-        style={{flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.beige}}>
-            <LostsPets navigation={navigation}/>
-            <PetScreen navigation={navigation}></PetScreen>
+              style={{flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.beige}}>
+            <PetScreen navigation={navigation}/>
             <View>
                 <TouchableOpacity
                     testID={'create-pet'}
@@ -34,7 +33,6 @@ export default function HomeScreen({navigation}) {
                     <Icon name='add' size={30} color='#fff'/>
                 </TouchableOpacity>
             </View>
-            {/* <LostPetGeolocationNotification/> */}
         </View>
     )
 }

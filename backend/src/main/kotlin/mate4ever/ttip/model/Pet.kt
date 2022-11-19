@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDate
 import javax.validation.constraints.NotEmpty
 @Document("pet")
-class Pet(
+open class Pet(
     @NotEmpty(message = "El nombre es obligatorio")
     var name: String,
     @NotEmpty(message = "La imagen es obligatoria")
@@ -17,15 +17,14 @@ class Pet(
     @NotEmpty(message = "Debes elegir en que estado se encuentra el animal")
     var state: String,
     @NotEmpty(message = "El tutor es obligatorio")
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "pets")
     var user: String,
     var vaccine: Boolean,
     var castrated: Boolean,
     var medicalHistory: String?,
     var description: String?,
-    var coordinates: Map<String, Double>?
-) {
+    var coordinates: Map<String, Double>?,
     @Id
     var id: String? = null
+) {
+
 }

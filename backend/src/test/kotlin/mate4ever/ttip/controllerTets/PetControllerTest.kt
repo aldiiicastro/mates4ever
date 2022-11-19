@@ -36,7 +36,6 @@ class PetControllerTest {
         val pet = petController.createPet(petDTO).body as Pet
         val findPet = petController.getPet(pet.id!!).body as Pet
         assert(findPet.name == pet.name)
-
     }
 
     @Test

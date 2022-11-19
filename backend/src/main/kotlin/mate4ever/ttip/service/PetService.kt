@@ -1,9 +1,11 @@
 package mate4ever.ttip.service
 
+import mate4ever.ttip.dto.PetDocumentDTO
 import mate4ever.ttip.dto.PetRequestDTO
 import mate4ever.ttip.exceptions.PetNotFoundException
 import mate4ever.ttip.model.Pet
 import mate4ever.ttip.repository.PetRepository
+import org.bson.types.ObjectId
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.mongodb.core.MongoTemplate
 import org.springframework.data.mongodb.core.query.Criteria
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.*
 
 @Service
 @Transactional
@@ -35,6 +38,7 @@ class PetService {
     fun findAll(): MutableIterable<Pet?> {
         return petRepository.findAll()
     }
+
     @Transactional(readOnly = true)
     fun findPetByUser(user: String): MutableIterable<Pet> {
         return petRepository.findByUser(user)
@@ -61,7 +65,7 @@ class PetService {
         )
 
         val petSaved = petRepository.insert(pet)
-        userService.addPet(petDTO.tutor,petSaved.id!!)
+        userService.addPet(petDTO.tutor, petSaved.id!!)
         return petSaved
     }
 
@@ -75,18 +79,28 @@ class PetService {
         return mongoTemplate.find(query, Pet::class.java)
     }
 
-    fun getNearbyPets(): MutableIterable<Pet> {
-//        val query = Query()
-//        query.addCriteria(Criteria.where("coordinates").exists(true))
-//        query.addCriteria(Criteria.where("coordinates.latitude").)
-//        val nameCriteria = criteriaForm(, "Math.abs(coordinates.latitude) - 34.8266321 <= 0.2 ")
-//        val stateCriteria = criteriaForm("coordinates.longitude", "Math.abs(coordinates.longitude) - 58.187748 <= 0.2 ")
-//        val typeCriteria = criteriaForm("coordinates", "!= null")
-//        val criteria = Criteria().orOperator(typeCriteria, nameCriteria, stateCriteria)
-//        return mongoTemplate.find(query, Pet::class.java)
-        return petRepository.getNearbyPets( 34.8266321, 58.187748)
+    fun getNearbyPets(lat: Double, long : Double): List<PetDocumentDTO> {
+        val document =
+            mongoTemplate.executeCommand("{ find: 'pet', filter : {\$where: 'this.coordinates && Math.abs(this.coordinates.latitude - $lat) <= 0.02 &&  Math.abs(this.coordinates.longitude - $long) <= 0.02 '}}")
+        val listOfPets = (document["cursor"] as Map<*, *>)["firstBatch"] as List<Map<String, *>>
+        return listOfPets.map { it ->
+            PetDocumentDTO(
+                (it["_id"] as ObjectId).toString(),
+                it["name"] as String,
+                it["image"] as String,
+                dateToLocalDate(it["birth"] as Date?),
+                it["type"] as String,
+                it["breed"] as String?,
+                it["state"] as String,
+                it["user"] as String,
+                it["vaccine"] as Boolean,
+                it["castrated"] as Boolean,
+                it["medicalHistory"] as String?,
+                it["description"] as String?,
+                it["coordinates"] as Map<String,Double>?
+            )
+        }
     }
-
     private fun criteriaForm(fieldName: String, value: String): Criteria {
         return Criteria.where(fieldName).regex(value, "i")
     }
@@ -107,6 +121,15 @@ class PetService {
             null
         }
 
+    }
+    fun dateToLocalDate(date: Date?) : LocalDate? {
+        return if (date != null) {
+            val calendar: Calendar = GregorianCalendar()
+            calendar.time = date
+            LocalDate.of(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH)+1, calendar.get(Calendar.DATE))
+        }else{
+            null
+        }
     }
 
 

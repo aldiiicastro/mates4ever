@@ -24,7 +24,7 @@ const LoginScreen = forwardRef(({navigation}, ref) => {
             response = await loginUser(dataToSend)
             setLoading(false)
             await AsyncStorage.setItem('user_id', response.data.email)
-            navigation.navigate('Inicio')
+            navigation.replace('Inicio')
         } catch (error) {
             setLoading(false)
             setErrorText(error.response.data.message)
