@@ -51,13 +51,18 @@ export const getPetById = async (id) => {
     return await axinst.get(url)
 }
 
+export const deletePetById = async (id) => {
+    const url =`${baseUrl}/api/pet/delete/${id}`
+    return await axinst.delete(url)
+}
+
 export const getPetByUser = async (user) => {
     const url = `${baseUrl}/api/pets/${user}`
     return await axinst.get(url)
 }
 
-export const getNearByPets = async () => {
-    const url = `${baseUrl}/api/pet/getNearbyPets`
+export const getNearByPets = async (lat, long) => {
+    const url = `${baseUrl}/api/pet/getNearbyPets?latitude=${lat}&longitude=${long}`
     return await axinst.get(url)
 }
 //******************** Create comment ********************

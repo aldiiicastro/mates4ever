@@ -73,13 +73,13 @@ export default function UserProfileScreen({ navigation, route }) {
     const renderLogOut = () => {
         return (
             <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
-                <Icon  testID={'logOut'} name="logout" size={25} style={petCreationScreenStyle.iconSearch} onPress={() => {
-                    AsyncStorage.clear()
-                    navigation.navigate("Login")
+                <Icon  testID={'logOut'} name="logout" size={25} style={petCreationScreenStyle.iconSearch} onPress={async () => {
+                    await AsyncStorage.removeItem('user_id')
+                    navigation.replace("Login")
                 }} />
-                <Text style={{ fontSize: 20 }} onPress={() => {
-                    AsyncStorage.clear()
-                    navigation.navigate("Login")
+                <Text style={{ fontSize: 20 }} onPress={async () => {
+                    await AsyncStorage.removeItem('user_id')
+                    navigation.replace("Login")
                 }}>Salir</Text>
             </View>
         )

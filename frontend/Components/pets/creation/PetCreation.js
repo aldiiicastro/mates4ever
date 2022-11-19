@@ -95,7 +95,7 @@ export default function PetCreation({navigation}) {
             if (pet.state === 'Perdido') {
                await sendPushNotification(petDB.data)
             }
-            navigation.navigate("Inicio")
+            navigation.navigate("Inicio", "Creacion")
         } catch (error) {
             setErrors(error.errors)
         }

@@ -69,8 +69,8 @@ class PetController {
     fun deleteAll() {
         return petService.deleteAll()
     }
-
-    fun deleteById(id: String) {
+    @DeleteMapping("api/pet/delete/{id}")
+    fun deleteById(@PathVariable id: String) {
         return petService.deleteById(id)
     }
 }

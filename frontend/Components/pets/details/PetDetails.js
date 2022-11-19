@@ -1,23 +1,26 @@
 import * as React from 'react'
 import {useEffect, useRef, useState} from "react"
-import {View, Image, Text, Pressable, FlatList} from 'react-native'
+import {View, Image, Text, Pressable, FlatList, TouchableHighlight, Alert} from 'react-native'
 import ViewShot from "react-native-view-shot"
 import * as Sharing from 'expo-sharing'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import Tag from '../../drawerlayout/Tag.js'
-import {getComments} from "../../../server/Api";
+import {deletePetById, getComments} from "../../../server/Api";
 import CommentCard from "../../comments/CommentCard";
 import SavedMapView from "../../SavedMapView";
 import {petDetailsStyle} from "../../../styles/pet/PetDetailsStyle";
 import {style} from "../../../styles/Commons"
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function PetDetails({navigation, pet}) {
     const [comments, setComments] = useState([])
+    const [email, setEmail] = useState('')
     useEffect(() => {
         getAllComments(pet.id)
     })
 
     const getAllComments = async (petID) => {
+        setEmail(await AsyncStorage.getItem('user_id'))
         try {
             const commentsSaved = await getComments(petID)
             setComments(commentsSaved.data)
@@ -25,7 +28,24 @@ export default function PetDetails({navigation, pet}) {
             console.log(e)
         }
     }
-
+    const deletePet = async () => {
+        try {
+            await deletePetById(pet.id)
+            navigation.replace("Inicio")
+        } catch (e) {
+            console.log(e)
+            alert("Ha habido un error. Contactese con el administrador")
+        }
+    }
+    const publishFinish = async () => {
+        Alert.alert(
+            "BORRAR PUBLICACIÓN",
+            "¿Estas seguro que deseas finalizarla?",
+            [{text: "Si", onPress: async () => deletePet()}, {
+                text: "No",
+                onPress: () => navigation.navigate("Detalles", pet.id)
+            }])
+    }
     const viewShot = useRef()
     const share = async () => {
         try {
@@ -56,7 +76,15 @@ export default function PetDetails({navigation, pet}) {
                 style={petDetailsStyle.imageDetail}/>
         </View>)
     }
-
+    const renderFinish = () => {
+        return pet.tutor === email ?
+            <View>
+                <Pressable style={[petDetailsStyle.button, petDetailsStyle.finish]} testID={'hideModal'}
+                           onPress={() => publishFinish()}>
+                    <Text style={petDetailsStyle.textStyle}>Finalizar</Text>
+                </Pressable>
+            </View> : <View/>
+    }
     const renderComponent = () => {
         return (
             <ViewShot ref={viewShot} options={{format: 'jpg', quality: 0.9}}>
@@ -118,6 +146,7 @@ export default function PetDetails({navigation, pet}) {
                         <Text testID={"pet-details-vaccinate"}
                               style={[petDetailsStyle.descriptionDetail, style.bold]}> • {pet.vaccine ? "Esta vacunado" : "No esta vacunado"}</Text>
                     </View>
+                    {renderFinish()}
                     {pet.coordinates && <SavedMapView param={pet}/>}
                 </View>
                 {comments.length > 0 && <View style={{paddingHorizontal: 20, marginVertical: 10}}>

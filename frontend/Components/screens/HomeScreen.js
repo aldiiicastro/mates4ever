@@ -1,14 +1,14 @@
 import * as React from 'react'
-import { View, TouchableOpacity } from 'react-native'
+import {View, TouchableOpacity} from 'react-native'
 import PetScreen from "./PetScreen.js"
-import { colors } from "../../styles/Colors.js"
+import {colors} from "../../styles/Colors.js"
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import { style } from "../../styles/Commons"
+import {style} from "../../styles/Commons"
 import * as Notifications from "expo-notifications";
-import { useEffect } from "react";
-import LostsPets from "../modals/LostsPets";
+import {useEffect} from "react";
+import LostPets from "../modals/LostPets";
 
-export default function HomeScreen({ navigation }) {
+export default function HomeScreen({navigation}) {
 
     const lastNotificationResponse = Notifications.useLastNotificationResponse();
     useEffect(() => {
@@ -22,16 +22,15 @@ export default function HomeScreen({ navigation }) {
     }, [lastNotificationResponse]);
     return (
         <View testID={"homeScreenView"}
-            style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.beige }}>
-            <LostsPets navigation={navigation} />
-            <PetScreen navigation={navigation}></PetScreen>
+              style={{flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.beige}}>
+            <PetScreen navigation={navigation}/>
             <View>
                 <TouchableOpacity
                     testID={'create-pet'}
                     style={[style.floatButton]}
                     onPress={() => navigation.navigate('Agregar')}
                 >
-                    <Icon name='add' size={30} color='#fff' />
+                    <Icon name='add' size={30} color='#fff'/>
                 </TouchableOpacity>
             </View>
         </View>

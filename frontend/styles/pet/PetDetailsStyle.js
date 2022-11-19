@@ -1,5 +1,6 @@
-import {Dimensions, StyleSheet} from "react-native";
+import {StyleSheet} from "react-native";
 import {colors} from "../Colors";
+import {width, height} from "../Dimension";
 
 const petDetailsStyle = StyleSheet.create({
     header: {
@@ -14,7 +15,10 @@ const petDetailsStyle = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-
+    finish: {
+        marginLeft: width - 200,
+        backgroundColor: colors.yellow
+    },
     detailsContainer: {
         flex: 1,
         backgroundColor: colors.bg_grey,
@@ -23,7 +27,7 @@ const petDetailsStyle = StyleSheet.create({
         marginTop: 10,
         paddingBottom: 30,
         paddingTop: 30,
-        minHeight: Dimensions.get('window').height - (Dimensions.get('window').width + 30)
+        minHeight: height - (width + 30)
     },
 
     descriptionDetail: {
@@ -34,7 +38,7 @@ const petDetailsStyle = StyleSheet.create({
 
     tag: {
         backgroundColor: colors.yellow,
-        width: 90,
+        width: width - 505,
         height: 40,
         justifyContent: 'center',
         borderTopLeftRadius: 25,
@@ -53,8 +57,8 @@ const petDetailsStyle = StyleSheet.create({
     imageDetail: {
         resizeMode: 'cover',
         flex: 1,
-        width: Dimensions.get('window').width - 30,
-        height: Dimensions.get('window').width - 30
+        width: width - 30,
+        height: width - 30
     },
     centeredView: {
         flex: 1,

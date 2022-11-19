@@ -9,7 +9,7 @@ export default function Tag(props) {
         <View style={petDetailsStyle.tag}>
             <Text testID={"pet-details-state"}
                   style={{
-                      marginLeft: 15,
+                      marginLeft: 16,
                       color: colors.violet,
                       fontWeight: 'bold',
                       fontSize: 16,

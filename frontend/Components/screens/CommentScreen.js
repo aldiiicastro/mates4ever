@@ -4,11 +4,10 @@ import {ScrollView} from "react-native-gesture-handler"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import * as Location from 'expo-location'
 import {createComment, getDir, getUserByEmail} from "../../server/Api"
-import {handleImagePicked, handleImagesPicked, pickImage, pickMultipleImage} from "../../server/FirebaseServer"
+import {handleImagesPicked, pickMultipleImage} from "../../server/FirebaseServer"
 import Loader from "../drawerlayout/Loader"
 import {
     CalendarForm, EmptyImage,
-    ImageForm, ImageGallery,
     MultiLineLabelRequired,
     SimpleCheckBox
 } from "../drawerlayout/FormItemGeneric"
@@ -16,10 +15,10 @@ import {colors} from "../../styles/Colors"
 import {petCreationScreenStyle} from "../../styles/pet/PetCreationScreenStyle"
 import {style} from "../../styles/Commons"
 import Back from "../drawerlayout/Back"
-import {Alert, FlatList, Image, SafeAreaView, TouchableHighlight, View} from "react-native"
-import MapViewWithLabel from "../MapViewWithLabel";
-import {form} from "../../styles/Form";
-import Icon from "react-native-vector-icons/MaterialIcons";
+import {Alert, FlatList, Image, SafeAreaView, View} from "react-native"
+import MapViewWithLabel from "../MapViewWithLabel"
+import {form} from "../../styles/Form"
+import Icon from "react-native-vector-icons/MaterialIcons"
 
 export default function CommentScreen({navigation, route}) {
     const [images, setImages] = useState(null)
@@ -37,7 +36,7 @@ export default function CommentScreen({navigation, route}) {
 
     useEffect(() => {
         getCurrentPosition()
-    }, []);
+    }, [])
 
     //************GET CURRENT POSITION*******************
     const getCurrentPosition = async () => {
@@ -223,7 +222,7 @@ async function sendPushNotification(pet, comment) {
     const tokens = user.data.expoPushToken
     const message = {
         to: tokens,
-        title: 'Nuevo comentario sobre' + pet.name,
+        title: 'Nuevo comentario sobre ' + pet.name,
         body: 'De parte de ' + comment,
         data: {id: pet.id},
     };
