@@ -85,7 +85,7 @@ class PetService {
         val listOfPets = (document["cursor"] as Map<*, *>)["firstBatch"] as List<Map<String, *>>
         return listOfPets.map { it ->
             PetDocumentDTO(
-                (listOfPets[0]["_id"] as ObjectId).toString(),
+                (it["_id"] as ObjectId).toString(),
                 it["name"] as String,
                 it["image"] as String,
                 dateToLocalDate(it["birth"] as Date?),
