@@ -10,9 +10,20 @@
     ]
   },
   "scripts": {
+<<<<<<< HEAD
     "install:frontend": "cd frontend && npm install",
     "web:frontend": "cd frontend && npm run web",
     "web": "expo start --web"
+=======
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "clear": "expo start -c",
+    "install:frontend": "cd frontend && npm install",
+    "web:frontend": "cd frontend && npm run web",
+    "web": "expo start --web",
+    "postinstall": "patch-package"
+>>>>>>> 5f258fa2b6158f1a116679e9339c53be9d004791
   },
   "dependencies": {
     "@cypress/code-coverage": "^3.10.0",
@@ -26,6 +37,11 @@
     "@babel/plugin-syntax-jsx": "^7.18.6",
     "@babel/preset-env": "^7.19.1",
     "@babel/preset-react": "^7.18.6",
+<<<<<<< HEAD
     "babel-plugin-istanbul": "^6.1.1"
+=======
+    "babel-plugin-istanbul": "^6.1.1",
+    "sharp-cli": "^2.1.0"
+>>>>>>> 5f258fa2b6158f1a116679e9339c53be9d004791
   }
 }
