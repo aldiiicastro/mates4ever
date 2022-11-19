@@ -1,13 +1,13 @@
 import {View, Text, Modal, StyleSheet, Pressable, Dimensions, Alert} from 'react-native'
 import React, {useEffect, useState} from 'react'
-import {getSearchedPets} from '../../server/Api';
+import {getNearByPets, getSearchedPets} from '../../server/Api';
 import Pet from '../../model/Pet';
 import MapView, {Marker} from 'react-native-maps';
 import * as Location from 'expo-location';
 
 export default function LostsPets({navigation}) {
     const [modalVisible, setModalVisible] = useState(true);
-    const [petsSearching, setPetsSearching] = useState([])
+    const [pets, setPets] = useState([])
     const [isAlreadyShownAlert, setIsAlreadyShownAlert] = useState(false)
     const [currentLocation, setCurrentLocation] = useState({
         latitude: -36.6769415180527,
@@ -17,17 +17,18 @@ export default function LostsPets({navigation}) {
     })
 
     useEffect(() => {
-        search('')
         getCurrentPosition()
+        nearbyPets()
     }, [])
 
-    const search = async query => {
+    const nearbyPets = async query => {
         try {
-            const response = await getSearchedPets(query)
+            const response = await getNearByPets(currentLocation.latitude, currentLocation.longitude)
             const pets = response.data.map((pet) => (new Pet(pet)))
-            setPetsSearching(pets)
+            setPets(pets)
         } catch (error) {
-            setPetsSearching([])
+            console.log("fallo")
+            setPets([])
             isAlreadyShownAlert ?
                 (Alert.alert(
                     "Error",
@@ -47,8 +48,8 @@ export default function LostsPets({navigation}) {
         setCurrentLocation({
             latitude: location["coords"].latitude,
             longitude: location["coords"].longitude,
-            latitudeDelta: 0.1,
-            longitudeDelta: 0.1
+            latitudeDelta: 0.015,
+            longitudeDelta: 0.015
         })
     }
 
@@ -81,8 +82,7 @@ export default function LostsPets({navigation}) {
                             zoomControlEnabled={true}
 
                         >
-                            {petsSearching.map((pet, index) =>
-                                pet.coordinates != null ?
+                            {pets.map((pet, index) =>
                                     <Marker
                                         key={index}
                                         coordinate={{
@@ -93,9 +93,8 @@ export default function LostsPets({navigation}) {
                                             setModalVisible(!modalVisible)
                                             navigation.navigate('Detalles', pet.id)
                                         }
-                                        }
+                                    }
                                     />
-                                    : null
                             )}
 
                         </MapView>

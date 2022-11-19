@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const baseUrl = 'http://192.168.0.66:8070'
+const baseUrl = 'http://192.168.0.13:8070'
 
 const axinst = axios.create({
     baseURL: baseUrl,
@@ -56,8 +56,8 @@ export const getPetByUser = async (user) => {
     return await axinst.get(url)
 }
 
-export const getNearByPets = async () => {
-    const url = `${baseUrl}/api/pet/getNearbyPets`
+export const getNearByPets = async (lat, long) => {
+    const url = `${baseUrl}/api/pet/getNearbyPets?latitude=${lat}&longitude=${long}`
     return await axinst.get(url)
 }
 //******************** Create comment ********************
@@ -77,7 +77,6 @@ export const getComments = async (petID) => {
 export const getDir = async (dir) => {
     return axinst.get(`https://apis.datos.gob.ar/georef/api/direcciones?direccion=${dir}`)
 }
-
 
 //******************** Notifications ***************
 export const postNotifications = async (body) => {
