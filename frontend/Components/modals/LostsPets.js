@@ -12,6 +12,7 @@ import { colors } from '../../styles/Colors';
 export default function LostsPets({navigation}) {
     const [modalVisible, setModalVisible] = useState(true);
     const [pets, setPets] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
     const [isAlreadyShownAlert, setIsAlreadyShownAlert] = useState(false)
     const [currentLocation, setCurrentLocation] = useState({
         latitude: -34.706527,
@@ -21,18 +22,21 @@ export default function LostsPets({navigation}) {
     })
 
     useEffect(() => {
-        (async () => {
-            getCurrentPosition()
-        })();
-        nearbyPets()
+        getCurrentPosition().then( () => setIsLoading(false) )
     }, [])
+
+    useEffect(() => {
+        if (! isLoading ) {
+            nearbyPets()
+        }
+    }, [currentLocation, isLoading])
 
     const nearbyPets = async () => {
         try {
             const response = await getNearByPets(currentLocation.latitude, currentLocation.longitude)
             const nearby = response.data.map((pet) => (new Pet(pet)))
             setPets(nearby)
-        } catch (error) {
+        } catch (error) { 
             setPets([])
             isAlreadyShownAlert ?
                 (Alert.alert(
@@ -119,14 +123,11 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        // marginTop: 22
     },
     modalView: {
         width: Dimensions.get('window').width - 40,
         height: Dimensions.get('window').height - 40,
         backgroundColor: "white",
-        // borderTopLeftRadius: 20,
-        // borderTopRightRadius: 20,
         borderRadius:20,
         shadowColor: "#000",
         shadowOffset: {
