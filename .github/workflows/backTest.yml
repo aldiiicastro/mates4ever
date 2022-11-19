@@ -33,3 +33,5 @@ jobs:
       run: cd backend; mvn -B package --file pom.xml
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v2
+      with: 
+        files: ./backend/target/site/jacoco/jacoco.xml
