@@ -1,43 +1,26 @@
 import * as React from 'react'
 import {useEffect, useRef, useState} from "react"
-<<<<<<< HEAD
 import {View, Image, Text, Pressable, FlatList, TouchableHighlight, Alert} from 'react-native'
-=======
-import {View, Image, Text, Pressable, FlatList} from 'react-native'
->>>>>>> 5f258fa2b6158f1a116679e9339c53be9d004791
 import ViewShot from "react-native-view-shot"
 import * as Sharing from 'expo-sharing'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import Tag from '../../drawerlayout/Tag.js'
-<<<<<<< HEAD
 import {deletePetById, getComments} from "../../../server/Api";
-=======
-import {getComments} from "../../../server/Api";
->>>>>>> 5f258fa2b6158f1a116679e9339c53be9d004791
 import CommentCard from "../../comments/CommentCard";
 import SavedMapView from "../../SavedMapView";
 import {petDetailsStyle} from "../../../styles/pet/PetDetailsStyle";
 import {style} from "../../../styles/Commons"
-<<<<<<< HEAD
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function PetDetails({navigation, pet}) {
     const [comments, setComments] = useState([])
     const [email, setEmail] = useState('')
-=======
-
-export default function PetDetails({navigation, pet}) {
-    const [comments, setComments] = useState([])
->>>>>>> 5f258fa2b6158f1a116679e9339c53be9d004791
     useEffect(() => {
         getAllComments(pet.id)
     })
 
     const getAllComments = async (petID) => {
-<<<<<<< HEAD
         setEmail(await AsyncStorage.getItem('user_id'))
-=======
->>>>>>> 5f258fa2b6158f1a116679e9339c53be9d004791
         try {
             const commentsSaved = await getComments(petID)
             setComments(commentsSaved.data)
@@ -45,7 +28,6 @@ export default function PetDetails({navigation, pet}) {
             console.log(e)
         }
     }
-<<<<<<< HEAD
     const deletePet = async () => {
         try {
             await deletePetById(pet.id)
@@ -64,9 +46,6 @@ export default function PetDetails({navigation, pet}) {
                 onPress: () => navigation.navigate("Detalles", pet.id)
             }])
     }
-=======
-
->>>>>>> 5f258fa2b6158f1a116679e9339c53be9d004791
     const viewShot = useRef()
     const share = async () => {
         try {
@@ -97,7 +76,6 @@ export default function PetDetails({navigation, pet}) {
                 style={petDetailsStyle.imageDetail}/>
         </View>)
     }
-<<<<<<< HEAD
     const renderFinish = () => {
         return pet.tutor === email ?
             <View>
@@ -107,9 +85,6 @@ export default function PetDetails({navigation, pet}) {
                 </Pressable>
             </View> : <View/>
     }
-=======
-
->>>>>>> 5f258fa2b6158f1a116679e9339c53be9d004791
     const renderComponent = () => {
         return (
             <ViewShot ref={viewShot} options={{format: 'jpg', quality: 0.9}}>
@@ -171,10 +146,7 @@ export default function PetDetails({navigation, pet}) {
                         <Text testID={"pet-details-vaccinate"}
                               style={[petDetailsStyle.descriptionDetail, style.bold]}> • {pet.vaccine ? "Esta vacunado" : "No esta vacunado"}</Text>
                     </View>
-<<<<<<< HEAD
                     {renderFinish()}
-=======
->>>>>>> 5f258fa2b6158f1a116679e9339c53be9d004791
                     {pet.coordinates && <SavedMapView param={pet}/>}
                 </View>
                 {comments.length > 0 && <View style={{paddingHorizontal: 20, marginVertical: 10}}>

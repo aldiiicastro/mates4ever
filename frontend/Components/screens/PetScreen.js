@@ -9,12 +9,8 @@ import {petCreationScreenStyle} from "../../styles/pet/PetCreationScreenStyle.js
 import {getSearchedPets} from "../../server/Api"
 import {style} from "../../styles/Commons"
 import PerfilButton from '../drawerlayout/PerfilButton.js'
-<<<<<<< HEAD
 import LostPets from "../modals/LostPets";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-=======
-import LostsPets from '../modals/LostsPets.js'
->>>>>>> 5f258fa2b6158f1a116679e9339c53be9d004791
 
 export default function PetScreen({navigation}) {
     const [petsSearching, setPetsSearching] = useState([])
@@ -66,11 +62,7 @@ export default function PetScreen({navigation}) {
 
                     }}/>
                 </View>
-<<<<<<< HEAD
                 <LostPets navigation={navigation} />
-=======
-            <LostsPets navigation={navigation} />
->>>>>>> 5f258fa2b6158f1a116679e9339c53be9d004791
             </View>
             <ScrollView horizontal={true}>
                 {((petsSearching && petsSearching.length) ?

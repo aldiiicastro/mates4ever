@@ -32,10 +32,6 @@ jobs:
     - name: Build with Maven
       run: cd backend; mvn -B package --file pom.xml
     - name: Upload coverage to Codecov
-<<<<<<< HEAD
       uses: codecov/codecov-action@v3
-=======
-      uses: codecov/codecov-action@v2
->>>>>>> 5f258fa2b6158f1a116679e9339c53be9d004791
       with: 
         files: ./backend/target/site/jacoco/jacoco.xml

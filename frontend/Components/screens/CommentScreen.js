@@ -4,18 +4,10 @@ import {ScrollView} from "react-native-gesture-handler"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import * as Location from 'expo-location'
 import {createComment, getDir, getUserByEmail} from "../../server/Api"
-<<<<<<< HEAD
 import {handleImagesPicked, pickMultipleImage} from "../../server/FirebaseServer"
 import Loader from "../drawerlayout/Loader"
 import {
     CalendarForm, EmptyImage,
-=======
-import {handleImagePicked, handleImagesPicked, pickImage, pickMultipleImage} from "../../server/FirebaseServer"
-import Loader from "../drawerlayout/Loader"
-import {
-    CalendarForm, EmptyImage,
-    ImageForm, ImageGallery,
->>>>>>> 5f258fa2b6158f1a116679e9339c53be9d004791
     MultiLineLabelRequired,
     SimpleCheckBox
 } from "../drawerlayout/FormItemGeneric"
@@ -23,17 +15,10 @@ import {colors} from "../../styles/Colors"
 import {petCreationScreenStyle} from "../../styles/pet/PetCreationScreenStyle"
 import {style} from "../../styles/Commons"
 import Back from "../drawerlayout/Back"
-<<<<<<< HEAD
 import {Alert, FlatList, Image, SafeAreaView, View} from "react-native"
 import MapViewWithLabel from "../MapViewWithLabel"
 import {form} from "../../styles/Form"
 import Icon from "react-native-vector-icons/MaterialIcons"
-=======
-import {Alert, FlatList, Image, SafeAreaView, TouchableHighlight, View} from "react-native"
-import MapViewWithLabel from "../MapViewWithLabel";
-import {form} from "../../styles/Form";
-import Icon from "react-native-vector-icons/MaterialIcons";
->>>>>>> 5f258fa2b6158f1a116679e9339c53be9d004791
 
 export default function CommentScreen({navigation, route}) {
     const [images, setImages] = useState(null)
@@ -51,11 +36,7 @@ export default function CommentScreen({navigation, route}) {
 
     useEffect(() => {
         getCurrentPosition()
-<<<<<<< HEAD
     }, [])
-=======
-    }, []);
->>>>>>> 5f258fa2b6158f1a116679e9339c53be9d004791
 
     //************GET CURRENT POSITION*******************
     const getCurrentPosition = async () => {
@@ -241,11 +222,7 @@ async function sendPushNotification(pet, comment) {
     const tokens = user.data.expoPushToken
     const message = {
         to: tokens,
-<<<<<<< HEAD
         title: 'Nuevo comentario sobre ' + pet.name,
-=======
-        title: 'Nuevo comentario sobre' + pet.name,
->>>>>>> 5f258fa2b6158f1a116679e9339c53be9d004791
         body: 'De parte de ' + comment,
         data: {id: pet.id},
     };

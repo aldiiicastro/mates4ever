@@ -57,13 +57,8 @@ const petDetailsStyle = StyleSheet.create({
     imageDetail: {
         resizeMode: 'cover',
         flex: 1,
-<<<<<<< HEAD
         width: width - 30,
         height: width - 30
-=======
-        width: Dimensions.get('window').width - 30,
-        height: Dimensions.get('window').width - 30
->>>>>>> 5f258fa2b6158f1a116679e9339c53be9d004791
     },
     centeredView: {
         flex: 1,

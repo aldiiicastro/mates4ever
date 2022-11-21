@@ -1,10 +1,6 @@
 import axios from 'axios'
 
-<<<<<<< HEAD
 const baseUrl = 'http://192.168.0.66:8070'
-=======
-const baseUrl = 'http://192.168.0.13:8070'
->>>>>>> 5f258fa2b6158f1a116679e9339c53be9d004791
 
 const axinst = axios.create({
     baseURL: baseUrl,
@@ -55,14 +51,11 @@ export const getPetById = async (id) => {
     return await axinst.get(url)
 }
 
-<<<<<<< HEAD
 export const deletePetById = async (id) => {
     const url =`${baseUrl}/api/pet/delete/${id}`
     return await axinst.delete(url)
 }
 
-=======
->>>>>>> 5f258fa2b6158f1a116679e9339c53be9d004791
 export const getPetByUser = async (user) => {
     const url = `${baseUrl}/api/pets/${user}`
     return await axinst.get(url)
@@ -90,10 +83,7 @@ export const getDir = async (dir) => {
     return axinst.get(`https://apis.datos.gob.ar/georef/api/direcciones?direccion=${dir}`)
 }
 
-<<<<<<< HEAD
 
-=======
->>>>>>> 5f258fa2b6158f1a116679e9339c53be9d004791
 //******************** Notifications ***************
 export const postNotifications = async (body) => {
     const headers = {
