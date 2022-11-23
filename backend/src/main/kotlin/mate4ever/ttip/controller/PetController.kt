@@ -2,7 +2,6 @@ package mate4ever.ttip.controller
 
 import mate4ever.ttip.dto.PetDocumentDTO
 import mate4ever.ttip.dto.PetRequestDTO
-import mate4ever.ttip.dto.PetResponseDTO
 import mate4ever.ttip.model.Pet
 import mate4ever.ttip.service.PetService
 import org.springframework.beans.factory.annotation.Autowired
@@ -30,45 +29,41 @@ class PetController {
         val pet = petService.findById(id)
         return ResponseEntity<Pet>(pet, null, HttpStatus.OK)
     }
+
     @GetMapping("/api/pets/{user}")
     fun getPetByUser(@PathVariable(required = true) user: String): ResponseEntity<*> {
         val pets = petService.findPetByUser(user)
         return ResponseEntity(pets, null, HttpStatus.OK)
     }
+
     @GetMapping("/api/pet/all")
     fun getAllPets(): MutableIterable<Pet?> {
         return petService.findAll()
     }
 
     @GetMapping("/api/pet/search")
-    fun searchBy(@RequestParam(required = true) query: String): ResponseEntity<*> {
-        val petsResponse = petService.search(query)
-        return ResponseEntity<List<*>>(petsResponse.map {
-            PetResponseDTO(
-                it!!.id!!,
-                it.name,
-                it.image,
-                it.birth.toString(),
-                it.type,
-                it.breed,
-                it.state,
-                it.user,
-                it.vaccine,
-                it.castrated,
-                it.medicalHistory,
-                it.description,
-                it.coordinates
-            )
-        }, null, HttpStatus.OK)
+    fun searchBy(
+        @RequestParam search: String,
+        @RequestParam closeness: List<Double>,
+        @RequestParam state: List<String>,
+        @RequestParam type: List<String>
+    ): List<PetDocumentDTO> {
+        val petsResponse = petService.search(search, closeness, state, type)
+        return petsResponse
     }
+
     @GetMapping("/api/pet/getNearbyPets")
-    fun getNearbyPets(@RequestParam latitude: Double, @RequestParam longitude: Double): List<PetDocumentDTO> {
+    fun getNearbyPets(
+        @RequestParam latitude: Double,
+        @RequestParam longitude: Double
+    ): List<PetDocumentDTO> {
         return petService.getNearbyPets(latitude, longitude)
     }
 
     fun deleteAll() {
         return petService.deleteAll()
     }
+
     @DeleteMapping("api/pet/delete/{id}")
     fun deleteById(@PathVariable id: String) {
         return petService.deleteById(id)

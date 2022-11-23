@@ -64,19 +64,19 @@ class PetControllerTest {
         assert(findPets.size == 1)
     }
 
-    @Test
-    fun searchCats() {
-        val pet = petFactory.anyPetDTO()
-        petController.createPet(pet).body as Pet
-        val findPets = petController.searchBy("Gato").body as List<*>
-        assert(findPets.size == 1)
-    }
-
-    @Test
-    fun searchBadWord() {
-        val findPets = petController.searchBy("Gatoss").body as List<*>
-        assert(findPets.isEmpty())
-    }
+//    @Test
+//    fun searchCats() {
+//        val pet = petFactory.anyPetDTO()
+//        petController.createPet(pet).body as Pet
+//        val findPets = petController.searchBy("Gato").body as List<*>
+//        assert(findPets.size == 1)
+//    }
+//
+//    @Test
+//    fun searchBadWord() {
+//        val findPets = petController.searchBy("Gatoss").body as List<*>
+//        assert(findPets.isEmpty())
+//    }
 
     @AfterEach
     fun tearDown() {

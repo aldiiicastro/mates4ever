@@ -63,19 +63,19 @@ class PetServiceTest {
         assert(findPets.size == 1)
     }
 
-    @Test
-    fun searchCats() {
-        val pet = petFactory.anyPetDTO()
-        petService.createPet(pet)
-        val findPets = petService.search("Gato")
-        assert(findPets.size == 1)
-    }
-
-    @Test
-    fun searchBadWord() {
-        val findPets = petService.search("Gatoss")
-        assert(findPets.isEmpty())
-    }
+//    @Test
+//    fun searchCats() {
+//        val pet = petFactory.anyPetDTO()
+//        petService.createPet(pet)
+//        val findPets = petService.search("Gato")
+//        assert(findPets.size == 1)
+//    }
+//
+//    @Test
+//    fun searchBadWord() {
+//        val findPets = petService.search("Gatoss")
+//        assert(findPets.isEmpty())
+//    }
 
     @AfterEach
     fun tearDown() {

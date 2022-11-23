@@ -8,8 +8,6 @@ import mate4ever.ttip.repository.PetRepository
 import org.bson.types.ObjectId
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.mongodb.core.MongoTemplate
-import org.springframework.data.mongodb.core.query.Criteria
-import org.springframework.data.mongodb.core.query.Query
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
@@ -70,19 +68,18 @@ class PetService {
     }
 
     @Transactional(readOnly = true)
-    fun search(value: String): List<Pet?> {
-        val nameCriteria = criteriaForm("name", value)
-        val stateCriteria = criteriaForm("state", value)
-        val typeCriteria = criteriaForm("type", value)
-        val criteria = Criteria().orOperator(nameCriteria, stateCriteria, typeCriteria)
-        val query = Query(criteria)
-        return mongoTemplate.find(query, Pet::class.java)
-    }
+    fun search(value: String, closeness: List<Double>, state: List<String>, type: List<String>): List<PetDocumentDTO> {
+        val valueQuery = if (value != "") searchByValuePetQuery(value) else ""
+        val closenessQuery = if (closeness.isNotEmpty() && closeness.size == 3) nearbyPetQuery(closeness[0], closeness[1], closeness[2]) else ""
+        val stateQuery = if (state.isNotEmpty()) statePetQuery(state) else ""
+        val typeQuery = if (type.isNotEmpty()) typePetQuery(type) else ""
 
-    fun getNearbyPets(lat: Double, long : Double): List<PetDocumentDTO> {
-        val document =
-            mongoTemplate.executeCommand("{ find: 'pet', filter : {\$where: 'this.coordinates && Math.abs(this.coordinates.latitude - $lat) <= 0.02 &&  Math.abs(this.coordinates.longitude - $long) <= 0.02 '}}")
+        val jsonCommand = "{ find: 'pet', filter : {\$and : [ {} $valueQuery  $closenessQuery $stateQuery $typeQuery]  }}"
+
+        val document = mongoTemplate.executeCommand( jsonCommand )
+
         val listOfPets = (document["cursor"] as Map<*, *>)["firstBatch"] as List<Map<String, *>>
+
         return listOfPets.map { it ->
             PetDocumentDTO(
                 (it["_id"] as ObjectId).toString(),
@@ -101,8 +98,28 @@ class PetService {
             )
         }
     }
-    private fun criteriaForm(fieldName: String, value: String): Criteria {
-        return Criteria.where(fieldName).regex(value, "i")
+
+    fun getNearbyPets(lat: Double, long : Double): List<PetDocumentDTO> {
+        val document =
+            mongoTemplate.executeCommand("{ find: 'pet', filter : "+ nearbyPetQuery(0.02, lat, long) + "}")
+        val listOfPets = (document["cursor"] as Map<*, *>)["firstBatch"] as List<Map<String, *>>
+        return listOfPets.map { it ->
+            PetDocumentDTO(
+                (it["_id"] as ObjectId).toString(),
+                it["name"] as String,
+                it["image"] as String,
+                dateToLocalDate(it["birth"] as Date?),
+                it["type"] as String,
+                it["breed"] as String?,
+                it["state"] as String,
+                it["user"] as String,
+                it["vaccine"] as Boolean,
+                it["castrated"] as Boolean,
+                it["medicalHistory"] as String?,
+                it["description"] as String?,
+                it["coordinates"] as Map<String,Double>?
+            )
+        }
     }
 
     fun deleteAll() {
@@ -132,6 +149,21 @@ class PetService {
         }
     }
 
+    fun nearbyPetQuery(km:Double, lat: Double, long: Double): String {
+        return " { \$where: 'this.coordinates && Math.abs(this.coordinates.latitude - $lat) <= $km &&  Math.abs(this.coordinates.longitude - $long) <= $km' }"
+    }
+
+    fun searchByValuePetQuery(value: String): String {
+        return "{ \$or : [{ name : {'\$regex': '$value' , '\$options': 'i'} } { state : {'\$regex': '$value' , '\$options': 'i'}} { type : {'\$regex': '$value' , '\$options': 'i'}}] }"
+    }
+
+    private fun typePetQuery(type: List<String>): String {
+        return "{ \$or : [ " + type.map { v1-> "{ type : '$v1' }" }.reduce { v1, v2 -> v1 + v2 } + "] }"
+    }
+
+    private fun statePetQuery(state: List<String>): String {
+        return  "{ \$or : [ " + state.map { v1 -> "{ state : '$v1' }" }.reduce { v1, v2 -> v1 + v2 } + "] }"
+    }
 
 
 }
