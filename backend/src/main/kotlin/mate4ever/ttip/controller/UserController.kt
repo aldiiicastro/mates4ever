@@ -67,7 +67,4 @@ class UserController {
         return userService.deleteAll()
     }
 
-    fun deleteById(id: String) {
-        return userService.deleteById(id)
-    }
 }

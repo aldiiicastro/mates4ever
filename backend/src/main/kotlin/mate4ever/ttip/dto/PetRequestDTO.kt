@@ -1,6 +1,5 @@
 package mate4ever.ttip.dto
 
-import java.util.StringJoiner
 import javax.persistence.Id
 
 class PetRequestDTO(

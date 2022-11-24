@@ -44,7 +44,7 @@ class PetFactory() {
         type: String = "Gato",
         breed: String? = "Siames",
         state: String = "Perdido",
-        tutor: User = UserFactory().anyUser(pets = listOf()),
+        tutor: User = UserFactory().anyUser(),
         vaccine: Boolean = true,
         castrated: Boolean = true,
         medicalHistory: String? = null,

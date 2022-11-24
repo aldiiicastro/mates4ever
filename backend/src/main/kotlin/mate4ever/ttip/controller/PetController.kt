@@ -48,8 +48,7 @@ class PetController {
         @RequestParam state: List<String>,
         @RequestParam type: List<String>
     ): List<PetDocumentDTO> {
-        val petsResponse = petService.search(search, closeness, state, type)
-        return petsResponse
+        return petService.search(search, closeness, state, type)
     }
 
     @GetMapping("/api/pet/getNearbyPets")

@@ -31,7 +31,7 @@ class PetRepositoryTest {
             "Dog",
             null,
             "Lost",
-            UserFactory().anyUser(pets = listOf()),
+            UserFactory().anyUser(),
             description = null
         )
         pet = petRepository.insert(pet)

@@ -1,6 +1,5 @@
 package mate4ever.ttip.modelTests
 
-import mate4ever.ttip.dataHelpers.PetFactory
 import mate4ever.ttip.dataHelpers.UserFactory
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
@@ -11,7 +10,7 @@ class UserTest {
 
     @Test
     fun createUserTest() {
-        val user = userFactory.anyUser(pets = listOf(PetFactory().anyPet()))
+        val user = userFactory.anyUser()
         assert(user.name == "Aldana")
         assert(user.lastname == "Castro")
         assert(user.image == "Example")

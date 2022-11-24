@@ -48,7 +48,7 @@ class UserService {
     @Transactional(readOnly = true)
     fun findUserByEmail(email: String): User? {
         return userRepository.findByEmail(email)
-            ?: throw UserNotFoundException("No existe ningun usuario con ese email en la base de datos")
+            ?: throw UserNotFoundException("El mail o la contraseña son incorrectos")
     }
 
     @Transactional(readOnly = true)
@@ -56,9 +56,6 @@ class UserService {
         return userRepository.findAll()
     }
 
-    fun getPets(email: String){
-        return
-    }
 
     fun createUser(user: User): User {
         user.password = encryptor.encrypt(user.password, secretKey).toString()
@@ -73,9 +70,6 @@ class UserService {
         return userRepository.deleteAll()
     }
 
-    fun deleteById(id: String) {
-        return userRepository.deleteById(id)
-    }
     fun addPet(email: String, petID: String){
         val user = findUserByEmail(email)!!
         user.addPet(petID)

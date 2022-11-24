@@ -14,14 +14,14 @@ import java.time.format.DateTimeFormatter
 class CommentService {
     @Autowired
     lateinit var commentRepository : CommentRepository
-
+    @Transactional
     fun createComment(commentDTO: CommentRequestDTO): Comment {
         val dateOfSeen = parseLocalDate(commentDTO.dateOfSeen)
         val comment = Comment(commentDTO.id, commentDTO.petID, commentDTO.image,dateOfSeen, commentDTO.commentary, commentDTO.contact, commentDTO.coordinates)
         return commentRepository.insert(comment)
     }
-
-    fun findCommentByPetID(petID: String): Any {
+    @Transactional
+    fun findCommentByPetID(petID: String): MutableIterable<Comment> {
         return commentRepository.findByPetID(petID)
     }
 
@@ -34,7 +34,7 @@ class CommentService {
         }
 
     }
-
+    @Transactional
     fun deleteAll() {
         return commentRepository.deleteAll()
     }

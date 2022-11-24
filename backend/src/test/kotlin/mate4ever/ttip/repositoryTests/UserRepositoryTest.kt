@@ -30,7 +30,7 @@ class UserRepositoryTest {
 
     @Test
     fun createAndFindPet() {
-        var user = userFactory.anyUser(pets = listOf(pet))
+        var user = userFactory.anyUser()
         user = userRepository.insert(user)
         val findPet = userRepository.findItemById(user.id!!)
         assert(findPet!!.name == user.name)
@@ -38,7 +38,7 @@ class UserRepositoryTest {
 
     @Test
     fun createAndFindPetWithNullParameters() {
-        var user = userFactory.anyUser(phone = null, image = null, pets = listOf(pet))
+        var user = userFactory.anyUser(phone = null, image = null)
         user = userRepository.insert(user)
         val findPet = userRepository.findItemById(user.id!!)
         assert(findPet!!.name == user.name)
@@ -58,8 +58,9 @@ class UserRepositoryTest {
 
     @Test
     fun getAllPetsCorrect() {
-        val user = userFactory.anyUser(pets = listOf(pet))
+        val user = userFactory.anyUser()
         userRepository.insert(user)
+        user.addPet(pet.name)
         val findPets = userRepository.findAll() as List<*>
         assert(findPets.size == 1)
     }

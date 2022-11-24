@@ -24,7 +24,7 @@ class PetServiceTest {
 
     @BeforeEach
     fun setUp() {
-        val user = userFactory.anyUser(pets = listOf())
+        val user = userFactory.anyUser()
         userService.createUser(user)
     }
 

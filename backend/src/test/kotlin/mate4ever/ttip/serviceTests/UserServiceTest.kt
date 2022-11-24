@@ -24,7 +24,7 @@ class UserServiceTest {
 
     @Test
     fun createAndFindPet() {
-        var user = userFactory.anyUser(pets = listOf())
+        var user = userFactory.anyUser()
         user = userService.createUser(user)
         val findUser = userService.findUserBy(user.id!!)
         assert(findUser.name == user.name)
@@ -32,7 +32,7 @@ class UserServiceTest {
 
     @Test
     fun createAndFindPetWithNullParameters() {
-        var user = userFactory.anyUser(phone = null, image = null, pets = listOf())
+        var user = userFactory.anyUser(phone = null, image = null)
         user = userService.createUser(user)
         val findUser = userService.findUserBy(user.id!!)
         assert(findUser.name == user.name)
@@ -49,7 +49,7 @@ class UserServiceTest {
 
     @Test
     fun findUserLogin() {
-        var user = userFactory.anyUser(pets = listOf())
+        var user = userFactory.anyUser()
         user = userService.createUser(user)
         val findUser = userService.findUser(UserDTO("aldana@gmail.com", "contrasena...", "ExponentPushToken[0XZ0dzHNirdz-ogo3o64e1]"))
         assert(findUser!!.name == user.name)
@@ -57,7 +57,7 @@ class UserServiceTest {
 
     @Test
     fun findUserLoginWrongPassword() {
-        val user = userFactory.anyUser(pets = listOf())
+        val user = userFactory.anyUser()
         userService.createUser(user)
         assertThrows<UserIncorrectArgumentsException>("No existe ningun usuario con ese id en la base de datos") {
             userService.findUser(
@@ -68,7 +68,7 @@ class UserServiceTest {
 
     @Test
     fun findUserLoginWrongEmail() {
-        val user = userFactory.anyUser(pets = listOf())
+        val user = userFactory.anyUser()
         userService.createUser(user)
         assertThrows<UserIncorrectArgumentsException>("No existe ningun usuario con ese id en la base de datos") {
             userService.findUser(
@@ -85,7 +85,7 @@ class UserServiceTest {
 
     @Test
     fun getAllPetsCorrect() {
-        val user = userFactory.anyUser(pets = listOf())
+        val user = userFactory.anyUser()
         userService.createUser(user)
         val findUsers = userService.findAllUsers() as List<*>
         assert(findUsers.size == 1)

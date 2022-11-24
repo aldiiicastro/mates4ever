@@ -1,16 +1,12 @@
 package mate4ever.ttip.controller
 
 import mate4ever.ttip.dto.CommentRequestDTO
-import mate4ever.ttip.model.Comment
-import mate4ever.ttip.model.Pet
 import mate4ever.ttip.service.CommentService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 @RestController
 @EnableAutoConfiguration
@@ -29,4 +25,9 @@ class CommentController {
         val commentsSaved = commentService.findCommentByPetID(petID)
         return ResponseEntity(commentsSaved, null, HttpStatus.OK)
     }
+
+    fun deleteAll() {
+        return commentService.deleteAll()
+    }
+
 }
