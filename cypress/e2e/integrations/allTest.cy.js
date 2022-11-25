@@ -1,7 +1,7 @@
 
 describe('Create pet', () => {
     beforeEach( () => {
-        cy.intercept('GET', '/api/pet/search?query=', {fixture: 'pets_data.json'}).as('gets')
+        cy.intercept('GET', '/api/pet/search?search=&closeness=&state=&type=', {fixture: 'pets_data.json'}).as('gets')
         cy.loginBeforeEach()
     })
     it('Create a new pet without photo', () => {
@@ -20,7 +20,7 @@ describe('Create pet', () => {
 
 describe('Home', () => {
     beforeEach( () => {
-        cy.intercept('GET', '/api/pet/search?query=', {fixture: 'empty_data.json'}).as('getEmpty')
+        cy.intercept('GET', '/api/pet/search?search=&closeness=&state=&type=', {fixture: 'empty_data.json'}).as('getEmpty')
         cy.loginBeforeEach()
         cy.get('[data-testid="hideModal"]').click()
     })
@@ -33,7 +33,7 @@ describe('Home', () => {
 
 describe('Home', () => {
     beforeEach( () => {
-        cy.intercept('GET', '/api/pet/search?query=', {fixture: 'pets_data.json'}).as('getPets')
+        cy.intercept('GET', '/api/pet/search?search=&closeness=&state=&type=', {fixture: 'pets_data.json'}).as('getPets')
         cy.loginBeforeEach()
         cy.get('[data-testid="hideModal"]').click()
         cy.wait('@getPets')
@@ -75,7 +75,7 @@ describe('Home', () => {
 
 describe('Initial pets', () => {
     beforeEach( () => {
-        cy.intercept('GET', '/api/pet/search?query=', {fixture: 'pets_data.json'}).as('gets')
+        cy.intercept('GET', '/api/pet/search?search=&closeness=&state=&type=', {fixture: 'pets_data.json'}).as('gets')
         cy.loginBeforeEach()
         cy.wait('@gets')
         cy.get('[data-testid="hideModal"]').click()
@@ -119,14 +119,14 @@ describe('Initial pets', () => {
 
 describe('Pet searching', () => {
     beforeEach( () => {
-        cy.intercept('GET', '/api/pet/search?query=', {fixture: 'pets_data.json'}).as('gets')
+        cy.intercept('GET', '/api/pet/search?search=&closeness=&state=&type=', {fixture: 'pets_data.json'}).as('gets')
         cy.loginBeforeEach()
     })
     it('Searching Pet', ()=> {
         //Fixture create the seed data
-        cy.intercept('GET', '/api/pet/search?query=P', {fixture: 'searchPer_data.json'})
-        cy.intercept('GET', '/api/pet/search?query=Pe', {fixture: 'searchPer_data.json'})
-        cy.intercept('GET', '/api/pet/search?query=Per', {fixture: 'searchPer_data.json'}).as('getPer')
+        cy.intercept('GET', '/api/pet/search?search=P&closeness=&state=&type=', {fixture: 'searchPer_data.json'})
+        cy.intercept('GET', '/api/pet/search?search=Pe&closeness=&state=&type=', {fixture: 'searchPer_data.json'})
+        cy.intercept('GET', '/api/pet/search?search=Per&closeness=&state=&type=', {fixture: 'searchPer_data.json'}).as('getPer')
         cy.wait('@gets')
         cy.get('[data-testid="hideModal"]').click()
         cy.wait(500)
@@ -142,7 +142,7 @@ describe('Pet searching', () => {
 
 describe('Profile screen', () => {
     beforeEach( () => {
-        cy.intercept('GET', '/api/pet/search?query=', {fixture: 'pets_data.json'}).as('gets')
+        cy.intercept('GET', '/api/pet/search?search=&closeness=&state=&type=', {fixture: 'pets_data.json'}).as('gets')
         cy.loginBeforeEach()
         cy.wait('@gets')
         cy.get('[data-testid="hideModal"]').click()
