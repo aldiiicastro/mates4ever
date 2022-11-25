@@ -62,6 +62,27 @@ const loginScreenStyle = StyleSheet.create({
         color: colors.yellow,
         fontWeight: 'bold',
     },
+    mainViewStyle: {
+        flex: 1,
+        backgroundColor:
+        colors.yellow,
+        padding: 24
+    },
+    keyboardStyle: {
+        flex: 1
+    },
+    formButtonStyle: {
+        backgroundColor: colors.violet
+    },
+    safeAreaStyle: {
+        flex: 1
+    },
+    contentContainersStyle: {
+        flex: 1,
+        justifyContent: 'center',
+        alignContent: 'center',
+    }
+
 });
 
 export {loginScreenStyle}

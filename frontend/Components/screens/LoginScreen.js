@@ -6,7 +6,6 @@ import {loginScreenStyle} from "../../styles/LoginScreenStyle"
 import ImageView from "../drawerlayout/ImageView"
 import {Form, FormItem} from 'react-native-form-component'
 import {loginUser} from "../../server/Api"
-import {colors} from "../../styles/Colors"
 import {FormItemGeneric} from "../drawerlayout/FormItemGeneric"
 
 const LoginScreen = forwardRef(({navigation}, ref) => {
@@ -32,22 +31,17 @@ const LoginScreen = forwardRef(({navigation}, ref) => {
     }
 
     return (
-        <SafeAreaView style={{flex: 1}}>
-
+        <SafeAreaView style={loginScreenStyle.safeAreaStyle}>
             <View style={loginScreenStyle.mainBody}>
                 <Loader loading={loading}/>
                 <ScrollView
                     keyboardShouldPersistTaps="handled"
-                    contentContainerStyle={{
-                        flex: 1,
-                        justifyContent: 'center',
-                        alignContent: 'center',
-                    }}>
-                    <View style={{flex: 1, backgroundColor: colors.yellow, padding: 24}}>
-                        <KeyboardAvoidingView behavior="position" style={{flex: 1}}>
+                    contentContainerStyle={loginScreenStyle.contentContainersStyle}>
+                    <View style={loginScreenStyle.mainViewStyle}>
+                        <KeyboardAvoidingView behavior="position" style={loginScreenStyle.keyboardStyle}>
                             <ImageView/>
                             <Form buttonText={'Iniciar sesión'} onButtonPress={() => handleSubmitPress()}
-                                  buttonStyle={{backgroundColor: colors.violet}}>
+                                  buttonStyle={loginScreenStyle.formButtonStyle}>
                                 <FormItemGeneric
                                     value={userEmail}
                                     label={"Email"}
@@ -79,7 +73,6 @@ const LoginScreen = forwardRef(({navigation}, ref) => {
                     </View>
                 </ScrollView>
             </View>
-
         </SafeAreaView>
     )
 })

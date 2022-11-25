@@ -1,15 +1,14 @@
-import {View, Text, Modal, StyleSheet, Pressable, Dimensions, Alert} from 'react-native'
+import {View, Text, Modal, Alert} from 'react-native'
 import React, {useEffect, useState} from 'react'
-import {getNearByPets, getSearchedPets} from '../../server/Api';
+import {getNearByPets} from '../../server/Api';
 import Pet from '../../model/Pet';
 import MapView, {Marker} from 'react-native-maps';
 import * as Location from 'expo-location';
-import { petCreationScreenStyle } from '../../styles/pet/PetCreationScreenStyle';
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import { colors } from '../../styles/Colors';
+import {lostPetsStyle} from "../../styles/LostPetsStyle";
 
 
-export default function LostsPets({navigation}) {
+export default function MapLostPets({navigation}) {
     const [modalVisible, setModalVisible] = useState(true);
     const [pets, setPets] = useState([])
     const [isLoading, setIsLoading] = useState(true)
@@ -36,7 +35,7 @@ export default function LostsPets({navigation}) {
             const response = await getNearByPets(currentLocation.latitude, currentLocation.longitude)
             const nearby = response.data.map((pet) => (new Pet(pet)))
             setPets(nearby)
-        } catch (error) { 
+        } catch (error) {
             setPets([])
             isAlreadyShownAlert ?
                 (Alert.alert(
@@ -65,8 +64,8 @@ export default function LostsPets({navigation}) {
 
     return (
         <View>
-            <View style={petCreationScreenStyle.sortBtn}>
-                <Icon name="place" size={30} style={petCreationScreenStyle.iconSrt} onPress={() => setModalVisible(true)} />
+            <View style={lostPetsStyle.sortBtn}>
+                <Icon name="place" size={30} style={lostPetsStyle.iconSrt} onPress={() => setModalVisible(true)} />
             </View>
 
             <Modal
@@ -77,19 +76,19 @@ export default function LostsPets({navigation}) {
                     setModalVisible(!modalVisible);
                 }}
             >
-                <View style={styles.centeredView}>
-                    <View style={styles.modalView}>
-                        <View style={{ margin: 10, flexDirection: 'row', justifyContent: 'space-around' }}>
-                            <Text style={styles.modalText}>Animales perdidos en tu zona</Text>
+                <View style={lostPetsStyle.centeredView}>
+                    <View style={lostPetsStyle.modalView}>
+                        <View style={lostPetsStyle.modalTitle}>
+                            <Text style={lostPetsStyle.modalText}>Animales perdidos en tu zona</Text>
                             <Icon
-                                name="close" size={30} style={{ color: colors.grey }}
+                                name="close" size={30} style={lostPetsStyle.iconHideModal}
                                 onPress={() => setModalVisible(false)}
                                 testID={'hideModal'}
                             />
                         </View>
 
                         <MapView
-                            style={{width: "100%", height: "90%"}}
+                            style={lostPetsStyle.mapViewStyle}
                             initialRegion={currentLocation}
                             region={currentLocation}
                             showsUserLocation={true}
@@ -118,45 +117,4 @@ export default function LostsPets({navigation}) {
         </View>
     )
 }
-const styles = StyleSheet.create({
-    centeredView: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-    },
-    modalView: {
-        width: Dimensions.get('window').width - 40,
-        height: Dimensions.get('window').height - 40,
-        backgroundColor: "white",
-        borderRadius:20,
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5
-    },
-    button: {
-        borderRadius: 20,
-        padding: 10,
-        elevation: 2
-    },
-    buttonOpen: {
-        backgroundColor: "#F194FF",
-    },
-    buttonClose: {
-        backgroundColor: "#2196F3",
-    },
-    textStyle: {
-        color: "white",
-        fontWeight: "bold",
-        textAlign: "center"
-    },
-    modalText: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: colors.violet,
-    }
-});
+

@@ -1,4 +1,4 @@
-import {Dimensions, StyleSheet} from "react-native";
+import {StyleSheet} from "react-native";
 import {colors} from "../Colors.js";
 import {width} from "../Dimension.js";
 
@@ -18,7 +18,7 @@ const petCreationScreenStyle = StyleSheet.create({
         fontSize: 25,
         color: colors.yellow,
         fontWeight: 'bold',
-        width: Dimensions.get('window').width-40
+        width: width-40
 
     },
     categoryContainer: {

@@ -1,12 +1,11 @@
 import * as React from 'react'
 import {View, TouchableOpacity} from 'react-native'
 import PetScreen from "./PetScreen.js"
-import {colors} from "../../styles/Colors.js"
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import {style} from "../../styles/Commons"
 import * as Notifications from "expo-notifications";
 import {useEffect} from "react";
-import LostPets from "../modals/LostPets";
+import {homeScreenStyle} from "../../styles/HomeScreenStyle";
 
 export default function HomeScreen({navigation}) {
 
@@ -22,7 +21,7 @@ export default function HomeScreen({navigation}) {
     }, [lastNotificationResponse]);
     return (
         <View testID={"homeScreenView"}
-              style={{flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.beige}}>
+              style={homeScreenStyle.viewStyle}>
             <PetScreen navigation={navigation}/>
             <View>
                 <TouchableOpacity

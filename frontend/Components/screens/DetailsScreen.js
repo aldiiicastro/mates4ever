@@ -23,14 +23,14 @@ export default function DetailsScreen({navigation, route}) {
     }, [route.params])
 
     return (
-        <View style={{flex: 1, alignItems: 'center', backgroundColor: '#fff'}}>
+        <View style={petDetailsStyle.viewStyle}>
             <PetDetails navigation={navigation} pet={pet}></PetDetails>
             <TouchableOpacity testID={'contactar'}
-                style={[petDetailsStyle.floatButton, style.alignItems]}
-                onPress={() => navigation.navigate('Perfil', pet.tutor)}
+                              style={[petDetailsStyle.floatButton, style.alignItems]}
+                              onPress={() => navigation.navigate('Perfil', pet.tutor)}
             >
                 <Icon name='face' size={30} color='#fff'/>
-                <Text style={{color: '#fff'}}> Contactar </Text>
+                <Text style={petDetailsStyle.contactColor}> Contactar </Text>
             </TouchableOpacity>
         </View>
     )

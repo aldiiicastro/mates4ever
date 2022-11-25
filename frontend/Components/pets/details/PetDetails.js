@@ -1,13 +1,13 @@
 import * as React from 'react'
 import {useEffect, useRef, useState} from "react"
-import {View, Image, Text, Pressable, FlatList, TouchableHighlight, Alert} from 'react-native'
+import {View, Image, Text, Pressable, FlatList, Alert} from 'react-native'
 import ViewShot from "react-native-view-shot"
 import * as Sharing from 'expo-sharing'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import Tag from '../../drawerlayout/Tag.js'
 import {deletePetById, getComments} from "../../../server/Api";
 import CommentCard from "../../comments/CommentCard";
-import SavedMapView from "../../SavedMapView";
+import SavedMapView from "../../map/SavedMapView";
 import {petDetailsStyle} from "../../../styles/pet/PetDetailsStyle";
 import {style} from "../../../styles/Commons"
 import AsyncStorage from "@react-native-async-storage/async-storage";

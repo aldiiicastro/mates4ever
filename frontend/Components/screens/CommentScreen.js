@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from "react"
+import React, {createRef, useEffect, useState} from "react"
 import {Form} from "react-native-form-component"
 import {ScrollView} from "react-native-gesture-handler"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import * as Location from 'expo-location'
-import {createComment, getDir, getUserByEmail} from "../../server/Api"
+import {createComment, getDir} from "../../server/Api"
 import {handleImagesPicked, pickMultipleImage} from "../../server/FirebaseServer"
 import Loader from "../drawerlayout/Loader"
 import {
@@ -11,14 +11,14 @@ import {
     MultiLineLabelRequired,
     SimpleCheckBox
 } from "../drawerlayout/FormItemGeneric"
-import {colors} from "../../styles/Colors"
-import {petCreationScreenStyle} from "../../styles/pet/PetCreationScreenStyle"
 import {style} from "../../styles/Commons"
 import Back from "../drawerlayout/Back"
 import {Alert, FlatList, Image, SafeAreaView, View} from "react-native"
-import MapViewWithLabel from "../MapViewWithLabel"
-import {form} from "../../styles/Form"
+import MapViewWithLabel from "../map/MapViewWithLabel"
 import Icon from "react-native-vector-icons/MaterialIcons"
+import {sendCommentNotifications} from "../Notifications";
+import {commentScreenStyle} from "../../styles/CommentScreenStyle";
+import {getDate, mapDir} from "../drawerlayout/CommonFunctions";
 
 export default function CommentScreen({navigation, route}) {
     const [images, setImages] = useState(null)
@@ -32,6 +32,7 @@ export default function CommentScreen({navigation, route}) {
     const [locations, setLocations] = useState([])
     const [location, setLocation] = useState({})
     const [wantLocation, setWantLocation] = useState(false)
+    const [close, setClose] = useState(false)
     const pet = route.params
 
     useEffect(() => {
@@ -84,27 +85,21 @@ export default function CommentScreen({navigation, route}) {
         hideDatePicker()
     }
 
-    const getDate = (dateInput) => {
-        const dateArray = dateInput.toLocaleDateString().split("/")
-        return ([dateArray[1], dateArray[0], dateInput.getFullYear()].join("/"))
-    }
 
     //************MAP AUXILIARIES*******************
-    const mapDir = (index, dire) => {
-        return {id: index, name: dire.nomenclatura}
-    }
-
     const onSelected = async (item) => {
+        setClose(true)
         let reg = await Location.geocodeAsync(item.name)
         setLocation(item)
         setRegion({latitude: reg[0].latitude, longitude: reg[0].longitude})
     }
 
     const onChangeText = async (dir) => {
+        setClose(false)
         try {
-            let algo = await getDir(dir)
+            let direction = await getDir(dir)
             setLocation([])
-            setLocations(algo.data["direcciones"].map((dire, index) => mapDir(index, dire)))
+            setLocations(direction.data["direcciones"].map((dire, index) => mapDir(index, dire)))
         } catch (e) {
             console.log(e)
         }
@@ -123,7 +118,9 @@ export default function CommentScreen({navigation, route}) {
 
     // *********************PUBLISH*********************
     const publish = async () => {
-
+        if (commentary) {
+            setErrors("Debe escribir un comentario")
+        }
         setLoading(true)
         const userEmail = await AsyncStorage.getItem("user_id")
         let imageUpload = []
@@ -143,11 +140,10 @@ export default function CommentScreen({navigation, route}) {
         try {
             await createComment(comment)
         } catch (error) {
-            setErrors(error.errors)
+            alert("Hubo un problema. Contactese con el administador")
         }
         try {
-
-            await sendPushNotification(pet, userEmail)
+            await sendCommentNotifications(pet, userEmail)
             navigation.navigate("Detalles", pet.id)
         } catch (e) {
 
@@ -166,13 +162,13 @@ export default function CommentScreen({navigation, route}) {
         <ScrollView style={style.fullContainer}>
             <Loader loading={loading}/>
             <Back onPress={() => navigation.goBack()} text="Cargar un comentario"
-                  headerStyle={petCreationScreenStyle.header}/>
-            <View style={form.image} on>
+                  headerStyle={commentScreenStyle.header}/>
+            <View style={commentScreenStyle.image} on>
                 <FlatList horizontal={true}
                           ListEmptyComponent={ <EmptyImage onPress={pickAnImage}/>}
                           data={images} renderItem={(item)=> {
-                    return <Image source= { {uri: item["item"].uri}} style={form.imageSize}/>}}/>
-                <View style={form.imageIcon}>
+                    return <Image source= { {uri: item["item"].uri}} style={commentScreenStyle.imageSize}/>}}/>
+                <View style={commentScreenStyle.imageIcon}>
                     <Icon name="create" size={28} onPress={() => pickAnImage()} />
                 </View>
             </View>
@@ -180,7 +176,7 @@ export default function CommentScreen({navigation, route}) {
             <Form
                 GenericInput={"Cargar un comentario"}
                 onButtonPress={() => publish()}
-                buttonStyle={{backgroundColor: colors.violet}}
+                buttonStyle={commentScreenStyle.formButtonStyle}
                 buttonText="Publicar"
                 style={[style.marginX, style.bgWhite]}>
                 <CalendarForm
@@ -193,6 +189,7 @@ export default function CommentScreen({navigation, route}) {
                     onPress={showDatePicker}
                 />
                 <MultiLineLabelRequired
+                    ref={createRef()}
                     value={commentary}
                     label={"Cuentanos un poco sobre el encuentro"}
                     onChangeText={setCommentary}
@@ -204,38 +201,17 @@ export default function CommentScreen({navigation, route}) {
                     }}
                     text={"¿Queres poner una ubicación?"}
                 />
+                {wantLocation && <MapViewWithLabel region={region} onSelected={(item) => onSelected(item)}
+                                                   removeItem={() => onRemoveItem()} location={location}
+                                                   locations={locations}
+                                                   close={close}
+                                                   onPressMap={(e) => onChangeRegion(e.nativeEvent.coordinate)}
+                                                   onDragMarker={(e) => setRegion(e.nativeEvent.coordinate)}
+                                                   onChangeText={(text) => onChangeText(text)}/>}
             </Form>
         </ScrollView>
-    {wantLocation && <MapViewWithLabel region={region} onSelected={(item) => onSelected(item)}
-                                       removeItem={() => onRemoveItem()} location={location}
-                                       locations={locations}
-                                       onPressMap={(e) => onChangeRegion(e.nativeEvent.coordinate)}
-                                       onDragMarker={(e) => setRegion(e.nativeEvent.coordinate)}
-                                       onChangeText={(text) => onChangeText(text)}/>}
         </SafeAreaView>
     )
-}
-
-async function sendPushNotification(pet, comment) {
-
-    const user = await getUserByEmail(pet.tutor)
-    const tokens = user.data.expoPushToken
-    const message = {
-        to: tokens,
-        title: 'Nuevo comentario sobre ' + pet.name,
-        body: 'De parte de ' + comment,
-        data: {id: pet.id},
-    };
-
-    await fetch('https://exp.host/--/api/v2/push/send', {
-        method: 'POST',
-        headers: {
-            Accept: 'application/json',
-            'Accept-encoding': 'gzip, deflate',
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(message),
-    });
 }
 
 

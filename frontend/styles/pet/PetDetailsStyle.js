@@ -1,6 +1,6 @@
-import {StyleSheet} from "react-native";
-import {colors} from "../Colors";
-import {width, height} from "../Dimension";
+import {StyleSheet} from "react-native"
+import {colors} from "../Colors"
+import {width, height} from "../Dimension"
 
 const petDetailsStyle = StyleSheet.create({
     header: {
@@ -81,6 +81,14 @@ const petDetailsStyle = StyleSheet.create({
     },
     modalText: {
         marginBottom: 15, textAlign: "center"
+    },
+    viewStyle: {
+        flex: 1,
+        alignItems: 'center',
+        backgroundColor: '#fff'
+    },
+    contactColor: {
+        color: '#fff'
     }
 })
-export {petDetailsStyle};
+export {petDetailsStyle}

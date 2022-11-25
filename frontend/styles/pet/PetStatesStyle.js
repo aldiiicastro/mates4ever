@@ -24,6 +24,9 @@ const petsStatesStyle = StyleSheet.create({
     contentContainerStyle: {
         marginTop: 10,
         paddingBottom: 50,
+    },
+    columnsWrapperStyle: {
+        justifyContent: 'space-between'
     }
 })
 export {petsStatesStyle};

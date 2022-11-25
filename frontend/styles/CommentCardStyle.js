@@ -1,5 +1,6 @@
-import {Dimensions, StyleSheet} from "react-native";
+import {StyleSheet} from "react-native";
 import {colors} from "./Colors";
+import {width} from "./Dimension";
 
 const commentCardStyle = StyleSheet.create({
     header: {
@@ -62,11 +63,38 @@ const commentCardStyle = StyleSheet.create({
         resizeMode: 'cover',
         flex: 1,
         borderRadius: 10,
-        width: Dimensions.get('window').width - 250,
-        height: Dimensions.get('window').width - 250
+        width: width - 250,
+        height: width - 250
     },
     contentContainerStyle: {
         marginTop: 5
+    },
+    containerView: {
+        marginTop: 10,
+        marginHorizontal: 12,
+        borderRadius: 20
+    },
+    mailStyle: {
+        marginLeft: 20,
+        flexDirection: 'row',
+        alignItems: 'flex-end'
+    },
+    dateOfSeenStyle: {
+        marginLeft: 20,
+        marginTop: 20,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
+    commentStyle: {
+        paddingHorizontal: 20,
+        marginVertical: 10
+    },
+    font16: {
+        fontSize: 16
+    },
+    font18: {
+        fontSize: 18
     }
 })
-export {commentCardStyle};
+export {commentCardStyle}

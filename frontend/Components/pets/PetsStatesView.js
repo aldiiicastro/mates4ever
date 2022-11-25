@@ -35,7 +35,7 @@ export default function PetsStatesView(props) {
                 {states.map((propState, index) => statesButtons(propState, index))}
             </View>
             <FlatList
-                columnWrapperStyle={{justifyContent: 'space-between'}}
+                columnWrapperStyle={petsStatesStyle.columnsWrapperStyle}
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={petsStatesStyle.contentContainerStyle}
                 numColumns={2}

@@ -1,9 +1,10 @@
 import MapView, {Circle, Marker} from "react-native-maps";
+import {savedMapViewStyle} from "../../styles/SavedMapViewStyle";
 
 export default function SavedMapView({param}) {
     return (
         <MapView
-            style={{marginHorizontal: 10, marginTop: 30, height: 200}}
+            style={savedMapViewStyle.mapViewStyle}
             initialRegion={{
                 latitude: param.coordinates.latitude,
                 longitude: param.coordinates.longitude,
@@ -16,3 +17,4 @@ export default function SavedMapView({param}) {
         </MapView>
     )
 }
+
