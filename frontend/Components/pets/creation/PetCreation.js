@@ -43,6 +43,7 @@ export default function PetCreation({navigation}) {
     const [region, setRegion] = useState({latitude: -36.6769415180527, longitude: -60.5588319815719})
     const [locations, setLocations] = useState([])
     const [location, setLocation] = useState({})
+    const [changeText, setChangeText] = useState('')
     const nameInputRef = createRef()
 
     useEffect(() => {
@@ -124,9 +125,10 @@ export default function PetCreation({navigation}) {
         setClose(false)
         try {
             let direction = await getDir(dir)
-            setLocation([])
+            setChangeText(dir)
             setLocations(direction.data["direcciones"].map((dire, index) => mapDir(index, dire)))
         } catch (e) {
+            setChangeText('')
             console.log(e)
         }
     }
@@ -146,100 +148,6 @@ export default function PetCreation({navigation}) {
         let reg = await Location.reverseGeocodeAsync(newRegion)
         setLocation({id: 1, name: `${reg[0].street}, ${reg[0].streetNumber}, ${reg[0].city}`})
     }
-    const onRemoveItem = () => {
-        setLocations([])
-        setLocation({})
-    }
-    const renderForm = () => {
-        return (
-            <React.Fragment>
-                <ImageForm
-                    imageUri={imageUri}
-                    onPress={pickAnImage}
-                />
-
-                <FormItem
-                    value={name}
-                    label={"Nombre"}
-                    onChangeText={setName}
-                    showErrorIcon={false}
-                    asterik
-                    floatingLabel
-                    isRequired
-                    textInputStyle={form.inputLineBox}
-                    onSubmitEditing={() => nameInputRef.current && nameInputRef.current.focus()}
-                    ref={nameInputRef}
-                    errorBorderColor="white"
-                />
-                <CalendarForm
-                    isVisible={isDatePickerVisible}
-                    date={ageDate}
-                    onConfirm={handleConfirm}
-                    onCancel={hideDatePicker}
-                    dateText={age}
-                    defaultText="Fecha aproximada de nacimiento"
-                    onPress={showDatePicker}
-
-                />
-
-                <SimpleLinePicker
-                    items={[
-                        {label: "Adopción", value: "Adopción"},
-                        {label: "Transito", value: "Transito"},
-                        {label: "Perdido", value: "Perdido"},
-                    ]}
-                    label="Tipo de publicacion"
-                    selectedValue={state}
-                    onSelection={(item) => setState(item.value)}
-                />
-
-                <SimpleLinePicker
-                    items={[
-                        {label: "Perro", value: "Perro"},
-                        {label: "Gato", value: "Gato"},
-                        {label: "Otro", value: "Otro"},
-                    ]}
-                    label="Tipo de animal"
-                    selectedValue={type}
-                    onSelection={(item) => setType(item.value)}
-                />
-
-                <SimpleLineLabel
-                    value={breed}
-                    label={"Tiene raza? Cual?"}
-                    onChangeText={setBreed}
-                />
-
-                <MultiLineLabel
-                    value={description}
-                    label={"Cuentanos un poco sobre " + (name ? name : "el/ella")}
-                    onChangeText={setDescription}
-                />
-
-                <MultiLineLabel
-                    value={medicalHistory}
-                    label={"Tiene algun problema medico? Algo que quieras destacar?"}
-                    onChangeText={setMedicalHistory}
-                />
-
-                <SimpleCheckBox
-                    status={vaccine ? "checked" : "unchecked"}
-                    onPress={() => {
-                        setVaccine(!vaccine)
-                    }}
-                    text={"¿Tiene las vacunas al día?"}
-                />
-
-                <SimpleCheckBox
-                    status={castrated ? "checked" : "unchecked"}
-                    onPress={() => {
-                        setCastrated(!castrated)
-                    }}
-                    text={"¿Esta castrado?"}
-                />
-            </React.Fragment>
-        )
-    }
 
     const renderGoBack = () => {
         return (
@@ -258,11 +166,95 @@ export default function PetCreation({navigation}) {
                 <Form GenericInput={"Cargar una mascota"} onButtonPress={() => publish()}
                       buttonStyle={{backgroundColor: colors.violet}} buttonText="Publicar"
                       style={[style.marginX, style.bgWhite]}>
-                    {renderForm()}
+                    <ImageForm
+                        imageUri={imageUri}
+                        onPress={pickAnImage}
+                    />
+
+                    <FormItem
+                        value={name}
+                        label={"Nombre"}
+                        onChangeText={setName}
+                        showErrorIcon={false}
+                        asterik
+                        floatingLabel
+                        isRequired
+                        textInputStyle={form.inputLineBox}
+                        onSubmitEditing={() => nameInputRef.current && nameInputRef.current.focus()}
+                        ref={nameInputRef}
+                        errorBorderColor="white"
+                    />
+                    <CalendarForm
+                        isVisible={isDatePickerVisible}
+                        date={ageDate}
+                        onConfirm={handleConfirm}
+                        onCancel={hideDatePicker}
+                        dateText={age}
+                        defaultText="Fecha aproximada de nacimiento"
+                        onPress={showDatePicker}
+
+                    />
+
+                    <SimpleLinePicker
+                        items={[
+                            {label: "Adopción", value: "Adopción"},
+                            {label: "Transito", value: "Transito"},
+                            {label: "Perdido", value: "Perdido"},
+                        ]}
+                        label="Tipo de publicacion"
+                        selectedValue={state}
+                        onSelection={(item) => setState(item.value)}
+                    />
+
+                    <SimpleLinePicker
+                        items={[
+                            {label: "Perro", value: "Perro"},
+                            {label: "Gato", value: "Gato"},
+                            {label: "Otro", value: "Otro"},
+                        ]}
+                        label="Tipo de animal"
+                        selectedValue={type}
+                        onSelection={(item) => setType(item.value)}
+                    />
+
+                    <SimpleLineLabel
+                        value={breed}
+                        label={"Tiene raza? Cual?"}
+                        onChangeText={setBreed}
+                    />
+
+                    <MultiLineLabel
+                        value={description}
+                        label={"Cuentanos un poco sobre " + (name ? name : "el/ella")}
+                        onChangeText={setDescription}
+                    />
+
+                    <MultiLineLabel
+                        value={medicalHistory}
+                        label={"Tiene algun problema medico? Algo que quieras destacar?"}
+                        onChangeText={setMedicalHistory}
+                    />
+
+                    <SimpleCheckBox
+                        status={vaccine ? "checked" : "unchecked"}
+                        onPress={() => {
+                            setVaccine(!vaccine)
+                        }}
+                        text={"¿Tiene las vacunas al día?"}
+                    />
+
+                    <SimpleCheckBox
+                        status={castrated ? "checked" : "unchecked"}
+                        onPress={() => {
+                            setCastrated(!castrated)
+                        }}
+                        text={"¿Esta castrado?"}
+                    />
                     <MapViewWithLabel region={region} onSelected={(item) => onSelected(item)}
-                                      removeItem={() => onRemoveItem()} location={location}
+                                      location={location}
                                       locations={locations}
                                       close={close}
+                                      changeText={changeText}
                                       onPressMap={(e) => onChangeRegion(e.nativeEvent.coordinate)}
                                       onDragMarker={(e) => setRegion(e.nativeEvent.coordinate)}
                                       onChangeText={(text) => onChangeText(text)}/>

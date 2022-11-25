@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>130/130</span>
+                <span class='fraction'>115/115</span>
             </div>
         
             
@@ -39,14 +39,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>26/26</span>
+                <span class='fraction'>23/23</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>130/130</span>
+                <span class='fraction'>115/115</span>
             </div>
         
             
@@ -257,22 +257,22 @@
 <a name='L192'></a><a href='#L192'>192</a>
 <a name='L193'></a><a href='#L193'>193</a>
 <a name='L194'></a><a href='#L194'>194</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -450,28 +450,28 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">&nbsp;
-describe('Create pet', () =&gt; {
-    beforeEach( () =&gt; {
-        cy.intercept('GET', '/api/pet/search?query=', {fixture: 'pets_data.json'}).as('gets')
-        cy.loginBeforeEach()
-    })
-    it('Create a new pet without photo', () =&gt; {
-        cy.intercept('POST', '/api/pet/create', {fixture: 'pet_create.json'}).as('post')
-        cy.get('[data-testid="hideModal"]').click()
-        cy.wait('@gets')
-        cy.get('[data-testid="create-pet"]').click()
-        cy.get('[data-testid="input"]').should('have.length', 6)
-        cy.get('[data-testid="input"]').eq(2).click().type('Animal')
-        cy.get('[data-testid="input"]').eq(3).type("Beagel")
-        cy.get('[data-testid="input"]').eq(4).type('Tiene 5 años necesita un transito')
-        cy.get('div').contains('Publicar').click()
-        cy.wait('@post')
-    })
-})
+// describe('Create pet', () =&gt; {
+//     beforeEach( () =&gt; {
+//         cy.intercept('GET', '/api/pet/search?search=&amp;closeness=&amp;state=&amp;type=', {fixture: 'pets_data.json'}).as('gets')
+//         cy.loginBeforeEach()
+//     })
+//     it('Create a new pet without photo', () =&gt; {
+//         cy.intercept('POST', '/api/pet/create', {fixture: 'pet_create.json'}).as('post')
+//         cy.get('[data-testid="hideModal"]').click()
+//         cy.wait('@gets')
+//         cy.get('[data-testid="create-pet"]').click()
+//         cy.get('[data-testid="input"]').should('have.length', 4)
+//         cy.get('[data-testid="input"]').eq(0).click().type('Animal')
+//         cy.get('[data-testid="input"]').eq(1).type("Beagel")
+//         cy.get('[data-testid="input"]').eq(2).type('Tiene 5 años necesita un transito')
+//         cy.get('div').contains('Publicar').click()
+//         cy.wait('@post')
+//     })
+// })
 &nbsp;
 describe('Home', () =&gt; {
     beforeEach( () =&gt; {
-        cy.intercept('GET', '/api/pet/search?query=', {fixture: 'empty_data.json'}).as('getEmpty')
+        cy.intercept('GET', '/api/pet/search?search=&amp;closeness=&amp;state=&amp;type=', {fixture: 'empty_data.json'}).as('getEmpty')
         cy.loginBeforeEach()
         cy.get('[data-testid="hideModal"]').click()
     })
@@ -484,7 +484,7 @@ describe('Home', () =&gt; {
 &nbsp;
 describe('Home', () =&gt; {
     beforeEach( () =&gt; {
-        cy.intercept('GET', '/api/pet/search?query=', {fixture: 'pets_data.json'}).as('getPets')
+        cy.intercept('GET', '/api/pet/search?search=&amp;closeness=&amp;state=&amp;type=', {fixture: 'pets_data.json'}).as('getPets')
         cy.loginBeforeEach()
         cy.get('[data-testid="hideModal"]').click()
         cy.wait('@getPets')
@@ -526,7 +526,7 @@ describe('Home', () =&gt; {
 &nbsp;
 describe('Initial pets', () =&gt; {
     beforeEach( () =&gt; {
-        cy.intercept('GET', '/api/pet/search?query=', {fixture: 'pets_data.json'}).as('gets')
+        cy.intercept('GET', '/api/pet/search?search=&amp;closeness=&amp;state=&amp;type=', {fixture: 'pets_data.json'}).as('gets')
         cy.loginBeforeEach()
         cy.wait('@gets')
         cy.get('[data-testid="hideModal"]').click()
@@ -570,14 +570,14 @@ describe('Initial pets', () =&gt; {
 &nbsp;
 describe('Pet searching', () =&gt; {
     beforeEach( () =&gt; {
-        cy.intercept('GET', '/api/pet/search?query=', {fixture: 'pets_data.json'}).as('gets')
+        cy.intercept('GET', '/api/pet/search?search=&amp;closeness=&amp;state=&amp;type=', {fixture: 'pets_data.json'}).as('gets')
         cy.loginBeforeEach()
     })
     it('Searching Pet', ()=&gt; {
         //Fixture create the seed data
-        cy.intercept('GET', '/api/pet/search?query=P', {fixture: 'searchPer_data.json'})
-        cy.intercept('GET', '/api/pet/search?query=Pe', {fixture: 'searchPer_data.json'})
-        cy.intercept('GET', '/api/pet/search?query=Per', {fixture: 'searchPer_data.json'}).as('getPer')
+        cy.intercept('GET', '/api/pet/search?search=P&amp;closeness=&amp;state=&amp;type=', {fixture: 'searchPer_data.json'})
+        cy.intercept('GET', '/api/pet/search?search=Pe&amp;closeness=&amp;state=&amp;type=', {fixture: 'searchPer_data.json'})
+        cy.intercept('GET', '/api/pet/search?search=Per&amp;closeness=&amp;state=&amp;type=', {fixture: 'searchPer_data.json'}).as('getPer')
         cy.wait('@gets')
         cy.get('[data-testid="hideModal"]').click()
         cy.wait(500)
@@ -593,7 +593,7 @@ describe('Pet searching', () =&gt; {
 &nbsp;
 describe('Profile screen', () =&gt; {
     beforeEach( () =&gt; {
-        cy.intercept('GET', '/api/pet/search?query=', {fixture: 'pets_data.json'}).as('gets')
+        cy.intercept('GET', '/api/pet/search?search=&amp;closeness=&amp;state=&amp;type=', {fixture: 'pets_data.json'}).as('gets')
         cy.loginBeforeEach()
         cy.wait('@gets')
         cy.get('[data-testid="hideModal"]').click()
@@ -649,7 +649,7 @@ describe('Profile screen', () =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2022-11-17T20:10:44.048Z
+                at 2022-11-25T17:15:23.003Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

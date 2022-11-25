@@ -1,5 +1,5 @@
 import {FormItem, Picker} from "react-native-form-component"
-import React, {forwardRef} from "react"
+import React, {createRef, forwardRef} from "react"
 import {Text, TouchableHighlight, View, Image} from 'react-native'
 import Icon from "react-native-vector-icons/MaterialIcons"
 import DateTimePickerModal from "react-native-modal-datetime-picker"
@@ -60,11 +60,12 @@ export const MultiLineLabelRequired = forwardRef(({...props}, ref) => {
             onChangeText={props.onChangeText}
             showErrorIcon={false}
             textInputStyle={form.inputLineBox}
+            ref={ref}
             numberOfLines={4}
             floatingLabel
             asterik
-            isRequired
             multiline
+            isRequired
         />
     )
 })

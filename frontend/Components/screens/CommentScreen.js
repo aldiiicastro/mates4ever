@@ -31,9 +31,11 @@ export default function CommentScreen({navigation, route}) {
     const [region, setRegion] = useState({latitude: -36.6769415180527, longitude: -60.5588319815719})
     const [locations, setLocations] = useState([])
     const [location, setLocation] = useState({})
+    const [changeText, setChangeText] = useState('')
     const [wantLocation, setWantLocation] = useState(false)
     const [close, setClose] = useState(false)
     const pet = route.params
+    const commentInputRef = createRef()
 
     useEffect(() => {
         getCurrentPosition()
@@ -98,9 +100,10 @@ export default function CommentScreen({navigation, route}) {
         setClose(false)
         try {
             let direction = await getDir(dir)
-            setLocation([])
+            setChangeText(dir)
             setLocations(direction.data["direcciones"].map((dire, index) => mapDir(index, dire)))
         } catch (e) {
+            setChangeText('')
             console.log(e)
         }
     }
@@ -189,10 +192,11 @@ export default function CommentScreen({navigation, route}) {
                     onPress={showDatePicker}
                 />
                 <MultiLineLabelRequired
-                    ref={createRef()}
+                    ref={commentInputRef}
                     value={commentary}
                     label={"Cuentanos un poco sobre el encuentro"}
                     onChangeText={setCommentary}
+                    isRequired
                 />
                 <SimpleCheckBox
                     status={wantLocation ? "checked" : "unchecked"}
@@ -205,6 +209,7 @@ export default function CommentScreen({navigation, route}) {
                                                    removeItem={() => onRemoveItem()} location={location}
                                                    locations={locations}
                                                    close={close}
+                                                   changeText={changeText}
                                                    onPressMap={(e) => onChangeRegion(e.nativeEvent.coordinate)}
                                                    onDragMarker={(e) => setRegion(e.nativeEvent.coordinate)}
                                                    onChangeText={(text) => onChangeText(text)}/>}

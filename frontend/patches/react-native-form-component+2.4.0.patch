@@ -1,5 +1,31 @@
+diff --git a/node_modules/react-native-form-component/src/components/Form.tsx b/node_modules/react-native-form-component/src/components/Form.tsx
+index 6d7717e..4351d95 100644
+--- a/node_modules/react-native-form-component/src/components/Form.tsx
++++ b/node_modules/react-native-form-component/src/components/Form.tsx
+@@ -33,9 +33,12 @@ export default function Form(props: Props) {
+ 
+   const handleButtonPress = () => {
+     const fieldsWithError: string[] = [];
++    
+     Children.forEach(props.children, (child, index) => {
+       //@ts-ignore
++      
+       if (child && child.ref?.current?.getComponent() == 'FormItem') {
++        
+         const {
+           keyboardType,
+           isRequired,
+@@ -58,7 +61,7 @@ export default function Form(props: Props) {
+     });
+ 
+     if (fieldsWithError.length) {
+-      console.error(
++      console.log(
+         'The following fields do not fulfil their conditions:\n' +
+           JSON.stringify(fieldsWithError, null, 2)
+       );
 diff --git a/node_modules/react-native-form-component/src/components/FormItem/index.tsx b/node_modules/react-native-form-component/src/components/FormItem/index.tsx
-index 459cd85..fc2f9a7 100644
+index 459cd85..1c6d7ea 100644
 --- a/node_modules/react-native-form-component/src/components/FormItem/index.tsx
 +++ b/node_modules/react-native-form-component/src/components/FormItem/index.tsx
 @@ -43,6 +43,7 @@ interface Props extends ComponentProps<typeof TextInput> {
@@ -53,7 +79,7 @@ index 459cd85..fc2f9a7 100644
 +  password: boolean,
 +  initialPassword: boolean,
  ) => {
-+
++  
    if (extraValidation && !extraValidation.status) {
      return {
        status: true,
@@ -81,7 +107,7 @@ index 459cd85..fc2f9a7 100644
    if (keyboardType == 'decimal-pad' && !validateDecimalNumber(value))
 -    return { status: true, message: 'Invalid number' };
 +    return { status: true, message: 'Ingresar un número válido' };
-   
+ 
 +  if (!initialPassword && password && !validatePassword(value))
 +    return {status: true, message: 'La contraseña debe contener 8 caracteres incluyendo: al menos 1 mayúscula, una miniscula, un numero'}
    return { status: false, message: '' };

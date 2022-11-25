@@ -14,6 +14,7 @@ import MapView, {Circle, Marker} from "react-native-maps";
 import * as Location from "expo-location";
 import Back from "../drawerlayout/Back";
 import {registerScreenStyle} from "../../styles/RegisterScreenStyle";
+import MapViewWithLabel from "../map/MapViewWithLabel";
 
 Notifications.setNotificationHandler({
     handleNotification: async () => ({
@@ -24,10 +25,10 @@ Notifications.setNotificationHandler({
 });
 
 const RegisterScreen = forwardRef(({navigation}, ref) => {
-        const [region, setRegion] = useState({latitude: -36.6769415180527, longitude: 	-60.5588319815719})
+        const [region, setRegion] = useState({latitude: -36.6769415180527, longitude: -60.5588319815719})
         const [locations, setLocations] = useState([])
 
-        const [location, setLocation] = useState([])
+        const [location, setLocation] = useState({id: 1, name: ''})
         const [expoPushToken, setExpoPushToken] = useState('');
         const [userName, setUserName] = useState('')
         const [lastName, setLastName] = useState('')
@@ -45,68 +46,72 @@ const RegisterScreen = forwardRef(({navigation}, ref) => {
         const passwordInputRef = createRef()
         const rePasswordInputRef = createRef()
         const lastNameInputRef = createRef()
+        const nameInputRef = createRef()
         const userStreetInputRef = createRef()
+        const [close, setClose] = useState(false)
+        const [changeText, setChangeText] = useState('')
+        const getCurrentPosition = async () => {
+            setLoading(true)
+            let {status} = await Location.requestForegroundPermissionsAsync()
+            if (status !== 'granted') {
+                return
+            }
 
-
-    const getCurrentPosition = async () => {
-        setLoading(true)
-        let { status } = await Location.requestForegroundPermissionsAsync()
-        if (status !== 'granted') {
-            return
-        }
-
-        let reg = await Location.getCurrentPositionAsync({})
-        await onChangeRegion(reg["coords"])
-        setLoading(false)
-    }
-    const dataToSend = {
-        name: userName,
-        lastname: lastName,
-        email: userEmail,
-        phone: phoneNumber,
-        coordinates: region,
-        password: userPassword,
-        expoPushToken: expoPushToken,
-        pets: [],
-    }
-
-    const handleSubmitButton = async () => {
-        setLoading(true)
-        try {
-            const response = await createUser(dataToSend)
+            let reg = await Location.getCurrentPositionAsync({})
+            await onChangeRegion(reg["coords"])
             setLoading(false)
-            await AsyncStorage.setItem('user_id', response.data.email)
-            navigation.navigate('Inicio')
-        } catch (error) {
-            setLoading(false)
-            setErrorText(error.response.data)
         }
-    }
-
-
-    const mapDir = (index, dire) => {
-        return { id: index, name: dire.nomenclatura}
-    }
-
-    const onChangeText = async(dir) => {
-        try {
-            let allDir = await getDir(dir)
-            setLocation([])
-            setLocations(allDir.data["direcciones"].map((dire, index) => mapDir(index, dire)))
-        } catch (e) {
-            console.log(e)
+        const dataToSend = {
+            name: userName,
+            lastname: lastName,
+            email: userEmail,
+            phone: phoneNumber,
+            coordinates: region,
+            password: userPassword,
+            expoPushToken: expoPushToken,
+            pets: [],
         }
-    }
-    const onChangeRegion = async (newRegion) => {
-        setRegion(newRegion)
-        let reg = await Location.reverseGeocodeAsync(newRegion)
-        setLocation({id:1, name:`${reg[0].street}, ${reg[0].streetNumber}, ${reg[0].city}`})
-    }
-    const onSelected = async (item) => {
-        let reg = await Location.geocodeAsync(item.name)
-        setLocation(item)
-        setRegion({ latitude: reg[0].latitude, longitude: reg[0].longitude })
-    }
+
+        const handleSubmitButton = async () => {
+            setLoading(true)
+            try {
+                const response = await createUser(dataToSend)
+                setLoading(false)
+                await AsyncStorage.setItem('user_id', response.data.email)
+                navigation.navigate('Inicio')
+            } catch (error) {
+                setLoading(false)
+                setErrorText(error.response.data)
+            }
+        }
+
+
+        const mapDir = (index, dire) => {
+            return {id: index, name: dire.nomenclatura}
+        }
+
+        const onChangeText = async (dir) => {
+            setClose(false)
+            try {
+                let allDir = await getDir(dir)
+                setChangeText(dir)
+                setLocations(allDir.data["direcciones"].map((dire, index) => mapDir(index, dire)))
+            } catch (e) {
+                setChangeText('')
+                console.log(e)
+            }
+        }
+        const onChangeRegion = async (newRegion) => {
+            setRegion(newRegion)
+            let reg = await Location.reverseGeocodeAsync(newRegion)
+            setLocation({id: 1, name: `${reg[0].street}, ${reg[0].streetNumber}, ${reg[0].city}`})
+        }
+        const onSelected = async (item) => {
+            setClose(true)
+            let reg = await Location.geocodeAsync(item.name)
+            setLocation(item)
+            setRegion({latitude: reg[0].latitude, longitude: reg[0].longitude})
+        }
         //[] means that useEffect runs in the first render.
         useEffect(() => {
             getCurrentPosition()
@@ -128,8 +133,9 @@ const RegisterScreen = forwardRef(({navigation}, ref) => {
                                 label={"Nombre"}
                                 onChange={(firstname) => setUserName(firstname)}
                                 inputRef={() => lastNameInputRef.current && lastNameInputRef.current.focus()}
-                                ref={ref}
+                                ref={nameInputRef}
                                 keyboardType={"default"}
+                                isRequired
                             />
                             <FormItemGeneric
                                 value={lastName}
@@ -138,6 +144,7 @@ const RegisterScreen = forwardRef(({navigation}, ref) => {
                                 inputRef={() => emailInputRef.current && emailInputRef.current.focus()}
                                 ref={lastNameInputRef}
                                 keyboardType={"default"}
+                                isRequired
                             />
                             <FormItemGeneric
                                 value={userEmail}
@@ -206,86 +213,33 @@ const RegisterScreen = forwardRef(({navigation}, ref) => {
                                 isRequired
                                 secureTextEntry
                             />
-
+                            <MapViewWithLabel region={region} onSelected={(item) => onSelected(item)}
+                                              locations={locations}
+                                              location={location}
+                                              changeText={changeText}
+                                              close={close}
+                                              onPressMap={(e) => onChangeRegion(e.nativeEvent.coordinate)}
+                                              onDragMarker={(e) => setRegion(e.nativeEvent.coordinate)}
+                                              onChangeText={(text) => onChangeText(text)}/>
                         </Form>
                     </ScrollView>
                 }
-                <View>
-                    <SearchableDropdown
-                        multi={true}
-                        selectedItems={[location]}
-                        onTextChange= {(text) => onChangeText(text)}
-                        onItemSelect={(item) => {
-                            onSelected(item)
-                        }}
-                        onRemoveItem={() => {
-                            setLocation([])
-                            setLocations([])
-                        }}
-                        containerStyle={{ padding: 5 }}
-                        itemStyle={{
-                            padding: 10,
-                            marginTop: 2,
-                            backgroundColor: '#ddd',
-                            borderColor: '#bbb',
-                            borderWidth: 1,
-                            borderRadius: 5,
-                        }}
-                        itemTextStyle={{ color: '#222' }}
-                        itemsContainerStyle={{ maxHeight: 140 }}
-                        items={locations}
-                        resetValue={true}
-                        textInputProps={
-                            {
-                                placeholder: "Direccion",
-                                underlineColorAndroid: "transparent",
-                                style: {
-                                    padding: 12,
-                                    borderWidth: 1,
-                                    borderColor: '#ccc',
-                                    borderRadius: 5,
-                                }
-                            }
-                        }
 
-                    />
-
-                    <MapView
-                        style={{width: "100%", height: 200}}
-                        initialRegion={{
-                            latitude: region.latitude,
-                            longitude: region.longitude,
-                            latitudeDelta: 0.05,
-                            longitudeDelta: 0.05,
-                        }}
-                        region={{
-                            latitude: region.latitude,
-                            longitude: region.longitude,
-                            latitudeDelta: 0.05,
-                            longitudeDelta: 0.05,
-                        }}
-                        onPress={(e) => onChangeRegion(e.nativeEvent.coordinate)}
-                    >
-                        <Marker
-                            coordinate={region}
-                            onDrag={(e) => setRegion(e.nativeEvent.coordinate)}
-                        />
-                        <Circle center={region} radius={1000}/>
-                    </MapView>
-                </View>
             </View>
         )
     }
+
+
 )
 
 
 async function registerForPushNotificationsAsync() {
     let token;
     if (Device.isDevice) {
-        const { status: existingStatus } = await Notifications.getPermissionsAsync();
+        const {status: existingStatus} = await Notifications.getPermissionsAsync();
         let finalStatus = existingStatus;
         if (existingStatus !== 'granted') {
-            const { status } = await Notifications.requestPermissionsAsync();
+            const {status} = await Notifications.requestPermissionsAsync();
             finalStatus = status;
         }
         if (finalStatus !== 'granted') {

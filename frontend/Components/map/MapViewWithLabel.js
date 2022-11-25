@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     }
 });
 
-export default function MapViewWithLabel({close, region, onSelected, onChangeText, locations, location, onPressMap, onDragMarker}) {
+export default function MapViewWithLabel({close, region, onSelected, onChangeText, locations, location, onPressMap, onDragMarker, changeText}) {
     let {sSearchBar, sTextItem } = styles;
     return(
       <React.Fragment>
@@ -34,7 +34,7 @@ export default function MapViewWithLabel({close, region, onSelected, onChangeTex
               placeholder={location.name}
               onChangeText={(text) => onChangeText(text)}
           />
-          {!close &&   locations && locations.map((item, index) => {
+          {!close && changeText &&  locations && locations.map((item, index) => {
               return (
                   <Text onPress={() => {
                       onSelected(item)

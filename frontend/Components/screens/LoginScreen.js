@@ -14,6 +14,7 @@ const LoginScreen = forwardRef(({navigation}, ref) => {
     const [loading, setLoading] = useState(false)
     const [errorText, setErrorText] = useState('')
     const passwordInputRef = createRef()
+    const emailInputRef = createRef()
 
     const handleSubmitPress = async () => {
         setLoading(true)
@@ -47,7 +48,7 @@ const LoginScreen = forwardRef(({navigation}, ref) => {
                                     label={"Email"}
                                     onChange={(userEmail) => setUserEmail(userEmail)}
                                     inputRef={() => passwordInputRef.current && passwordInputRef.current.focus()}
-                                    ref={ref}
+                                    ref={emailInputRef}
                                     keyboardType={'email-address'}
                                 />
                                 <FormItem
