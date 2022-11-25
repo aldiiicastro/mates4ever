@@ -4,7 +4,7 @@ import {width} from "../Dimension.js";
 
 const petCreationScreenStyle = StyleSheet.create({
     header: {
-        marginTop: 30,
+        marginTop: 15,
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
@@ -14,7 +14,7 @@ const petCreationScreenStyle = StyleSheet.create({
         color: colors.violet,
     },
     titleText: {
-        marginTop: -25,
+        // marginTop: -25,
         fontSize: 25,
         color: colors.yellow,
         fontWeight: 'bold',
@@ -37,7 +37,7 @@ const petCreationScreenStyle = StyleSheet.create({
         alignItems: 'center',
     },
     searchView: {
-        marginTop: 30,
+        marginTop: 10,
         flexDirection: 'row',
     },
     iconSearch: {
@@ -69,7 +69,6 @@ const petCreationScreenStyle = StyleSheet.create({
     safeAreaView: {
         flex: 1,
         paddingHorizontal: 20,
-        backgroundColor: colors.beige,
     },
 });
 

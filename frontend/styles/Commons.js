@@ -1,9 +1,11 @@
 import {Dimensions, StyleSheet} from "react-native";
 import {colors} from "./Colors";
+import { height } from "./Dimension";
 
 const style = StyleSheet.create({
     fullContainer: {
-        width : Dimensions.get('window').width
+        width : Dimensions.get('window').width,
+        height : Dimensions.get('window').height
     },
     container: {
         width : Dimensions.get('window').width - 40,

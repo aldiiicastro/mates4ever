@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {View, TouchableOpacity} from 'react-native'
+import {View, TouchableOpacity, Text} from 'react-native'
 import PetScreen from "./PetScreen.js"
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import {style} from "../../styles/Commons"
@@ -7,6 +7,8 @@ import * as Notifications from "expo-notifications";
 import {useEffect} from "react";
 import {homeScreenStyle} from "../../styles/HomeScreenStyle";
 import { Provider } from 'react-native-paper'
+import { petCreationScreenStyle } from '../../styles/pet/PetCreationScreenStyle.js'
+import PerfilButton from '../drawerlayout/PerfilButton.js'
 
 export default function HomeScreen({navigation}) {
 
@@ -25,6 +27,14 @@ export default function HomeScreen({navigation}) {
         <Provider>
             <View testID={"homeScreenView"}
                 style={homeScreenStyle.viewStyle}>
+                <View style={petCreationScreenStyle.header}>
+                    <View>
+                        <Text style={petCreationScreenStyle.titleText}>
+                            Mates4Ever
+                        </Text>
+                        <PerfilButton navigation={navigation}></PerfilButton>
+                    </View>
+                </View>
                 <PetScreen navigation={navigation}/>
                 <View>
                     <TouchableOpacity

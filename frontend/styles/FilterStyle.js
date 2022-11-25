@@ -14,10 +14,15 @@ const filterStyle = StyleSheet.create({
     button:{
         padding:10,
     },
+    buttonsFilter:{
+        marginTop: 5,
+        flexDirection: 'row',
+        justifyContent: 'flex-end'
+    },
     filterModal:{
-        marginTop: 80,
-        right:0,
+        marginTop: 150,
         width: width - 150,
+        maxHeight: height -200, 
         backgroundColor: "white",
         borderRadius:7,
         paddingVertical: 10,
@@ -35,25 +40,17 @@ const filterStyle = StyleSheet.create({
         elevation: 5
     },
     rightView: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
+        left: width - (width - 140)
     },
     secondaryDivider:{
         height:2,
         shadowColor: "#000",
-        // shadowOffset: { 
-        //     width: 0,
-        //     height: 2
-        // },
-        // shadowOpacity: 0.25,
-        // shadowRadius: 4,
-        // elevation: 2
     },
     title:{
         padding:10,
         fontSize:17
     }
+    
 })
 
 

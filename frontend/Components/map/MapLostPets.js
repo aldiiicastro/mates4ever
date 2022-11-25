@@ -6,6 +6,7 @@ import MapView, {Marker} from 'react-native-maps';
 import * as Location from 'expo-location';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import {lostPetsStyle} from "../../styles/LostPetsStyle";
+import { Button } from 'react-native-paper';
 
 
 export default function MapLostPets({navigation}) {
@@ -64,9 +65,12 @@ export default function MapLostPets({navigation}) {
 
     return (
         <View>
-            <View style={lostPetsStyle.sortBtn}>
-                <Icon name="place" size={30} style={lostPetsStyle.iconSrt} onPress={() => setModalVisible(true)} />
-            </View>
+            <Button
+                onPress={() => setModalVisible(true)}
+                mode="text"
+                icon={"map"}
+                contentStyle={{flexDirection: 'row-reverse'}}
+                >mapa </Button>
 
             <Modal
                 animationType="slide"
