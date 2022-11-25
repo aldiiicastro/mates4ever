@@ -7,6 +7,7 @@ import {Checkbox} from "react-native-paper"
 import {form} from "../../styles/Form"
 import {style} from "../../styles/Commons"
 import {colors} from "../../styles/Colors"
+import Slider from "@react-native-community/slider"
 
 export const FormItemGeneric = forwardRef(({...props}, ref) => {
     return (
@@ -165,3 +166,30 @@ export const CalendarForm = (props) => {
         </View>
     )
 }
+
+export const SlideCondicionalCheker = (props) => {
+
+    return (
+        <View>
+            <SimpleCheckBox
+                status={props.status}
+                onPress={props.onPress}
+                text={props.text}
+            />
+            <Text>{props.valueText}</Text>
+            <Slider
+                // style={}
+                minimumValue={props.minimumValue}
+                maximumValue={props.maximumValue}
+                step={props.step}
+                minimumTrackTintColor={colors.yellow}
+                maximumTrackTintColor={colors.yellow}
+                thumbTintColor={colors.yellow}
+                disabled={props.disabled}
+                onValueChange= { props.onValueChange }
+
+            />
+        </View>
+    )
+}
+

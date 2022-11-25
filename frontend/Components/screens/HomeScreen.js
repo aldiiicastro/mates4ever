@@ -6,6 +6,7 @@ import {style} from "../../styles/Commons"
 import * as Notifications from "expo-notifications";
 import {useEffect} from "react";
 import {homeScreenStyle} from "../../styles/HomeScreenStyle";
+import { Provider } from 'react-native-paper'
 
 export default function HomeScreen({navigation}) {
 
@@ -20,18 +21,21 @@ export default function HomeScreen({navigation}) {
         }
     }, [lastNotificationResponse]);
     return (
-        <View testID={"homeScreenView"}
-              style={homeScreenStyle.viewStyle}>
-            <PetScreen navigation={navigation}/>
-            <View>
-                <TouchableOpacity
-                    testID={'create-pet'}
-                    style={[style.floatButton]}
-                    onPress={() => navigation.navigate('Agregar')}
-                >
-                    <Icon name='add' size={30} color='#fff'/>
-                </TouchableOpacity>
+        
+        <Provider>
+            <View testID={"homeScreenView"}
+                style={homeScreenStyle.viewStyle}>
+                <PetScreen navigation={navigation}/>
+                <View>
+                    <TouchableOpacity
+                        testID={'create-pet'}
+                        style={[style.floatButton]}
+                        onPress={() => navigation.navigate('Agregar')}
+                    >
+                        <Icon name='add' size={30} color='#fff'/>
+                    </TouchableOpacity>
+                </View>
             </View>
-        </View>
+        </Provider>
     )
 }
