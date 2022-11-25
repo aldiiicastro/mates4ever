@@ -51,18 +51,17 @@ class UserRepositoryTest {
     }
 
     @Test
-    fun getAllPetsIsEmpty() {
-        val findPets = userRepository.findAll() as List<*>
-        assert(findPets.isEmpty())
+    fun getAllUsersIsEmpty() {
+        val findUsers = userRepository.findAll() as List<*>
+        assert(findUsers.isEmpty())
     }
 
     @Test
-    fun getAllPetsCorrect() {
+    fun getAllUsersCorrect() {
         val user = userFactory.anyUser()
         userRepository.insert(user)
-        user.addPet(pet.name)
-        val findPets = userRepository.findAll() as List<*>
-        assert(findPets.size == 1)
+        val findUsers = userRepository.findAll() as List<*>
+        assert(findUsers.size == 1)
     }
 
     @AfterEach

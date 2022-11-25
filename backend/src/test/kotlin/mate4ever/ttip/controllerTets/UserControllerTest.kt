@@ -90,7 +90,7 @@ class UserControllerTest {
             .andExpect(MockMvcResultMatchers.status().isNotFound)
             .andReturn()
             .resolvedException?.message
-        assertEquals(errorMessage, "No existe ningun usuario con ese id en la base de datos")
+        assertEquals(errorMessage, "No existe ningún usuario con ese id en la base de datos")
     }
 
     @Test
@@ -102,7 +102,6 @@ class UserControllerTest {
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("email").value("aldana@gmail.com"))
-            .andExpect(MockMvcResultMatchers.jsonPath("password").value("++LMRceetmbxu2vkx9ZZI71pPgE7G2esPuBckIY="))
             .andExpect(MockMvcResultMatchers.jsonPath("expoPushToken").value(""))
     }
 
@@ -141,16 +140,6 @@ class UserControllerTest {
         userController.createUser(user)
         val findPets = userController.getAllUsers() as List<*>
         assert(findPets.size == 1)
-    }
-    @Test
-    fun getSearchBy() {
-        val user = userFactory.anyUser()
-        userController.createUser(user)
-        mockMvc.perform(
-            MockMvcRequestBuilders.get("/api/user/${user.email}/pets")
-        )
-            .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(0))
     }
 
     @Test

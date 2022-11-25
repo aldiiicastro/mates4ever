@@ -18,6 +18,5 @@ class UserTest {
         assert(user.password == "contrasena...")
         assert(user.phone == 1139538873)
         assert(user.coordinates == mapOf("latitude" to -36.6769415180527, "longitude" to 	-60.5588319815719))
-        assert(user.pets.size == 0)
     }
 }

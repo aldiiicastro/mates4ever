@@ -275,9 +275,10 @@ const calculateDist = (userCoordinates, petCoordinates) => {
 }
 
 async function sendPushNotification(pet) {
-    const allUsers = await getAllUser()
-    const users = allUsers.data.filter((user) => calculateDist(user.coordinates, pet.coordinates))
-    const tokens = users.map((user) => user.expoPushToken)
+    const users = await getAllUser(pet.coordinates.latitude, pet.coordinates.longitude)
+    console.log(users)
+    //const users = allUsers.data.filter((user) => calculateDist(user.coordinates, pet.coordinates))
+    const tokens = users.data.map((user) => user.expoPushToken)
     const message = {
         to: tokens,
         title: 'Se perdio ' + pet.name,

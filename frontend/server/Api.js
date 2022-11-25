@@ -8,61 +8,64 @@ const axinst = axios.create({
 })
 
 //******************** User ********************
+//Create user. Return only email, password and expoPush.
 export const createUser = async (user) => {
     const url = `${baseUrl}/api/user/create`
     return await axinst.post(url, user)
 }
-
+//Search user by password and email. Return only email, password and expoPush.
 export const loginUser = async (userData) => {
-    const url = `${baseUrl}/api/user/userData`;
+    const url = `${baseUrl}/api/user/userData`
     return await axinst.post(url, {email: userData.email, password: userData.password})
 }
-export const getAllUser = async () => {
-    const url = `${baseUrl}/api/user/all`;
+//Get all users. Return only email and expoPushToken.
+export const getAllUser = async (lat, long) => {
+    const url = `${baseUrl}/api/user/nearby?latitude=${lat}&longitude=${long}`
     return await axios.get(url)
 }
 
-
+//Get user by email. Return only email and expoPushToken.
 export const getUserByEmail = async (email) => {
     const url = `${baseUrl}/api/user/email/${email}`;
     return await axinst.get(url)
 }
 
 export const getUserDataByEmail = async (email) => {
-    const url = `${baseUrl}/api/user/allData/${email}`;
+    const url = `${baseUrl}/api/user/allData/${email}`
     return await axinst.get(url)
 }
 
 //******************** Pet ********************
+//    Create a pet
 export const createPet = async (pet) => {
 
     return await axinst.post(
         `${baseUrl}/api/pet/create`,
         pet)
 }
-
+//Search pet by text, closeness, state and type
 export const getSearchedPets = async (query) => {
-    const url = `${baseUrl}/api/pet/search?query=${query}`
+    const url = `${baseUrl}/api/pet/search?search=${query}&closeness=&state=&type=`
     return await axinst.get(url)
 }
-
+//Get pet by id
 export const getPetById = async (id) => {
     const url = `${baseUrl}/api/pet/${id}`
     return await axinst.get(url)
 }
-
+//Delete pet by id
 export const deletePetById = async (id) => {
     const url =`${baseUrl}/api/pet/delete/${id}`
     return await axinst.delete(url)
 }
 
-export const getPetByUser = async (user) => {
-    const url = `${baseUrl}/api/pets/${user}`
+export const getNearByPets = async (lat, long) => {
+    const url = `${baseUrl}/api/pet/nearby?latitude=${lat}&longitude=${long}`
     return await axinst.get(url)
 }
 
-export const getNearByPets = async (lat, long) => {
-    const url = `${baseUrl}/api/pet/getNearbyPets?latitude=${lat}&longitude=${long}`
+export const getPetByUser = async (user) => {
+    const url = `${baseUrl}/api/pet/all/${user}`
     return await axinst.get(url)
 }
 //******************** Create comment ********************

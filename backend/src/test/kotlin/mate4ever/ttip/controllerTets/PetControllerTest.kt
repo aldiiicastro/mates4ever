@@ -200,7 +200,7 @@ class PetControllerTest {
     fun getPetByUser() {
         val pet = petService.createPet(petFactory.anyPetDTO())
         mockMvc.perform(
-            MockMvcRequestBuilders.get("/api/pets/${pet.user}"))
+            MockMvcRequestBuilders.get("/api/pet/all/${pet.user}"))
             .andExpect(status().isOk)
             .andExpect(content().contentType("application/json"))
             .andExpect (jsonPath("$").isArray)
@@ -210,7 +210,7 @@ class PetControllerTest {
     fun getNoPetByUser() {
         petService.createPet(petFactory.anyPetDTO())
         mockMvc.perform(
-            MockMvcRequestBuilders.get("/api/pets/aldanaaaa@gmail.com"))
+            MockMvcRequestBuilders.get("/api/pet/all/aldanaaaa@gmail.com"))
             .andExpect(status().isOk)
             .andExpect(content().contentType("application/json"))
             .andExpect (jsonPath("$").isArray)
@@ -221,7 +221,7 @@ class PetControllerTest {
     fun getNearbyPets() {
         petService.createPet(petFactory.anyPetDTO())
         mockMvc.perform(
-            MockMvcRequestBuilders.get("/api/pet/getNearbyPets?latitude=-36.6769415180527&longitude=-60.5588319815719"))
+            MockMvcRequestBuilders.get("/api/pet/nearby?latitude=-36.6769415180527&longitude=-60.5588319815719"))
             .andExpect(status().isOk)
             .andExpect(content().contentType("application/json"))
             .andExpect (jsonPath("$").isArray)
@@ -232,7 +232,7 @@ class PetControllerTest {
     fun getNoNearbyPets() {
         petService.createPet(petFactory.anyPetDTO())
         mockMvc.perform(
-            MockMvcRequestBuilders.get("/api/pet/getNearbyPets?latitude=0&longitude=0"))
+            MockMvcRequestBuilders.get("/api/pet/nearby?latitude=0&longitude=0"))
             .andExpect(status().isOk)
             .andExpect(content().contentType("application/json"))
             .andExpect (jsonPath("$").isArray)
@@ -242,10 +242,10 @@ class PetControllerTest {
     @Test
     fun deleteByPetId() {
         val pet = petService.createPet(petFactory.anyPetDTO())
-        val petsOne =  petController.getPet(pet.id!!).body as Pet
+        val petsOne =  petController.getPetByID(pet.id!!).body as Pet
         assertEquals(petsOne.name, "Gatito")
         petController.deleteById(pet.id!!)
-        assertThrows<PetNotFoundException>("No existe ninguna mascota con ese id en la base de datos") { petController.getPet(pet.id!!) }
+        assertThrows<PetNotFoundException>("No existe ninguna mascota con ese id en la base de datos") { petController.getPetByID(pet.id!!) }
 
     }
     @Test

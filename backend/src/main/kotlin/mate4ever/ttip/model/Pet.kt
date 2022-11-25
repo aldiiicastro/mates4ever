@@ -25,6 +25,4 @@ open class Pet(
     var coordinates: Map<String, Double>?,
     @Id
     var id: String? = null
-) {
-
-}
+)

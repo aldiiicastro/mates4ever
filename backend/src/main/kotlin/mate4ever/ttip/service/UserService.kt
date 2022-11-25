@@ -5,6 +5,7 @@ import mate4ever.ttip.exceptions.UserIncorrectArgumentsException
 import mate4ever.ttip.exceptions.UserNotFoundException
 import mate4ever.ttip.model.User
 import mate4ever.ttip.dto.UserDTO
+import mate4ever.ttip.dto.UserEmailResponseDTO
 import mate4ever.ttip.repository.UserRepository
 import mate4ever.ttip.security.secretKey
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,12 +24,13 @@ class UserService {
     @Autowired
     private lateinit var mongoTemplate: MongoTemplate
     var encryptor = AESEncryptorGCM()
-    @Transactional(readOnly = true)
-    fun findUserBy(id: String): User {
-        return userRepository.findItemById(id)
-            ?: throw UserNotFoundException("No existe ningun usuario con ese id en la base de datos")
+    private var commonMethods: CommonMethods = CommonMethods()
+    //Create user
+    fun createUser(user: User): User {
+        user.password = encryptor.encrypt(user.password, secretKey).toString()
+        return userRepository.insert(user)
     }
-
+    //Search user by password and email.
     @Transactional(readOnly = true)
     fun findUser(user: UserDTO): User? {
         lateinit var query : Query
@@ -44,35 +46,41 @@ class UserService {
         return mongoTemplate.findOne(query, User::class.java)
             ?: throw UserIncorrectArgumentsException("El mail o la contraseña son incorrectos")
     }
-
+    //Get user nearby.
+    fun getNearby(lat: Double, long : Double): List<UserEmailResponseDTO> {
+        val document =
+            mongoTemplate.executeCommand("{ find: 'user', filter : "+ commonMethods.nearbyQuery(0.02, lat, long) + "}")
+        val listOfPets = (document["cursor"] as Map<*, *>)["firstBatch"] as List<Map<String, *>>
+        return listOfPets.map {
+            UserEmailResponseDTO(
+                it["email"] as String,
+                it["expoPushToken"] as String
+            )
+        }
+    }
+    //Get user by email.
     @Transactional(readOnly = true)
     fun findUserByEmail(email: String): User? {
         return userRepository.findByEmail(email)
             ?: throw UserNotFoundException("El mail o la contraseña son incorrectos")
+    }
+    //********** AUXILIARIES FUNCTION ********************************************
+    private fun criteriaForm(fieldName: String, value: String): Criteria {
+        return Criteria.where(fieldName).`is`(value)
+    }
+    //********** DOESN'T USE IN FRONT ********************************************
+    @Transactional(readOnly = true)
+    fun findUserBy(id: String): User {
+        return userRepository.findItemById(id)
+            ?: throw UserNotFoundException("No existe ningún usuario con ese id en la base de datos")
     }
 
     @Transactional(readOnly = true)
     fun findAllUsers(): MutableList<User?> {
         return userRepository.findAll()
     }
-
-
-    fun createUser(user: User): User {
-        user.password = encryptor.encrypt(user.password, secretKey).toString()
-        return userRepository.insert(user)
-    }
-
-    private fun criteriaForm(fieldName: String, value: String): Criteria {
-        return Criteria.where(fieldName).`is`(value)
-    }
-
     fun deleteAll() {
         return userRepository.deleteAll()
     }
 
-    fun addPet(email: String, petID: String){
-        val user = findUserByEmail(email)!!
-        user.addPet(petID)
-        userRepository.save(user)
-    }
 }

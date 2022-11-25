@@ -16,31 +16,13 @@ class PetController {
     @Autowired
     private lateinit var petService: PetService
 
-    //    @LogExecutionTime
+    //    Create a pet
     @PostMapping("/api/pet/create")
     fun createPet(@RequestBody petDTO: PetRequestDTO): ResponseEntity<*> {
         val pet = petService.createPet(petDTO)
         return ResponseEntity<Pet>(pet, null, HttpStatus.OK)
     }
-
-    //    @LogExecutionTime
-    @GetMapping("/api/pet/{id}")
-    fun getPet(@PathVariable(required = true) id: String): ResponseEntity<*> {
-        val pet = petService.findById(id)
-        return ResponseEntity<Pet>(pet, null, HttpStatus.OK)
-    }
-
-    @GetMapping("/api/pets/{user}")
-    fun getPetByUser(@PathVariable(required = true) user: String): ResponseEntity<*> {
-        val pets = petService.findPetByUser(user)
-        return ResponseEntity(pets, null, HttpStatus.OK)
-    }
-
-    @GetMapping("/api/pet/all")
-    fun getAllPets(): MutableIterable<Pet?> {
-        return petService.findAll()
-    }
-
+    //Search pet by text, closeness, state and type
     @GetMapping("/api/pet/search")
     fun searchBy(
         @RequestParam search: String,
@@ -50,21 +32,40 @@ class PetController {
     ): List<PetDocumentDTO> {
         return petService.search(search, closeness, state, type)
     }
-
-    @GetMapping("/api/pet/getNearbyPets")
+    //Get pet by id
+    @GetMapping("/api/pet/{id}")
+    fun getPetByID(@PathVariable(required = true) id: String): ResponseEntity<*> {
+        val pet = petService.findById(id)
+        return ResponseEntity<Pet>(pet, null, HttpStatus.OK)
+    }
+    //Delete pet by id
+    @DeleteMapping("api/pet/delete/{id}")
+    fun deleteById(@PathVariable id: String) {
+        return petService.deleteById(id)
+    }
+    //Get pet for nearer
+    @GetMapping("/api/pet/nearby")
     fun getNearbyPets(
         @RequestParam latitude: Double,
         @RequestParam longitude: Double
     ): List<PetDocumentDTO> {
         return petService.getNearbyPets(latitude, longitude)
     }
-
-    fun deleteAll() {
-        return petService.deleteAll()
+    //Get all pets by user
+    @GetMapping("/api/pet/all/{user}")
+    fun getPetByUser(@PathVariable(required = true) user: String): ResponseEntity<*> {
+        val pets = petService.findPetByUser(user)
+        return ResponseEntity(pets, null, HttpStatus.OK)
     }
 
-    @DeleteMapping("api/pet/delete/{id}")
-    fun deleteById(@PathVariable id: String) {
-        return petService.deleteById(id)
+    //*********DOESN'T USE IN THE FRONTEND********************************************
+    @GetMapping("/api/pet/all")
+    fun getAllPets(): MutableIterable<Pet?> {
+        return petService.findAll()
+    }
+
+    @DeleteMapping("api/pet/deleteAll")
+    fun deleteAll() {
+        return petService.deleteAll()
     }
 }

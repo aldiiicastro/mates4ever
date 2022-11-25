@@ -5,7 +5,7 @@ import ContactCard from '../users/ContactCard'
 import Icon from "react-native-vector-icons/MaterialIcons"
 import { petCreationScreenStyle } from '../../styles/pet/PetCreationScreenStyle'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { getUserDataByEmail } from '../../server/Api'
+import {getPetByUser, getUserDataByEmail} from '../../server/Api'
 import Back from "../drawerlayout/Back"
 import User from '../../model/User'
 import PetCard from '../pets/card/PetCard'
@@ -22,14 +22,17 @@ export default function UserProfileScreen({ navigation, route }) {
         try {
             let reg = await Location.reverseGeocodeAsync(response.data.coordinates)
             setUser(new User(response.data, reg[0].city, reg[0].region))
-            //Si buscasemos los pets según el email
-            // const petResponse = await getPetByUser(response.data.email)
-            // setPets(petResponse.data.pets.map((pet)=> new Pet(pet)))
-            setPets(response.data.pets.map((pet) => new Pet(pet)))
+        } catch (error) {
+            alert('Ha habido un error con su locación. Compruebe tener permisos activados')
+        }
+        try {
+            const petResponse = await getPetByUser(userEmail)
+            setPets(petResponse.data.map((pet)=> new Pet(pet)))
         } catch (error) {
             alert('Ha habido un error. Contactese con el administrador')
         }
     }
+
     useEffect(() => {
         getUserProfile()
     }, [])
@@ -121,7 +124,5 @@ export default function UserProfileScreen({ navigation, route }) {
         </View>
     )
 }
-
-
 
 

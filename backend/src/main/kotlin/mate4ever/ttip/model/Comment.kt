@@ -6,7 +6,6 @@ import java.time.LocalDate
 import javax.validation.constraints.NotEmpty
 @Document("comment")
 open class Comment(
-
     @Id
     var id: String? = null,
     @NotEmpty(message = "Debe haber una mascota")
