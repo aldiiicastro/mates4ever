@@ -2,3 +2,6 @@ coverage:
   precision: 2
   round: down
   range: "60...65"
+  
+ignore:
+    - "backend/src/main/kotlin/mate4ever/ttip/security/Encryptor.kt"
