@@ -5,3 +5,4 @@ coverage:
   
 ignore:
     - "backend/src/main/kotlin/mate4ever/ttip/security/Encryptor.kt"
+    - "backend/src/main/kotlin/mate4ever/ttip/TtipApplication.kt"
