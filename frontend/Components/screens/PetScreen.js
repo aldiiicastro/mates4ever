@@ -69,6 +69,7 @@ export default function PetScreen({navigation}) {
     }
 
     const searchByFilters = async (search) => {
+        console.log(search)
         const response = await getSearchedPets( search != null? search : query,typeFilter,getCoordinates(),stateFilter)
         const pets = response.data.map((pet) => (new Pet(pet)))
         setPetsSearching(pets)
@@ -77,7 +78,6 @@ export default function PetScreen({navigation}) {
     }
 
     const clearFilters = () => {
-        console.log("cdz")
         setTypeFilter("")
         setCloseness(0)
         setClosenessFilter(false)
@@ -116,7 +116,7 @@ export default function PetScreen({navigation}) {
                     }}/>
                 </View>
                 <View style={lostPetsStyle.sortBtn}>
-                    <Icon name="search" size={30} style={lostPetsStyle.iconSrt} onPress={() => searchPets()} />
+                    <Icon name="search" size={30} style={lostPetsStyle.iconSrt} onPress={() => searchPets(null)} />
                 </View>
             </View>
                 <Portal>
@@ -184,7 +184,7 @@ export default function PetScreen({navigation}) {
                                     <Divider style={filterStyle.secondaryDivider}/>
                                     <View style={filterStyle.categoryView}>
                                         <Button
-                                            onPress={searchByFilters}
+                                            onPress={() => searchByFilters(null)}
                                             mode="contained"
                                             color="#841584"
                                         >Buscar</Button>
