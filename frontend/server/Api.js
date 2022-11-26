@@ -46,7 +46,6 @@ export const createPet = async (pet) => {
 //Search pet by text, closeness, state and type
 export const getSearchedPets = async (query, type, closeness, state) => {
     const url = `${baseUrl}/api/pet/search?search=${query}&type=${type}&state=${state}&closeness=${closeness}`
-    console.log( url)
     return await axinst.get(url)
 }
 //Get pet by id

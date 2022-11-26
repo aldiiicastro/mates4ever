@@ -8,8 +8,6 @@ import {Button, Divider, Menu, Modal as Modal2, Portal, Provider, Title} from "r
 import {petCreationScreenStyle} from "../../styles/pet/PetCreationScreenStyle.js"
 import {getSearchedPets} from "../../server/Api"
 import {style} from "../../styles/Commons"
-import PerfilButton from '../drawerlayout/PerfilButton.js'
-import MapLostPets from "../map/MapLostPets";
 import { SimpleCheckBox, SlideCondicionalCheker } from '../drawerlayout/FormItemGeneric.js'
 import { getCurrentPosition } from '../../server/LocationServer.js'
 import { lostPetsStyle } from '../../styles/LostPetsStyle.js'
@@ -25,7 +23,6 @@ export default function PetScreen({navigation}) {
     const [isExpanded, setIsExpanded] = useState(false)
     const [isAlreadyShownAlert, setIsAlreadyShownAlert] = useState(false)
     const [query, setQuery] = useState('')
-    let textInput = ''
 
     //searching pets in de database. Catching the error if fetch has a problem, showing an alert.
     const search = async () => {
@@ -71,8 +68,8 @@ export default function PetScreen({navigation}) {
         setActualCoordinetes({"km" : 0,  "latitude": location["latitude"], "longitude": location["longitude"]})
     }
 
-    const searchByFilters = async () => {
-        const response = await getSearchedPets(query,typeFilter,getCoordinates(),stateFilter)
+    const searchByFilters = async (search) => {
+        const response = await getSearchedPets( search != null? search : query,typeFilter,getCoordinates(),stateFilter)
         const pets = response.data.map((pet) => (new Pet(pet)))
         setPetsSearching(pets)
         setIsExpanded(false)
@@ -87,10 +84,10 @@ export default function PetScreen({navigation}) {
         setStateFilter("")
     }
 
-    const searchPets = () => {
-        console.log(query)
+    const searchPets = (search) => {
+        console.log("hola",search)
         clearFilters()
-        searchByFilters()
+        searchByFilters(search)
     };
     //[] means that useEffect runs in the first render.
     useEffect(() => {
@@ -106,15 +103,16 @@ export default function PetScreen({navigation}) {
                 <View style={petCreationScreenStyle.searchContainer}>
                     <Icon name="search" size={25} style={petCreationScreenStyle.iconSearch}/>
                     <TextInput 
-                    testID={'search'} 
-                    placeholder="Search" 
-                    style={petCreationScreenStyle.input}
-                    value={query}
-                    onChangeText={setQuery} 
-                    clearButtonMode={"always"}/>
+                        testID={'search'}
+                        placeholder="Search"
+                        style={petCreationScreenStyle.input}
+                        value={query}
+                        onChangeText={setQuery}
+                        clearButtonMode={"always"}
+                    />
                     <Icon name="close" size={20} style={petCreationScreenStyle.iconClose} onPress={() => {
-                        setQuery('')
-                        search('')
+                        setQuery("");
+                        searchPets("");
                     }}/>
                 </View>
                 <View style={lostPetsStyle.sortBtn}>
@@ -197,7 +195,6 @@ export default function PetScreen({navigation}) {
                     </Modal>
                 </Portal>
                 <View style={filterStyle.buttonsFilter}>
-                <MapLostPets navigation={navigation} />
                     <Button
                         onPress={ () => { setIsExpanded(true)} }
                         mode="text"

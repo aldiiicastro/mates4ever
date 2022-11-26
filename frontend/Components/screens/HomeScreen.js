@@ -9,8 +9,11 @@ import {homeScreenStyle} from "../../styles/HomeScreenStyle";
 import { Provider } from 'react-native-paper'
 import { petCreationScreenStyle } from '../../styles/pet/PetCreationScreenStyle.js'
 import PerfilButton from '../drawerlayout/PerfilButton.js'
+import DrawerMenu from '../drawerlayout/DrawerMenu.js'
+import MapLostPets from '../map/MapLostPets.js'
 
 export default function HomeScreen({navigation}) {
+    const [mapModalVisible, setMapModalVisible] = React.useState(true);
 
     const lastNotificationResponse = Notifications.useLastNotificationResponse();
     useEffect(() => {
@@ -23,16 +26,17 @@ export default function HomeScreen({navigation}) {
         }
     }, [lastNotificationResponse]);
     return (
-        
         <Provider>
+            <MapLostPets modalVisible={mapModalVisible}  setModalVisible={setMapModalVisible} />
             <View testID={"homeScreenView"}
                 style={homeScreenStyle.viewStyle}>
-                <View style={petCreationScreenStyle.header}>
-                    <View>
+                <View style={{width:"100%"}}>
+                    <View style={petCreationScreenStyle.header}>
+                        <DrawerMenu navigation={navigation}/>
                         <Text style={petCreationScreenStyle.titleText}>
                             Mates4Ever
                         </Text>
-                        <PerfilButton navigation={navigation}></PerfilButton>
+                        {/* <PerfilButton navigation={navigation}></PerfilButton> */}
                     </View>
                 </View>
                 <PetScreen navigation={navigation}/>

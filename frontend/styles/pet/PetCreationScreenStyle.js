@@ -7,6 +7,7 @@ const petCreationScreenStyle = StyleSheet.create({
         marginTop: 15,
         flexDirection: 'row',
         justifyContent: 'space-between',
+        marginHorizontal: 25
     },
     welcomeText: {
         fontSize: 25,
@@ -18,7 +19,7 @@ const petCreationScreenStyle = StyleSheet.create({
         fontSize: 25,
         color: colors.yellow,
         fontWeight: 'bold',
-        width: width-40
+        // width: width-40
 
     },
     categoryContainer: {
