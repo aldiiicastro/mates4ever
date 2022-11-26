@@ -116,7 +116,7 @@ export default function PetScreen({navigation}) {
                     }}/>
                 </View>
                 <View style={lostPetsStyle.sortBtn}>
-                    <Icon name="search" size={30} style={lostPetsStyle.iconSrt} onPress={() => searchPets(null)} />
+                    <Icon testID={'search-button'} name="search" size={30} style={lostPetsStyle.iconSrt} onPress={() => searchPets(null)} />
                 </View>
             </View>
                 <Portal>
@@ -153,13 +153,15 @@ export default function PetScreen({navigation}) {
                                     <Divider style={filterStyle.secondaryDivider}/>
                                     <View style={filterStyle.categoryView}>
                                         <Text style={filterStyle.categoryTitle}>Estado de la publicación:</Text>
-                                        {['Transito', 'Adopción', 'Perdido'].map( (status) => 
+                                        {['Transito', 'Adopción', 'Perdido'].map( (status, index) => 
                                             <SimpleCheckBox
                                                 status={stateFilter.includes(status) ? "checked" : "unchecked"}
                                                 onPress={() => {
                                                     changeStateFilter(status)
                                                 }}
                                                 text={status}
+                                                key={index}
+                                                testID={`button-${status}`}
                                             />
                                         )}
 
@@ -184,6 +186,7 @@ export default function PetScreen({navigation}) {
                                     <Divider style={filterStyle.secondaryDivider}/>
                                     <View style={filterStyle.categoryView}>
                                         <Button
+                                            testID={"search-filter-button"}
                                             onPress={() => searchByFilters(null)}
                                             mode="contained"
                                             color="#841584"
@@ -196,6 +199,7 @@ export default function PetScreen({navigation}) {
                 </Portal>
                 <View style={filterStyle.buttonsFilter}>
                     <Button
+                        testID={'filter-button'}
                         onPress={ () => { setIsExpanded(true)} }
                         mode="text"
                         icon={"filter"}

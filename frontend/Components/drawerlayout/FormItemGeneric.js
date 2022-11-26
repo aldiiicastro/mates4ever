@@ -115,6 +115,7 @@ export const SimpleCheckBox = (props) => {
                 color={colors.yellow}
                 status={props.status}
                 onPress={props.onPress}
+                testID={props.testID}
             />
             <Text style={style.label}>{props.text}</Text>
         </View>

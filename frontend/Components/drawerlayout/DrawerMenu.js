@@ -24,9 +24,10 @@ export default function DrawerMenu ({navigation}) {
     return (
         <View>
             <Icon
+                testID={'menu-button'}
                 name="menu"
                 size={35}
-                onPress={() => {setShowMenu(!showMenu); console.log("hola")}}
+                onPress={() => {setShowMenu(!showMenu)}}
             />
             <Modal
                 animationType="fade"
@@ -45,7 +46,7 @@ export default function DrawerMenu ({navigation}) {
                     <TouchableWithoutFeedback >
                     <View style={styles.centeredView}>
                         <View style={styles.modalView}>
-                            <TouchableOpacity style={styles.profileButton} onPress={() => {setShowMenu(!showMenu); navigation.navigate('Perfil', email)}}>
+                            <TouchableOpacity testID={'profile-button'} style={styles.profileButton} onPress={() => {setShowMenu(!showMenu); navigation.navigate('Perfil', email)}}>
                                 <View style={{ flexDirection: 'row', justifyContent: 'flex-start',}}>
                                     <Icon 
                                         name='person'

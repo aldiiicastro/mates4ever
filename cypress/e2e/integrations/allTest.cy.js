@@ -1,7 +1,7 @@
 
 // describe('Create pet', () => {
 //     beforeEach( () => {
-//         cy.intercept('GET', '/api/pet/search?search=&closeness=&state=&type=', {fixture: 'pets_data.json'}).as('gets')
+//         cy.intercept('GET', '/api/pet/search?search=&type=&state=&closeness=', {fixture: 'pets_data.json'}).as('gets')
 //         cy.loginBeforeEach()
 //     })
 //     it('Create a new pet without photo', () => {
@@ -20,7 +20,7 @@
 
 describe('Home', () => {
     beforeEach( () => {
-        cy.intercept('GET', '/api/pet/search?search=&closeness=&state=&type=', {fixture: 'empty_data.json'}).as('getEmpty')
+        cy.intercept('GET', '/api/pet/search?search=&type=&state=&closeness=', {fixture: 'empty_data.json'}).as('getEmpty')
         cy.loginBeforeEach()
         cy.get('[data-testid="hideModal"]').click()
     })
@@ -33,7 +33,7 @@ describe('Home', () => {
 
 describe('Home', () => {
     beforeEach( () => {
-        cy.intercept('GET', '/api/pet/search?search=&closeness=&state=&type=', {fixture: 'pets_data.json'}).as('getPets')
+        cy.intercept('GET', '/api/pet/search?search=&type=&state=&closeness=', {fixture: 'pets_data.json'}).as('getPets')
         cy.loginBeforeEach()
         cy.get('[data-testid="hideModal"]').click()
         cy.wait('@getPets')
@@ -46,27 +46,37 @@ describe('Home', () => {
         //Testing adoption pet
         cy.getAdoptionPet()
     })
-    it('Can click on states', () => {
-        cy.get('[data-testid="button-Perdido"]').click()
-        cy.get('[data-testid="button-Adopción"]').click()
-        cy.get('[data-testid="button-Transito"]').click()
+    it('Can click on filter', () => {
+        cy.get('[data-testid="filter-button"]').click()        
     })
     it('Appears correct transit pet', () => {
+        cy.get('[data-testid="filter-button"]').click()  
         //Click on Transit Button
         cy.get('[data-testid="button-Transito"]').click()
+        cy.intercept('GET', '/api/pet/search?search=&type=&state=Transito&closeness=', {fixture: 'pets_data.json'}).as('getTransit')
+        cy.get('[data-testid="search-filter-button"]').click()
+        cy.wait('@getTransit')
         //Testing transit pet
         cy.getTransitPet()
     })
 
     it('Appears correct lost pet', () => {
+        cy.get('[data-testid="filter-button"]').click()  
         //Click on Lost Button
         cy.get('[data-testid="button-Perdido"]').click()
+        cy.intercept('GET', '/api/pet/search?search=&type=&state=Perdido&closeness=', {fixture: 'pets_data.json'}).as('getLost')
+        cy.get('[data-testid="search-filter-button"]').click()
+        cy.wait('@getLost')
         //Testing lost pet
         cy.getLostPet()
     })
     it('Appears correct adoption pet', () => {
+        cy.get('[data-testid="filter-button"]').click()  
         //Click on Adoption Button
         cy.get('[data-testid="button-Adopción"]').click()
+        cy.intercept('GET', '/api/pet/search?search=&type=&state=Adopci%C3%B3n&closeness=', {fixture: 'pets_data.json'}).as('getAdopt')
+        cy.get('[data-testid="search-filter-button"]').click()
+        cy.wait('@getAdopt')
         //Testing adoption pet
         cy.getAdoptionPet()
     })
@@ -75,7 +85,7 @@ describe('Home', () => {
 
 describe('Initial pets', () => {
     beforeEach( () => {
-        cy.intercept('GET', '/api/pet/search?search=&closeness=&state=&type=', {fixture: 'pets_data.json'}).as('gets')
+        cy.intercept('GET', '/api/pet/search?search=&type=&state=&closeness=', {fixture: 'pets_data.json'}).as('gets')
         cy.loginBeforeEach()
         cy.wait('@gets')
         cy.get('[data-testid="hideModal"]').click()
@@ -119,18 +129,19 @@ describe('Initial pets', () => {
 
 describe('Pet searching', () => {
     beforeEach( () => {
-        cy.intercept('GET', '/api/pet/search?search=&closeness=&state=&type=', {fixture: 'pets_data.json'}).as('gets')
+        cy.intercept('GET', '/api/pet/search?search=&type=&state=&closeness=', {fixture: 'pets_data.json'}).as('gets')
         cy.loginBeforeEach()
     })
     it('Searching Pet', ()=> {
         //Fixture create the seed data
-        cy.intercept('GET', '/api/pet/search?search=P&closeness=&state=&type=', {fixture: 'searchPer_data.json'})
-        cy.intercept('GET', '/api/pet/search?search=Pe&closeness=&state=&type=', {fixture: 'searchPer_data.json'})
-        cy.intercept('GET', '/api/pet/search?search=Per&closeness=&state=&type=', {fixture: 'searchPer_data.json'}).as('getPer')
+        cy.intercept('GET', '/api/pet/search?search=P&type=&state=&closeness=', {fixture: 'searchPer_data.json'})
+        cy.intercept('GET', '/api/pet/search?search=Pe&type=&state=&closeness=', {fixture: 'searchPer_data.json'})
+        cy.intercept('GET', '/api/pet/search?search=Per&type=&state=&closeness=', {fixture: 'searchPer_data.json'}).as('getPer')
         cy.wait('@gets')
         cy.get('[data-testid="hideModal"]').click()
         cy.wait(500)
         cy.get('[data-testid="search"]').type('Per')
+        cy.get('[data-testid="search-button"]').click()
         cy.wait('@getPer')
         //Testing lost pet
         cy.getLostPet()
@@ -142,7 +153,7 @@ describe('Pet searching', () => {
 
 describe('Profile screen', () => {
     beforeEach( () => {
-        cy.intercept('GET', '/api/pet/search?search=&closeness=&state=&type=', {fixture: 'pets_data.json'}).as('gets')
+        cy.intercept('GET', '/api/pet/search?search=&type=&state=&closeness=', {fixture: 'pets_data.json'}).as('gets')
         cy.loginBeforeEach()
         cy.wait('@gets')
         cy.get('[data-testid="hideModal"]').click()
@@ -163,9 +174,10 @@ describe('Profile screen', () => {
         cy.get('[data-testid="local-phone"').contains('1139538873')
         cy.getTransitPet()
     })
-    it('Profile from icon', ()=> {
+    it('Profile from menu', ()=> {
         cy.intercept('GET', 'api/user/allData/aldana@gmail.com', {fixture: 'user_data.json'}).as('getUser')
-        cy.get('[data-testid="profileButton"]').click()
+        cy.get('[data-testid="menu-button"]').click()
+        cy.get('[data-testid="profile-button"]').click()
         //Testing button
         cy.wait('@getUser')
         cy.get('[data-testid="user-name"').contains('Aldana Castro')
@@ -175,7 +187,8 @@ describe('Profile screen', () => {
     })
     it('Profile go back', ()=> {
         cy.intercept('GET', 'api/user/allData/aldana@gmail.com', {fixture: 'user_data.json'}).as('getUser')
-        cy.get('[data-testid="profileButton"]').click()
+        cy.get('[data-testid="menu-button"]').click()
+        cy.get('[data-testid="profile-button"]').click()
         //Testing button
         cy.wait('@getUser')
         cy.get('[data-testid="goBack"').click()
@@ -184,7 +197,8 @@ describe('Profile screen', () => {
 
     it('Profile log out', ()=> {
         cy.intercept('GET', 'api/user/allData/aldana@gmail.com', {fixture: 'user_data.json'}).as('getUser')
-        cy.get('[data-testid="profileButton"]').click()
+        cy.get('[data-testid="menu-button"]').click()
+        cy.get('[data-testid="profile-button"]').click()
         //Testing button
         cy.wait('@getUser')
         cy.get('[data-testid="logOut"').click({force: true})
