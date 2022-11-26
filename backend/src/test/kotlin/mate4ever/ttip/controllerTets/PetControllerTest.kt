@@ -69,6 +69,52 @@ class PetControllerTest {
     }
 
     @Test
+    fun createPetWithBirth() {
+        val pet = petFactory.anyPetDTO(birth = "26/11/2022")
+        mockMvc.perform(
+            MockMvcRequestBuilders.post("/api/pet/create")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(ObjectMapper().writeValueAsString(pet)))
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("name").value("Gatito"))
+            .andExpect(jsonPath("image").value("Example"))
+            .andExpect(jsonPath("birth").value("2022-11-26"))
+            .andExpect(jsonPath("type").value("Gato"))
+            .andExpect(jsonPath("breed").value("Siames"))
+            .andExpect(jsonPath("state").value("Perdido"))
+            .andExpect(jsonPath("user").value("aldana@gmail.com"))
+            .andExpect(jsonPath("vaccine").value(true))
+            .andExpect(jsonPath("castrated").value(true))
+            .andExpect(jsonPath("medicalHistory").value(null))
+            .andExpect(jsonPath("description").value("Se perdio en Bernal"))
+            .andExpect(jsonPath("coordinates").value(pet.coordinates))
+
+    }
+
+    @Test
+    fun createPetWithMedicalStory() {
+        val pet = petFactory.anyPetDTO(medicalHistory = "No tiene ningun problema medico.")
+        mockMvc.perform(
+            MockMvcRequestBuilders.post("/api/pet/create")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(ObjectMapper().writeValueAsString(pet)))
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("name").value("Gatito"))
+            .andExpect(jsonPath("image").value("Example"))
+            .andExpect(jsonPath("birth").value(null))
+            .andExpect(jsonPath("type").value("Gato"))
+            .andExpect(jsonPath("breed").value("Siames"))
+            .andExpect(jsonPath("state").value("Perdido"))
+            .andExpect(jsonPath("user").value("aldana@gmail.com"))
+            .andExpect(jsonPath("vaccine").value(true))
+            .andExpect(jsonPath("castrated").value(true))
+            .andExpect(jsonPath("medicalHistory").value("No tiene ningun problema medico."))
+            .andExpect(jsonPath("description").value("Se perdio en Bernal"))
+            .andExpect(jsonPath("coordinates").value(pet.coordinates))
+
+    }
+
+    @Test
     fun createAndFindPet() {
         val pet = petService.createPet(petFactory.anyPetDTO())
         mockMvc.perform(
@@ -219,7 +265,7 @@ class PetControllerTest {
 
     @Test
     fun getNearbyPets() {
-        petService.createPet(petFactory.anyPetDTO())
+        petService.createPet(petFactory.anyPetDTO(birth = "26/11/2022"))
         mockMvc.perform(
             MockMvcRequestBuilders.get("/api/pet/nearby?latitude=-36.6769415180527&longitude=-60.5588319815719"))
             .andExpect(status().isOk)
