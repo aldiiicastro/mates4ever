@@ -265,7 +265,7 @@ class PetControllerTest {
 
     @Test
     fun getNearbyPets() {
-        petService.createPet(petFactory.anyPetDTO())
+        petService.createPet(petFactory.anyPetDTO(birth = "26/11/2022"))
         mockMvc.perform(
             MockMvcRequestBuilders.get("/api/pet/nearby?latitude=-36.6769415180527&longitude=-60.5588319815719"))
             .andExpect(status().isOk)

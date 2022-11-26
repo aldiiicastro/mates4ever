@@ -122,6 +122,37 @@ class UserControllerTest {
     }
 
     @Test
+    fun getUserLoginPassword() {
+        val user = userFactory.anyUser()
+        userController.createUser(user)
+        val userDTO = UserDTO(user.email, "contrasena...", user.expoPushToken)
+        mockMvc.perform(
+            MockMvcRequestBuilders.post("/api/user/userData")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(ObjectMapper().writeValueAsString(userDTO))
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("email").value(user.email))
+
+    }
+
+    @Test
+    fun getNearbyPets(){
+        val coordinates = mapOf("latitude" to -36.6769415180527, "longitude" to -60.5588319815719)
+        val user = userFactory.anyUser(coordinates = coordinates)
+        userController.createUser(user)
+        mockMvc.perform(
+            MockMvcRequestBuilders.get("/api/user/nearby?latitude=${-36.6769415180527}&longitude=${-60.5588319815719}")
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
+            .andExpect (MockMvcResultMatchers.jsonPath("$").isArray)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.size()").value(1))
+            .andExpect(MockMvcResultMatchers.jsonPath("$[0].email").value("aldana@gmail.com"))
+
+    }
+
+    @Test
     fun getUserLoginWrongEmail() {
         val user = userFactory.anyUser()
         userController.createUser(user)
