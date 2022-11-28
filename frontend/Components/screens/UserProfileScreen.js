@@ -34,6 +34,8 @@ export default function UserProfileScreen({ navigation, route }) {
     }
 
     useEffect(() => {
+        navigation.addListener('focus', () => {
+            getUserProfile()})
         getUserProfile()
     }, [])
 

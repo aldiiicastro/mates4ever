@@ -126,7 +126,7 @@ const RegisterScreen = forwardRef(({navigation}, ref) => {
                     <Loader loading={loading}/> :
                     <ScrollView>
                         <ImageView/>
-                        <Form GenericInput={'Registrarse'} onButtonPress={() => handleSubmitButton()}
+                        <Form buttonText={'Registrarse'} GenericInput={'Registrarse'} onButtonPress={() => handleSubmitButton()}
                               buttonStyle={{backgroundColor: colors.violet}}>
                             <FormItemGeneric
                                 value={userName}
@@ -178,7 +178,7 @@ const RegisterScreen = forwardRef(({navigation}, ref) => {
                                 onChangeText={(phoneNumber) => setPhoneNumber(phoneNumber)}
                                 showErrorIcon={false}
                                 keyboardType={"phone-pad"}
-                                ref={phoneNumberInputRef}
+                                // ref={phoneNumberInputRef}
                                 onSubmitEditing={() => userStreetInputRef.current && userStreetInputRef.current.focus()}
                                 floatingLabel
                             />

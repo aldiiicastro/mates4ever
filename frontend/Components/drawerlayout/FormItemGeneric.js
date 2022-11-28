@@ -8,6 +8,7 @@ import {form} from "../../styles/Form"
 import {style} from "../../styles/Commons"
 import {colors} from "../../styles/Colors"
 import Slider from "@react-native-community/slider"
+import { keyboardProps } from "react-native-web/dist/cjs/modules/forwardedProps"
 
 export const FormItemGeneric = forwardRef(({...props}, ref) => {
     return (
@@ -116,6 +117,7 @@ export const SimpleCheckBox = (props) => {
                 status={props.status}
                 onPress={props.onPress}
                 testID={props.testID}
+                key={props.key}
             />
             <Text style={style.label}>{props.text}</Text>
         </View>

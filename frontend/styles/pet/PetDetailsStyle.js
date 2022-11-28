@@ -22,9 +22,10 @@ const petDetailsStyle = StyleSheet.create({
     detailsContainer: {
         flex: 1,
         backgroundColor: colors.bg_grey,
-        marginHorizontal: 12,
+        // marginHorizontal: 6,
+        width: width - 25,
         borderRadius: 20,
-        marginTop: 10,
+        marginTop: -10,
         paddingBottom: 30,
         paddingTop: 30,
         minHeight: height - (width + 30)

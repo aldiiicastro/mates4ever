@@ -78,7 +78,7 @@ export default function DrawerMenu ({navigation}) {
                     </ScrollView>
                 </TouchableOpacity>
             </Modal>
-            <MapLostPets modalVisible={mapModalVisible} setModalVisible={showModalMap}/>
+            <MapLostPets modalVisible={mapModalVisible} navigation={navigation} setModalVisible={showModalMap}/>
         </View>
     )
 }
