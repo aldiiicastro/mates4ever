@@ -21,6 +21,10 @@
 describe('Home', () => {
     beforeEach( () => {
         cy.intercept('GET', '/api/pet/search?search=&type=&state=&closeness=', {fixture: 'empty_data.json'}).as('getEmpty')
+        cy.intercept('GET', '/api/pet/nearby?latitude=&longitude=', (req) => {
+            req.latitude = -34.7086053,
+            req.longitude = -58.2809884
+          })
         cy.loginBeforeEach()
         cy.get('[data-testid="hideModal"]').click()
     })
@@ -35,6 +39,10 @@ describe('Home', () => {
     beforeEach( () => {
         cy.intercept('GET', '/api/pet/search?search=&type=&state=&closeness=', {fixture: 'pets_data.json'}).as('getPets')
         cy.loginBeforeEach()
+        cy.intercept('GET', '/api/pet/nearby?latitude=&longitude=', (req) => {
+            req.latitude = -34.7086053,
+            req.longitude = -58.2809884
+          })
         cy.get('[data-testid="hideModal"]').click()
         cy.wait('@getPets')
     })
@@ -87,6 +95,10 @@ describe('Initial pets', () => {
     beforeEach( () => {
         cy.intercept('GET', '/api/pet/search?search=&type=&state=&closeness=', {fixture: 'pets_data.json'}).as('gets')
         cy.loginBeforeEach()
+        cy.intercept('GET', '/api/pet/nearby?latitude=&longitude=', (req) => {
+            req.latitude = -34.7086053,
+            req.longitude = -58.2809884
+          })
         cy.wait('@gets')
         cy.get('[data-testid="hideModal"]').click()
     })
@@ -131,6 +143,10 @@ describe('Pet searching', () => {
     beforeEach( () => {
         cy.intercept('GET', '/api/pet/search?search=&type=&state=&closeness=', {fixture: 'pets_data.json'}).as('gets')
         cy.loginBeforeEach()
+        cy.intercept('GET', '/api/pet/nearby?latitude=&longitude=', (req) => {
+            req.latitude = -34.7086053,
+            req.longitude = -58.2809884
+          })
     })
     it('Searching Pet', ()=> {
         //Fixture create the seed data
@@ -155,6 +171,10 @@ describe('Profile screen', () => {
     beforeEach( () => {
         cy.intercept('GET', '/api/pet/search?search=&type=&state=&closeness=', {fixture: 'pets_data.json'}).as('gets')
         cy.loginBeforeEach()
+        cy.intercept('GET', '/api/pet/nearby?latitude=&longitude=', (req) => {
+            req.latitude = -34.7086053,
+            req.longitude = -58.2809884
+          })
         cy.wait('@gets')
         cy.get('[data-testid="hideModal"]').click()
     })
