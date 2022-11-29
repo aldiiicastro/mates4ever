@@ -27,7 +27,7 @@ export default function HomeScreen({navigation}) {
     }, [lastNotificationResponse]);
     return (
         <Provider>
-            <MapLostPets modalVisible={mapModalVisible}  setModalVisible={setMapModalVisible} />
+            <MapLostPets modalVisible={mapModalVisible} navigation={navigation} setModalVisible={setMapModalVisible} />
             <View testID={"homeScreenView"}
                 style={homeScreenStyle.viewStyle}>
                 <View style={{width:"100%"}}>

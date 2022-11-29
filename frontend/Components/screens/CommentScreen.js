@@ -164,7 +164,7 @@ export default function CommentScreen({navigation, route}) {
         <SafeAreaView style={{flex: 1}}>
         <ScrollView style={style.fullContainer}>
             <Loader loading={loading}/>
-            <Back onPress={() => navigation.goBack()} text="Cargar un comentario"
+            <Back onPress={() => navigation.goBack()} text="Crear un comentario"
                   headerStyle={commentScreenStyle.header}/>
             <View style={commentScreenStyle.image} on>
                 <FlatList horizontal={true}
@@ -177,10 +177,10 @@ export default function CommentScreen({navigation, route}) {
             </View>
 
             <Form
-                GenericInput={"Cargar un comentario"}
+                GenericInput={"Crear un comentario"}
                 onButtonPress={() => publish()}
                 buttonStyle={commentScreenStyle.formButtonStyle}
-                buttonText="Publicar"
+                buttonText="Comentar"
                 style={[style.marginX, style.bgWhite]}>
                 <CalendarForm
                     isVisible={isDatePickerVisible}

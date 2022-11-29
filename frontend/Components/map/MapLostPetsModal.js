@@ -9,7 +9,8 @@ import {lostPetsStyle} from "../../styles/LostPetsStyle";
 import { Button } from 'react-native-paper';
 
 
-export default function MapLostPets({modalVisible, setModalVisible, navigation}) {
+export default function MapLostPets({navigation}) {
+    const [modalVisible, setModalVisible] = useState(true);
     const [pets, setPets] = useState([])
     const [isLoading, setIsLoading] = useState(true)
     const [isAlreadyShownAlert, setIsAlreadyShownAlert] = useState(false)
@@ -53,10 +54,9 @@ export default function MapLostPets({modalVisible, setModalVisible, navigation})
         }
 
         let location = await Location.getCurrentPositionAsync();
-         let coords = location["coords"]
         setCurrentLocation({
-            latitude: coords ?coords.latitude : -34.706527,
-            longitude: coords ?coords.longitude : -58.277439,
+            latitude: location["coords"].latitude,
+            longitude: location["coords"].longitude,
             latitudeDelta: 0.015,
             longitudeDelta: 0.015
         })
@@ -65,6 +65,13 @@ export default function MapLostPets({modalVisible, setModalVisible, navigation})
 
     return (
         <View>
+            <Button
+                onPress={() => setModalVisible(true)}
+                mode="text"
+                icon={"map"}
+                contentStyle={{flexDirection: 'row-reverse'}}
+                >mapa </Button>
+
             <Modal
                 animationType="slide"
                 transparent={true}

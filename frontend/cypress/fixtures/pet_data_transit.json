@@ -1,0 +1,13 @@
+{
+  "age": 5,
+  "breed": "Sin Raza",
+  "date": null,
+  "description": "Tenemos muchos animales y necesitamos que alguien pueda transitarlo o adoptarlo",
+  "id": "1", "image": "https://github.com/aldiiicastro/mates4ever/blob/main/frontend/assets/gatitos/Mia.jpg?raw=true",
+  "name": "Mía",
+  "state": "Transito",
+  "user": "aldana@gmail.com",
+  "type": "Gato",
+  "castrated": false,
+  "vaccine": false
+}

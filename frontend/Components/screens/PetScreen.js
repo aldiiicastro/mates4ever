@@ -91,6 +91,8 @@ export default function PetScreen({navigation}) {
     };
     //[] means that useEffect runs in the first render.
     useEffect(() => {
+        navigation.addListener('focus', () => {
+            search('')})
         search('')
         getActualCoordinates()
     }, [])
@@ -139,12 +141,13 @@ export default function PetScreen({navigation}) {
                                 <ScrollView>
                                     <View style={filterStyle.categoryView}>
                                         <Text style={filterStyle.categoryTitle}>Tipo de animal:</Text>
-                                        {['Perro', 'Gato', 'Conejo'].map( (type) => 
+                                        {['Perro', 'Gato', 'Conejo'].map( (type, index) => 
                                             <SimpleCheckBox
                                                 status={typeFilter.includes(type) ? "checked" : "unchecked"}
                                                 onPress={() => {
                                                     changeTypeFilter(type)
                                                 }}
+                                                key={index}
                                                 text={type}
                                             />
                                         )}

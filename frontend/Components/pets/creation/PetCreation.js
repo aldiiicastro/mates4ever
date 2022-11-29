@@ -153,7 +153,7 @@ export default function PetCreation({navigation}) {
         return (
             <React.Fragment>
                 <Loader loading={loading}/>
-                <Back onPress={() => navigation.goBack()} text="Cargar una mascota"
+                <Back onPress={() => navigation.goBack()} text="Publicar una mascota"
                       headerStyle={petCreationScreenStyle.header}/>
             </React.Fragment>
         )
@@ -163,7 +163,7 @@ export default function PetCreation({navigation}) {
         <SafeAreaView style={{flex: 1}}>
             {renderGoBack()}
             <ScrollView>
-                <Form GenericInput={"Cargar una mascota"} onButtonPress={() => publish()}
+                <Form GenericInput={"Publicar una mascota"} onButtonPress={() => publish()}
                       buttonStyle={{backgroundColor: colors.violet}} buttonText="Publicar"
                       style={[style.marginX, style.bgWhite]}>
                     <ImageForm
