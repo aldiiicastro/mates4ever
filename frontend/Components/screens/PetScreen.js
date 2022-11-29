@@ -65,7 +65,7 @@ export default function PetScreen({navigation}) {
     }
     const getActualCoordinates = async () => {
         let location = await getCurrentPosition()
-        setActualCoordinetes({"km" : 0,  "latitude": location["latitude"], "longitude": location["longitude"]})
+       setActualCoordinetes({"km" : 0,  "latitude": location? location["latitude"]: -34.706527, "longitude": location? location["longitude"]: -58.277439})
     }
 
     const searchByFilters = async (search) => {
