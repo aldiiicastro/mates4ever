@@ -4,7 +4,7 @@
       "date": null,
       "description": "Tenemos muchos animales y necesitamos que alguien pueda transitarlo o adoptarlo",
       "id": "1", "image": "https://github.com/aldiiicastro/mates4ever/blob/main/frontend/assets/gatitos/Mia.jpg?raw=true",
-      "name": "Mía", "state": "Transito", "tutor": "Octavio", "type": "Gato"
+      "name": "Mía", "state": "Transito", "tutor": "Octavio", "type": "Gato", "coordinates": {"latitude" : -34.7086053, "longitude" :-58.2809884 }
 },
       {
             "age": 8,
@@ -16,7 +16,7 @@
             "name": "Gatito",
             "state": "Perdido",
             "tutor": "Octavio",
-            "type": "Gato"
+            "type": "Gato", "coordinates": {"latitude" : -34.7086053, "longitude" :-58.2809884 }
       },
       {
             "age": 6,
@@ -28,7 +28,7 @@
             "name": "Perrito",
             "state": "Adopción",
             "tutor": "Octavio",
-            "type": "Perro"
+            "type": "Perro", "coordinates": {"latitude" : -34.7086053, "longitude" :-58.2809884 }
       },
       {
             "name": "Animal",
@@ -37,7 +37,7 @@
             "date": null,
             "state": "Adopción",
             "type": "Perro",
-            "breed": "Beagle"
+            "breed": "Beagle", "coordinates": {"latitude" : -34.7086053, "longitude" :-58.2809884 }
       }
 ]
 

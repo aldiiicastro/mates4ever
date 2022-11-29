@@ -7,7 +7,8 @@
             "name": "Gatito",
             "state": "Perdido",
             "tutor": "Octavio",
-            "type": "Gato"
+            "type": "Gato", 
+            "coordinates": {"latitude" : -34.7086053, "longitude" :-58.2809884 }
       },
       {
             "age": 6,
@@ -18,7 +19,8 @@
             "name": "Perrito",
             "state": "Adopción",
             "tutor": "Octavio",
-            "type": "Perro"
+            "type": "Perro", 
+            "coordinates": {"latitude" : -34.7086053, "longitude" :-58.2809884 }
       }
 ]
 

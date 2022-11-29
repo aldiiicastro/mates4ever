@@ -10,5 +10,5 @@
   "medicalHistory": "",
   "description": "Tiene 5 años necesita un transito",
   "tutor": "aldana@gmail.com",
-  "coordinates": null
+  "coordinates": {"latitude" : -34.7086053, "longitude" :-58.2809884 }
 }
