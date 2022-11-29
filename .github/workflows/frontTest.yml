@@ -26,3 +26,5 @@ jobs:
           wait-on: 'http://localhost:19006'
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
+        with:
+          files: ./cypress/e2e/integrations/allTest.cy.js

@@ -1,0 +1,14 @@
+{
+  "name": "Animal",
+  "image": "https://github.com/aldiiicastro/mates4ever/blob/main/frontend/assets/gatitos/Mia.jpg?raw=true",
+  "birth": null,
+  "state": "Adopción",
+  "type": "Perro",
+  "breed": "Beagle",
+  "castrated": false,
+  "vaccine": false,
+  "medicalHistory": "",
+  "description": "Tiene 5 años necesita un transito",
+  "tutor": "aldana@gmail.com",
+  "coordinates": null
+}
