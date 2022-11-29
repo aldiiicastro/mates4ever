@@ -9,6 +9,5 @@
   "user": "aldana@gmail.com",
   "type": "Gato",
   "castrated": false,
-  "vaccine": false, 
-  "coordinates": {"latitude" : -34.7086053, "longitude" :-58.2809884 }
+  "vaccine": false
 }
