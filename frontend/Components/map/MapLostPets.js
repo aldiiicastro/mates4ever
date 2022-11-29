@@ -53,9 +53,10 @@ export default function MapLostPets({modalVisible, setModalVisible}) {
         }
 
         let location = await Location.getCurrentPositionAsync();
+         let coords = location["coords"]
         setCurrentLocation({
-            latitude: location["coords"].latitude,
-            longitude: location["coords"].longitude,
+            latitude: coords ?coords.latitude : -34.706527,
+            longitude: coords ?coords.longitude : -58.277439,
             latitudeDelta: 0.015,
             longitudeDelta: 0.015
         })
