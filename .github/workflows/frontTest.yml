@@ -5,7 +5,8 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-
+env: 
+  CODECOV_TOKEN: 00e39ba1-12c6-43eb-955e-93cd70bd060f
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
@@ -27,4 +28,5 @@ jobs:
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
         with:
+          token: ${{env.CODECOV_TOKEN}}
           working-directory: ./frontend/Components/
