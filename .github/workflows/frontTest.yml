@@ -27,4 +27,4 @@ jobs:
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
         with:
-          files: ./cypress/e2e/integrations/allTest.cy.js
+          files: ./frontend/cypress/e2e/integrations/allTest.cy.js
